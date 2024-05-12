@@ -243,15 +243,15 @@ int main() {
                         cout << "file cannot be opened"<< endl;
                         errorPage = true;
                     }else{
-                        int buffersize = 10000;
+                        int buffersize = 1024;
                         char* const buf = new char[buffersize];
                         char buffer[1024] = { "HTTP/1.1 200 Ok\nContent-type: image/avif\n\n\r\n\r\n" };
                         send(newClientSocket, buffer, strlen(buffer),0);
                         int pos{0};
-                        while(file.get(buffer[pos++]));     
+                        while(file.get(buf[pos++]));
 
-                        send(newClientSocket, buffer, strlen(buffer),0);
-                        
+                        send(newClientSocket, buf, strlen(buf),0);
+                                                
                         delete[] buf;
                     }
                 }else{
@@ -261,14 +261,16 @@ int main() {
                         cout << "file cannot be opened"<< endl;
                         errorPage = true;
                     }else{
-                        int buffersize = 10000;
+                        int buffersize = 1024;
                         char* const buf = new char[buffersize];
                         char buffer[1024] = { "HTTP/1.1 200 Ok\nContent-type: text/html\nAcceptLanguage: de,en-US;q=0.7,en|q=0.3\n\r\n\r\n" };
                         send(newClientSocket, buffer, strlen(buffer),0);
                         int pos{0};
-                        while(file.get(buffer[pos++]));    
+                        while(file.get(buf[pos++]));
 
-                        send(newClientSocket, buffer, strlen(buffer),0);                    
+                        //cout << buf << endl;
+                        send(newClientSocket, buf, strlen(buf),0);                         
+
                         delete[] buf;
                     } 
                 }
@@ -278,8 +280,7 @@ int main() {
                 char* buffer = new char[length + 1]; 
                 strcpy(buffer, request.data.c_str());  
                 cout << "Message from client: " << buffer << endl;
-                send(newClientSocket, buffer, strlen(buffer),0); 
-
+                send(newClientSocket, buffer, strlen(buffer),0);
             }
             if (errorPage){
                 string filename = "error.html";
@@ -287,14 +288,13 @@ int main() {
                 if(!file.good()){
                     cout << "file cannot be opened (error page)"<< endl;
                 }else{
-                    int buffersize = 10000;
+                    int buffersize = 1024;
                     char* const buf = new char[buffersize];
                     char buffer[1024] = { "HTTP/1.1 200 Ok\nContent-type: text/html\n\n\r\n\r\n" };
                     send(newClientSocket, buffer, strlen(buffer),0);
                     int pos{0};
-                    while(file.get(buffer[pos++]));  
-
-                    send(newClientSocket, buffer, strlen(buffer),0);
+                    while(file.get(buf[pos++]));
+                    send(newClientSocket, buf, strlen(buf),0);
                     
                     delete[] buf;
                 }
