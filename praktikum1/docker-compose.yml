@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  praktikum1:
+    image: praktikum1
+    container_name: p1-socket
+    ports:
+      - 127.0.0.1:8080:8080
+    build:
+      context: .
+      dockerfile: ./Dockerfile
