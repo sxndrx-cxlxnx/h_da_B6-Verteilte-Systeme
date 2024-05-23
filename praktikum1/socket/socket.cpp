@@ -11,6 +11,7 @@
 #include <filesystem>
 
 using namespace std;
+
 /*
 void str_echo(int socketForClient){
 
@@ -85,11 +86,11 @@ HTTPrequest validateHTTP(string message){
     
     if( !(element.get | element.post)){
         return element;
-    }else{
+    } else{
         if(element.get){
             line.erase(0, GET.size());
             cout << "*GET" <<  endl;
-        }else{
+        } else{
             line.erase(0, POST.size());
             cout << "*POST" <<  endl;
         }
@@ -125,16 +126,16 @@ HTTPrequest validateHTTP(string message){
                 element.host = line;
                 cout << "*Host: " << element.host << endl;
                 getline(sMessage, line);
-            }else{
+            } else{
                 cout << "*Host: " << element.host << endl;
                 return element;            
             }
-        }else if((line.find(USER_AGENT,0) == 0)){
+        } else if((line.find(USER_AGENT,0) == 0)){
             line.erase(0, USER_AGENT.size());        
             element.userAgent = line; 
             cout << "*User-Agent: " << element.userAgent << endl;
 
-        }else if((line.find(ACCEPT,0) == 0)){                                      
+        } else if((line.find(ACCEPT,0) == 0)){                                      
             line.erase(0, ACCEPT.size());
             if(line.find(TEXT_HTML, 0) != -1 | line.find(IMAGE_AVIF, 0) != -1){                
                 if(line.find(IMAGE_AVIF, 0) != -1 && element.requestURI == FAVICON){
@@ -142,35 +143,35 @@ HTTPrequest validateHTTP(string message){
                 }                
                 element.accept = line;
                 cout << "*Accept: " << element.accept << endl;
-            }else{
+            } else{
                 return element;
             }
-        }else if((line.find(ACCEPT_LANGUAGE,0) == 0)){                                      
+        } else if((line.find(ACCEPT_LANGUAGE,0) == 0)){                                      
             line.erase(0, ACCEPT_LANGUAGE.size());
             element.acceptLang = line;
             cout << "*Accept-Language: " << element.acceptLang << endl;
 
-        }else if((line.find(ACCEPT_ENCODING,0) == 0)){                                       
+        } else if((line.find(ACCEPT_ENCODING,0) == 0)){                                       
             line.erase(0, ACCEPT_ENCODING.size());
             element.acceptEnc = line;
             cout << "*Accept-Encoding: " << element.acceptEnc << endl;
 
-        }else if((line.find(DNT,0) == 0)){                                                    
+        } else if((line.find(DNT,0) == 0)){                                                    
             line.erase(0, DNT.size());
             element.dnt = stoi(line);
             cout << "*DNT: " << element.dnt << endl;
 
-        }else if((line.find(SEC_GPT,0) == 0)){                                                    
+        } else if((line.find(SEC_GPT,0) == 0)){                                                    
             line.erase(0, SEC_GPT.size());
             element.secGPC = stoi(line);
             cout << "*Sec-GPT: " << element.secGPC << endl; 
 
-        }else if((line.find(CONNECTION,0) == 0)){                                                    
+        } else if((line.find(CONNECTION,0) == 0)){                                                    
             line.erase(0, CONNECTION.size());
             if(line.find(KEEP_ALIVE, 0) != -1){
                 element.connection = line;
                 cout << "*Connection: " << element.connection << endl;
-            }else{
+            } else{
                 return element;
             }       
         }
@@ -216,22 +217,22 @@ int main() {
 
         if((childPID = fork()) < 0){
             cout << "server: error while fork" << endl;
-        }else if (childPID == 0){
+        } else if (childPID == 0){
             cout << "forked"<< endl;
 
             close(socketServer);
 
-            char buffer[1024] = { "" }; 
-            recv(newClientSocket, buffer, sizeof(buffer), 0);
+            char clientReqBuffer[1024] = { "" }; 
+            recv(newClientSocket, clientReqBuffer, sizeof(clientReqBuffer), 0);
 
             bool errorPage = false;
 
-            string sBuffer(buffer); 
+            string sBuffer(clientReqBuffer); 
             HTTPrequest request = validateHTTP(sBuffer);
             if(request.valid){
-                cout << "message from client: " << endl << buffer << endl;
-            }else{
-                cout << "invalid message from client" << endl << buffer << endl;
+                cout << "message from client: " << endl << clientReqBuffer << endl;
+            } else{
+                cout << "invalid message from client" << endl << clientReqBuffer << endl;
                 errorPage = true;                
             }
 
@@ -243,100 +244,59 @@ int main() {
                     if(!file.good()){
                         cout << "file cannot be opened"<< endl;
                         errorPage = true;
-                    }else{ 
+                    } else{
                         std::filesystem::path p(filename);
-                        auto buffersize = std::filesystem::file_size(p);                        
-
-                        string header = "HTTP/1.1 200 Ok\nContent-type: text/html\nContent-length: ";
-                        
-                        char* const buf = new char[buffersize];
+                        auto buffersize = std::filesystem::file_size(p); 
+                        char* const fileBuffer = new char[buffersize];
                         int pos{0};
-                        while(file.get(buf[pos++]));
+                        while(file.get(fileBuffer[pos++]));
 
-                        int content_length = strlen(buf);
-                        string length = to_string(content_length);
-                        
-                        header = header + length + "\n\r\n\r\n";
-
-                        cout << "**header: " << header << endl;
-
-                        char buffer[3000];
-                        strcpy(buffer, header.c_str());
-                        send(newClientSocket, buffer, strlen(buffer),0);
-
-                        send(newClientSocket, buf, strlen(buf),0);                         
-
-                        delete[] buf;
+                        sendResponse(fileBuffer, "HTTP/1.1 200 Ok", newClientSocket);
                     }
-                }else{
-                    string filename = request.requestURI+".html";
+                } else{
+                    string filename;
+                    if (request.requestURI == ""){
+                        filename = "index.html";
+                    } else {
+                        filename = request.requestURI+".html";
+                    }
+                    
                     ifstream file(filename, ios::binary);
                     if(!file.good()){
                         cout << "file cannot be opened"<< endl;
                         errorPage = true;
-                    }else{
+                    } else{
                         std::filesystem::path p(filename);
-                        auto buffersize = std::filesystem::file_size(p);                        
-
-                        string header = "HTTP/1.1 200 Ok\nContent-type: text/html\nContent-length: ";
-                        
-                        char* const buf = new char[buffersize];
+                        auto buffersize = std::filesystem::file_size(p); 
+                        char* const fileBuffer = new char[buffersize];
                         int pos{0};
-                        while(file.get(buf[pos++]));
+                        while(file.get(fileBuffer[pos++]));
 
-                        int content_length = strlen(buf);
-                        string length = to_string(content_length);
-                        
-                        header = header + length + "\n\r\n\r\n";
-
-                        cout << "**header: " << header << endl;
-
-                        char buffer[3000];
-                        strcpy(buffer, header.c_str());
-                        send(newClientSocket, buffer, strlen(buffer),0);
-
-                        send(newClientSocket, buf, strlen(buf),0);                         
-
-                        delete[] buf;
+                        sendResponse(fileBuffer, "HTTP/1.1 200 Ok", newClientSocket);
                     } 
                 }
 
-            }else if (request.post){
+            } else if (request.post){
                 int length = request.data.length(); 
-                char* buffer = new char[length + 1]; 
-                strcpy(buffer, request.data.c_str());  
-                cout << "Message from client: " << buffer << endl;
-                send(newClientSocket, buffer, strlen(buffer),0);
+                char* bufferPostHeader = new char[length + 1]; 
+                strcpy(bufferPostHeader, request.data.c_str());  
+                cout << "Message from client: " << bufferPostHeader << endl;
+                send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
             }
             if (errorPage){
                 string filename = "error.html";
                 ifstream file(filename, ios::binary);
                 if(!file.good()){
                     cout << "file cannot be opened (error page)"<< endl;
-                }else{
+                } else{
                     std::filesystem::path p(filename);
-                    auto buffersize = std::filesystem::file_size(p);                        
-
-                    string header = "HTTP/1.1 404 Not Found\nContent-type: text/html\nContent-length: ";
-                    
-                    char* const buf = new char[buffersize];
+                    auto buffersize = std::filesystem::file_size(p); 
+                    char* const fileBuffer = new char[buffersize];
                     int pos{0};
-                    while(file.get(buf[pos++]));
 
-                    int content_length = strlen(buf);
-                    string length = to_string(content_length);
-                    
-                    header = header + length + "\n\r\n\r\n";
+                    while(file.get(fileBuffer[pos++]));
 
-                    cout << "**header: " << header << endl;
-
-                    char buffer[3000];
-                    strcpy(buffer, header.c_str());
-                    send(newClientSocket, buffer, strlen(buffer),0);
-
-                    send(newClientSocket, buf, strlen(buf),0);                         
-
-                    delete[] buf;
+                    sendResponse(fileBuffer, "HTTP/1.1 404 Not Found", newClientSocket);
                 }
             }       
             exit(0);
@@ -346,3 +306,22 @@ int main() {
     }
 }
 
+int sendResponse(char* const fileBuffer, string httpCode, int newClientSocket)
+{
+    string header = httpCode + "\nContent-type: text/html\nContent-length: ";
+
+    int content_length = strlen(fileBuffer);
+    string length = to_string(content_length);
+    
+    header = header + length + "\n\r\n\r\n";
+
+    cout << "**header: " << header << endl;
+
+    char headerBuffer[3000];
+    strcpy(headerBuffer, header.c_str());
+    send(newClientSocket, headerBuffer, strlen(headerBuffer),0);
+
+    send(newClientSocket, fileBuffer, strlen(fileBuffer),0);                         
+
+    delete[] fileBuffer;
+}
