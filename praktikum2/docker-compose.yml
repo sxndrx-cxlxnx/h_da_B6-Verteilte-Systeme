@@ -5,7 +5,14 @@ services:
     image: praktikum1
     container_name: p2-socket
     ports:
-      - 127.0.0.1:8080:8080
+      - 8080:8080
+      - 9090:9090
     build:
       context: .
       dockerfile: ./Dockerfile
+    networks:
+      - vs
+      
+networks:
+  vs:
+    external: true
