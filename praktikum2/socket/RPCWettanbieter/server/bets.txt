@@ -1,5 +1,3 @@
-1:Gryffindor:Slytherin:1.0:2.0:1.5
-1:Gryffindor:Slytherin:1.0:2.0:1.5
-2:Hufflepuff:Ravenclaw:2.0:2.0:4.0
-1:Gryffindor:Slytherin:1.0:2.0:1.5
-1:Gryffindor:Slytherin:1.0:2.0:1.5
+x:1:a:b:1.0:2.0:3.0
+2:2:a:b:1.0:2.0:3.0
+x:2:c:d:3.0:2.0:1.0

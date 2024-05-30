@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++11 -Wall -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H CMakeFiles/CppClient.dir/CppClient.cpp.o CMakeFiles/CppClient.dir/Wettanbieter.cpp.o -o CppClient   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib -lthrift 

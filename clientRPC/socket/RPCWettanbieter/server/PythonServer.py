@@ -27,13 +27,13 @@ from thrift.server import TServer
 # Server implementation
 class WettanbieterHandler:
 
-    def addBet(self, id, playera, playerb, winachance, winbchance, even):
+    def addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
         file = open("bets.txt", "a")
-        file.write(str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
+        file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
         file.close()
         return True
 
-    def changeBet(self, id, playera, playerb, winachance, winbchance, even):
+    def changeBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
         # source: https://www.geeksforgeeks.org/python-program-to-replace-specific-line-in-file/
         # source: https://stackoverflow.com/questions/4710067/how-to-delete-a-specific-line-in-a-text-file-using-python
         with open('bets.txt','r',encoding='utf-8') as file:
@@ -42,14 +42,14 @@ class WettanbieterHandler:
 
         with open("bets.txt", "w", encoding='utf-8') as file:
             for line in data:
-                if line.startswith(str(id) + ":") :
-                    file.write(str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
+                if line.startswith(nameanbieter + ":" + str(id) + ":") :
+                    file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
                 else :
                     file.write(line)
 
         return True
 
-    def deleteBet(self, id, playera, playerb, winachance, winbchance, even):
+    def deleteBet(self, nameanbieter, id):
         # source: https://www.geeksforgeeks.org/python-program-to-replace-specific-line-in-file/
         # source: https://stackoverflow.com/questions/4710067/how-to-delete-a-specific-line-in-a-text-file-using-python
         
@@ -59,10 +59,60 @@ class WettanbieterHandler:
 
         with open("bets.txt", "w", encoding='utf-8') as file:
             for line in data:
-                if line != str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n" :
+                if not line.startswith(nameanbieter + ":" + str(id) + ":") :
                     file.write(line)
 
         return True
+    
+    def getMyBets(self, nameanbieter):
+
+        with open('bets.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        
+        for line in data:
+            if line.startswith(nameanbieter + ":") :
+                returnValue += line + "\n"
+            
+        return returnValue
+
+    def getBets(self, nameanbieter, id):
+        with open('bets.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        
+        for line in data:
+            if line.startswith(nameanbieter + ":" + str(id) + ":") :
+                returnValue += line
+            
+        return returnValue
+
+    def getBettors(self, nameanbieter, id):
+
+        with open('bettor.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        
+        for line in data:
+            if line.startswith(nameanbieter + ":" + str(id) + ":") :
+                returnValue += line
+            
+        return returnValue
+
+
+    def setBettor(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
+
+        file = open("bettor.txt", "a")
+        file.write(nameanbieter + ":" + str(betid) + ":" + namebettor + ":" + str(moneyset) + ":" + str(ending) + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
+        file.close()
+        return True
+
 
 
 # set handler to our implementation

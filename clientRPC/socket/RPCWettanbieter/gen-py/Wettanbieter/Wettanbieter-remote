@@ -24,9 +24,13 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('Usage: ' + sys.argv[0] + ' [-h host[:port]] [-u url] [-f[ramed]] [-s[sl]] [-novalidate] [-ca_certs certs] [-keyfile keyfile] [-certfile certfile] function [arg1 [arg2...]]')
     print('')
     print('Functions:')
-    print('  bool addBet(i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
-    print('  bool changeBet(i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
-    print('  bool deleteBet(i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
+    print('  bool addBet(string nameanbieter, i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
+    print('  bool changeBet(string nameanbieter, i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
+    print('  bool deleteBet(string nameanbieter, i32 id)')
+    print('  string getMyBets(string nameanbieter)')
+    print('  string getBets(string nameanbieter, i32 id)')
+    print('  string getBettors(string nameanbieter, i32 id)')
+    print('  bool setBettor(string nameanbieter, i32 betid, string namebettor, double moneyset, i32 ending, double winachance, double winbchance, double even)')
     print('')
     sys.exit(0)
 
@@ -107,22 +111,46 @@ client = Wettanbieter.Client(protocol)
 transport.open()
 
 if cmd == 'addBet':
-    if len(args) != 6:
-        print('addBet requires 6 args')
+    if len(args) != 7:
+        print('addBet requires 7 args')
         sys.exit(1)
-    pp.pprint(client.addBet(eval(args[0]), args[1], args[2], eval(args[3]), eval(args[4]), eval(args[5]),))
+    pp.pprint(client.addBet(args[0], eval(args[1]), args[2], args[3], eval(args[4]), eval(args[5]), eval(args[6]),))
 
 elif cmd == 'changeBet':
-    if len(args) != 6:
-        print('changeBet requires 6 args')
+    if len(args) != 7:
+        print('changeBet requires 7 args')
         sys.exit(1)
-    pp.pprint(client.changeBet(eval(args[0]), args[1], args[2], eval(args[3]), eval(args[4]), eval(args[5]),))
+    pp.pprint(client.changeBet(args[0], eval(args[1]), args[2], args[3], eval(args[4]), eval(args[5]), eval(args[6]),))
 
 elif cmd == 'deleteBet':
-    if len(args) != 6:
-        print('deleteBet requires 6 args')
+    if len(args) != 2:
+        print('deleteBet requires 2 args')
         sys.exit(1)
-    pp.pprint(client.deleteBet(eval(args[0]), args[1], args[2], eval(args[3]), eval(args[4]), eval(args[5]),))
+    pp.pprint(client.deleteBet(args[0], eval(args[1]),))
+
+elif cmd == 'getMyBets':
+    if len(args) != 1:
+        print('getMyBets requires 1 args')
+        sys.exit(1)
+    pp.pprint(client.getMyBets(args[0],))
+
+elif cmd == 'getBets':
+    if len(args) != 2:
+        print('getBets requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.getBets(args[0], eval(args[1]),))
+
+elif cmd == 'getBettors':
+    if len(args) != 2:
+        print('getBettors requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.getBettors(args[0], eval(args[1]),))
+
+elif cmd == 'setBettor':
+    if len(args) != 8:
+        print('setBettor requires 8 args')
+        sys.exit(1)
+    pp.pprint(client.setBettor(args[0], eval(args[1]), args[2], eval(args[3]), eval(args[4]), eval(args[5]), eval(args[6]), eval(args[7]),))
 
 else:
     print('Unrecognized method %s' % cmd)

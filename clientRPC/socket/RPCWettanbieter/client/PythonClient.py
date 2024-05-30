@@ -7,7 +7,7 @@
 #
 # source: https://cloudxlab.com/blog/creating-thrift-service/
 
-host = "p2-socket"
+host = "localhost"
 port = 9090
 
 import sys
@@ -45,12 +45,17 @@ try:
         print("Neue Wette? :1 \n")
         print("Wette anpassen? :2 \n")
         print("Wette entfernen? :3 \n")
-        print("beenden? :4 \n")
+        print("Wette ausgeben? :4 \n")
+        print("Wettende auf Wette abfragen? :5 \n")
+        print("Wetten? :6 \n")
+        print("Wette abfragen? :7 \n")
+        print("beenden? :8 \n")
 
         input2 = int(input("Eingabe: "))
 
         if input2 == 1:
 
+            name = input("Your Name?: ")
             pid = int(input("ID?: "))
             playera = input("Player A?: ")
             playerb = input("Player B?: ")
@@ -58,11 +63,12 @@ try:
             winb = float(input("Chance B?: "))
             even = float(input("Even?: "))
 
-            result = client.addBet(pid, playera, playerb, wina, winb, even)
+            result = client.addBet(name, pid, playera, playerb, wina, winb, even)
             print (result)
 
         elif input2 == 2:
 
+            name = input("Your Name?: ")
             pid = int(input("ID?: "))
             playera = input("Player A?: ")
             playerb = input("Player B?: ")
@@ -70,22 +76,65 @@ try:
             winb = float(input("Chance B?: "))
             even = float(input("Even?: "))
 
-            result = client.changeBet(pid, playera, playerb, wina, winb, even)
+            result = client.changeBet(name, pid, playera, playerb, wina, winb, even)
             print (result)
 
         elif input2 == 3:
 
+            name = input("Your Name?: ")
             pid = int(input("ID?: "))
-            playera = input("Player A?: ")
-            playerb = input("Player B?: ")
-            wina = float(input("Chance A?: "))
-            winb = float(input("Chance B?: "))
-            even = float(input("Even?: "))
 
-            result = client.deleteBet(pid, playera, playerb, wina, winb, even)
+            result = client.deleteBet(name, pid)
             print (result)
-            
+
         elif input2 == 4:
+
+            name = input("Your Name?: ")
+
+            result = client.getMyBets(name)
+            print (result)
+        
+        elif input2 == 5:
+
+            name = input("Your Name?: ")
+            pid = int(input("ID?: "))
+
+            result = client.getBettors(name, pid)
+            print (result)
+
+        elif input2 == 6:
+
+            nameanbieter = input("Name bookmaker?: ")
+            pid = int(input("ID?: "))
+
+            result1 = client.getBets(nameanbieter, pid)
+            if result1 :
+                name = input("Your Name?: ")
+                moneyset = float(input("Money?: "))
+
+                ending = int(input("wina (1), winb(2), even (3)?: "))
+
+                arrayResult = result1.split(":")
+
+                wina = float(arrayResult[-3])
+                winb = float(arrayResult[-2])
+                even = float(arrayResult[-1])
+
+                result = client.setBettor(nameanbieter, pid, name, moneyset, ending, wina, winb, even)
+                print (result)
+            else :
+                print ("No bet found with this id and bookmaker")
+
+        elif input2 == 7:
+
+            nameanbieter = input("Name bookmaker?: ")
+            pid = int(input("ID?: "))
+
+            result1 = client.getBets(nameanbieter, pid)
+            print(result1)
+            
+            
+        elif input2 == 8:
             loop = False
     
 

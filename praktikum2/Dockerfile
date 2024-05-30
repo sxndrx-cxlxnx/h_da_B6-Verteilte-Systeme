@@ -24,6 +24,7 @@ RUN tar -xvf thrift-0.20.0.tar.gz
 #RUN make install
 #RUN apt install -y python3-thrift
 #RUN apt install -y python3-pip
+#RUN apt install libboost-all-dev
 
 # Copy the current folder which contains C++ source code to the Docker image under /usr/src
 COPY . /usr/src/code
