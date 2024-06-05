@@ -29,7 +29,7 @@ class WettanbieterHandler:
 
     def addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
         file = open("bets.txt", "a")
-        file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
+        file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
         file.close()
         return True
 
@@ -43,7 +43,7 @@ class WettanbieterHandler:
         with open("bets.txt", "w", encoding='utf-8') as file:
             for line in data:
                 if line.startswith(nameanbieter + ":" + str(id) + ":") :
-                    file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
+                    file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
                 else :
                     file.write(line)
 
@@ -71,14 +71,31 @@ class WettanbieterHandler:
         print(data)        
 
         returnValue = ""
+        ctr = 0
         
         for line in data:
             if line.startswith(nameanbieter + ":") :
-                returnValue += line + "\n"
+                ctr += 1
+                returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
             
         return returnValue
 
-    def getBets(self, nameanbieter, id):
+    def getAllBets(self):
+
+        with open('bets.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        
+        for line in data:
+            returnValue += line + "\n"
+            
+        return returnValue
+
+    def getSpecificBet(self, nameanbieter, id):
         with open('bets.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
@@ -92,6 +109,20 @@ class WettanbieterHandler:
         return returnValue
 
     def getBettors(self, nameanbieter, id):
+
+        with open('bettor.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        
+        for line in data:
+            if line.startswith(nameanbieter + ":" + str(id) + ":") :
+                returnValue += line
+            
+        return returnValue
+
+    def getAllPlacedBetsToAnBetOffer(self, nameanbieter, id):
 
         with open('bettor.txt','r',encoding='utf-8') as file:
             data = file.readlines()

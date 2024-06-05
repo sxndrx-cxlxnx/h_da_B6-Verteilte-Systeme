@@ -88,6 +88,8 @@ HTTPrequest validateHTTP(string message){
     string SEC_GPT = "Sec-GPC: ";
     string CONNECTION = "Connection: ";
     string KEEP_ALIVE = "keep-alive";
+    string REFERER = "Referer: ";
+    string REFERER_PREFIX = "http://localhost:8080/";
 
     std::stringstream sMessage;
     sMessage << message;
@@ -188,7 +190,15 @@ HTTPrequest validateHTTP(string message){
             } else{
                 return element;
             }       
+        } else if((line.find(REFERER,0) == 0)){                                                    
+            line.erase(0, REFERER.size());
+            if(line.find(REFERER_PREFIX, 0) != -1){
+                line.erase(0, REFERER_PREFIX.size());
+                element.referer = line;
+                cout << "*Referer: " << element.referer << endl;
+            }     
         }
+
         getline(sMessage, line);               
     }
     //cout << "line: " << line << endl;
@@ -374,6 +384,27 @@ vector<Wettoption> getAllBetsFromWettanbieter(string anbieterName, string adress
     return allBets;
 }
 
+void setBettor(string nameanbieter, int betid, string namebettor, double moneyset, int ending, double winachance, double winbchance, double even){
+    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    try
+    {
+        transport->open();
+
+        client.setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
+
+        transport->close();
+
+    } catch (TException& tx) {
+    cout << "ERROR in setBettor(): " << tx.what() << endl;
+    }
+    cout << "added Bet" << endl;
+
+}
+
 vector<Wettoption> getAllBets()  // Schnittstelle, die der Client aufruft
 //string getAllBets()
 {
@@ -486,15 +517,25 @@ int main() {
                             string quoteA = to_string(alleWetten[i].quoteA);
                             string quoteB = to_string(alleWetten[i].quoteB);
                             string quoteEven = to_string(alleWetten[i].quoteEven);
+                            /*
                             newHTML += "<option value = \"" + alleWetten[i].playerA + " vs. " + alleWetten[i].playerB + "\">"
                                       + alleWetten[i].playerA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
                                       + alleWetten[i].playerB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
                                       + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</option>";
+                            */
+
+                            cout << alleWetten[i].anbieterName << endl;
+                            newHTML += "<option value = \"" + alleWetten[i].anbieterName + "AA" + to_string(alleWetten[i].id) + "AA" + alleWetten[i].playerA + "AA" + alleWetten[i].playerB + "AA" 
+                                        + quoteA.substr(0, quoteA.find('.')+3) + "AA" + quoteB.substr(0, quoteA.find('.')+3) + "AA" + quoteEven.substr(0, quoteA.find('.')+3) + "\">"
+                                        + alleWetten[i].playerA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
+                                        + alleWetten[i].playerB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                        + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</option>";
                             /*
                             newHTML += "<p> " + alleWetten[i].playerA + " vs. " + alleWetten[i].playerB + "\">"
                                       + alleWetten[i].playerA + "(" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
                                       + alleWetten[i].playerB + "(" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                      + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</p>";*/
+                                      + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</p>";
+                            */
                         }
                         // <option value = "Gryffindor vs. Slytherin">Gryffindor (3.5) vs. Slytherin (1.3) - Even (4.0)</option>
                         replace(sEditFileBuffer, htmlVariable, newHTML);
@@ -533,11 +574,129 @@ int main() {
                 }
 
             } else if (request.post){
+                cout << "* request.referer: " << request.referer; 
+                cout << "!"<< endl;
+                if(request.referer.find("wettender",0) != -1){
+                    cout << "POST bei wettender" << endl;
+                    //Wettender Beispiel POST-String: Spiel=Fred+und+GeorgeAA2AARavenclawAASlytherinAA1.00AA2.00AA3.50&gewaehlteMannschaft=Team+A&Wetteinsatz=10&Name=emmy
+                    string SPIEL = "Spiel=";
+                    string TRENNUNG = "AA";
+                    string AUSGEWAEHLT = "gewaehlteMannschaft=";
+                    string TEAM_A = "Team+A";
+                    string TEAM_B = "Team+A";
+                    string EVEN = "Even";
+                    string AMPERSAND = "&";
+                    string WETTEINSATZ = "Wetteinsatz=";
+                    string NAME = "Name=";
+                    string CARRIAGERETURN = "%0D%0A";
+
+                    string anbieter = "";
+                    string spielid = "";
+                    string playerA = "";
+                    string playerB = "";
+                    string aQuote = "";
+                    string bQuote = "";
+                    string evenQuote = "";
+                    int ergebnis = -1;
+                    string name = "";
+                    string einsatz = "";
+
+                    string post = request.data;
+
+                    cout << "*post: " << post << endl;
+
+                    if((post.find(SPIEL,0) == 0)){
+                        post.erase(0, SPIEL.size());                        
+                        cout << "*post: " << post << endl;
+
+                        if((post.find(CARRIAGERETURN,0) == 0)){
+                            cout << "found Carriagereturn" << endl;
+                            post.erase(0, CARRIAGERETURN.size());
+                            cout << "*post: " << post << endl;
+                        }
+                        int pos = post.find(TRENNUNG,0);
+
+                        anbieter = post.substr(0,pos);
+                        post.erase(0, anbieter.size());
+                        post.erase(0, TRENNUNG.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(TRENNUNG,0);
+                        spielid = post.substr(0,pos);
+                        post.erase(0, spielid.size());
+                        post.erase(0, TRENNUNG.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(TRENNUNG,0);
+                        playerA = post.substr(0,pos);
+                        post.erase(0, playerA.size());
+                        post.erase(0, TRENNUNG.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(TRENNUNG,0);
+                        playerB = post.substr(0,pos);
+                        post.erase(0, playerB.size());
+                        post.erase(0, TRENNUNG.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(TRENNUNG,0);
+                        aQuote = post.substr(0,pos);
+                        post.erase(0, aQuote.size());
+                        post.erase(0, TRENNUNG.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(TRENNUNG,0);
+                        bQuote = post.substr(0,pos);
+                        post.erase(0, bQuote.size());
+                        post.erase(0, TRENNUNG.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(AMPERSAND,0);
+                        evenQuote = post.substr(0,pos);
+                        post.erase(0, evenQuote.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        post.erase(0, AUSGEWAEHLT.size());
+                        cout << "*post: " << post << endl;
+
+                        pos = post.find(AMPERSAND,0);
+                        string auswahl = post.substr(0,pos);
+                        post.erase(0, auswahl.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        if(auswahl.find(TEAM_A,0) != -1){
+                            ergebnis = 1;
+                        } else if (auswahl.find(TEAM_B,0)){
+                            ergebnis = 2;
+                        }else{
+                            ergebnis = 3;
+                        }
+
+                        post.erase(0, WETTEINSATZ.size());
+                        pos = post.find(AMPERSAND,0);
+                        einsatz = post.substr(0,pos);
+                        post.erase(0, einsatz.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        post.erase(0, NAME.size());
+                        name = post;
+                        cout << "*post: " << post << endl;
+
+                        setBettor(anbieter, stoi(spielid), name, stod(einsatz), ergebnis, stod(aQuote), stod(bQuote), stod(evenQuote));
+
+                    }                      
+                    
+                }    
                 int length = request.data.length(); 
                 char* bufferPostHeader = new char[length + 1]; 
                 strcpy(bufferPostHeader, request.data.c_str());  
                 cout << "Message from client: " << bufferPostHeader << endl;
-                send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
+                send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);           
+
+                
             }
             if (errorPage){
                 string filename = "error.html";

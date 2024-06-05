@@ -7,7 +7,7 @@
 #
 # source: https://cloudxlab.com/blog/creating-thrift-service/
 
-host = "localhost"
+host = "p2-socket"
 port = 9090
 
 import sys
@@ -45,7 +45,7 @@ try:
         print("Neue Wette? :1 \n")
         print("Wette anpassen? :2 \n")
         print("Wette entfernen? :3 \n")
-        print("Wette ausgeben? :4 \n")
+        print("Wetten ausgeben? :4 \n")
         print("Wettende auf Wette abfragen? :5 \n")
         print("Wetten? :6 \n")
         print("Wette abfragen? :7 \n")
@@ -107,7 +107,7 @@ try:
             nameanbieter = input("Name bookmaker?: ")
             pid = int(input("ID?: "))
 
-            result1 = client.getBets(nameanbieter, pid)
+            result1 = client.getSpecificBet(nameanbieter, pid)
             if result1 :
                 name = input("Your Name?: ")
                 moneyset = float(input("Money?: "))
@@ -118,7 +118,7 @@ try:
 
                 wina = float(arrayResult[-3])
                 winb = float(arrayResult[-2])
-                even = float(arrayResult[-1])
+                even = float(arrayResult[-1].removesuffix(';\n'))
 
                 result = client.setBettor(nameanbieter, pid, name, moneyset, ending, wina, winb, even)
                 print (result)
@@ -130,7 +130,7 @@ try:
             nameanbieter = input("Name bookmaker?: ")
             pid = int(input("ID?: "))
 
-            result1 = client.getBets(nameanbieter, pid)
+            result1 = client.getSpecificBet(nameanbieter, pid)
             print(result1)
             
             

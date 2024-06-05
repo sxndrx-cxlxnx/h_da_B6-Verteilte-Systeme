@@ -40,14 +40,24 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("getMyBets\n");
   }
 
-  void getBets(std::string& _return, const std::string& nameanbieter, const int32_t id) {
+  void getAllBets(std::string& _return) {
     // Your implementation goes here
-    printf("getBets\n");
+    printf("getAllBets\n");
+  }
+
+  void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) {
+    // Your implementation goes here
+    printf("getSpecificBet\n");
   }
 
   void getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id) {
     // Your implementation goes here
     printf("getBettors\n");
+  }
+
+  void getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id) {
+    // Your implementation goes here
+    printf("getAllPlacedBetsToAnBetOffer\n");
   }
 
   bool setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) {
