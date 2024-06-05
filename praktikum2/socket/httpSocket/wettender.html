@@ -14,17 +14,21 @@
 			<section class="content" id="wette-schliessen">
 				<h2>Wette schließen</h2> <!-- TODO: Infos über HTTP GET holen -->
 				Mannschaft A vs. Mannschaft B
+				
 				<form method="post" action="http://localhost:8080">
 					<select name = "Spiel"> 
-						<option value = "Ravenclaw vs. Hufflepuff" selected> Ravenclaw (1.5) vs. Hufflepuff (2.0) - Remis (4.0)</option>
-						<option value = "Gryffindor vs. Slytherin">Gryffindor (3.5) vs. Slytherin (1.3) - Remis (4.0)</option>
-						<option value = "Chudley Cannons vs. Holyhead Harpines">Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Remis (4.0)</option>
+						{bettor_post_get_Selection}
+						<!--
+						<option value = "Ravenclaw vs. Hufflepuff" selected> Ravenclaw (1.5) vs. Hufflepuff (2.0) - Even (4.0)</option>
+						<option value = "Gryffindor vs. Slytherin">Gryffindor (3.5) vs. Slytherin (1.3) - Even (4.0)</option>
+						<option value = "Chudley Cannons vs. Holyhead Harpines">Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Even (4.0)</option>
+						-->
 					</select>
 					
-					<select name="gewählte Mannschaft">
+					<select name="gewaehlte Mannschaft">
 						<option value="Team A" selected> Mannschaft A</option>
 						<option value="Team B"> Mannschaft B</option>
-						<option value="Remis"> Remis</option>
+						<option value="Even"> Even</option>
 					</select>
 					<br><br>
 					Wetteinsatz: <input name = "Wetteinsatz" type = "number" id = "Geldbetrag"
@@ -42,7 +46,7 @@
 				<h2>Persönliche Übersicht</h2> <!--mit HTTP GET-->
 					<h3>Aktuelle Wetten</h3>
 						<ul>
-							<li>Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Remis (4.0)<br>
+							<li>Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Even (4.0)<br>
 								15 auf Team B</li>
 						</ul>
 						

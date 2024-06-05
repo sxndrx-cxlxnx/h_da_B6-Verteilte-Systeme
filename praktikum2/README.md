@@ -1,0 +1,76 @@
+## was muss alles gestartet werden
+- (Thrift)
+- Python
+- Socket
+    - evtl. Thrift vorher neu machen
+    - Python vorher zum verbinden
+    - Pfad setzen
+    - compilieren
+    - ./client - starten
+
+___
+<h2 id="Thrift_einrichten">Thrift zum Laufen bekommen</h2>
+
+- Tutorial: https://thrift-tutorial.readthedocs.io/en/latest/installation.html
+- **stehe im Dev-Container!!!**
+- beim Bauen des Docker-Images wurden (aus unbekannten Gründen) einige Befehle, die vorgesehen waren, nicht ausgeführt -> muss händisch ausgeführt werden (die Befehle stehen **auskommentiert im Dockerfile**)
+- Vorsicht: dauert ne Weile
+
+___
+## CPP-Client für Python Server starten
+- [Thrift neu einrichten](#Thrift_einrichten)
+
+### Python Server starten
+```
+cd workspaces/praktikum2/socket/RPCWettanbieter/server/
+python3 PythonServer.py
+```
+
+### neuen CPP-Client (= socket.cpp) starten
+Umgebungsvariable (Path) setzen:
+```
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/thrift-0.20.0/lib/cpp/.libs
+```
+
+Kompilieren der Dateien im gen-cpp Ordner:
+```
+cd socket/httpSocket/
+g++ ../RPCWettanbieter/gen-cpp/Wettanbieter_types.h ../RPCWettanbieter/gen-cpp/Wettanbieter.h ../RPCWettanbieter/gen-cpp/Wettanbieter.cpp socket.cpp -o http-server -lthrift
+./http-server
+```
+
+___
+## Wenn ein RPC-File (+Thrift) geändert wurde
+- **Vorsicht**: in gen-cpp ist der Client mit drin - **nicht löschen**
+- Ordner gen-py / gen-cpp löschen
+- Docker-Image neu bauen
+- [Thrift neu einrichten](#Thrift_einrichten)
+
+___
+## Wenn RPC in den .cpp verwendet wird
+- dazu kompilieren
+- python auch noch
+```
+g++ socket.cpp -o Socket -lthrift
+```
+
+___
+## Überblick
+![Überblick Gesamtsystem](vs_gesamtsystem.PNG)
+
+| Feld | Datei | Port | Aufruf | Pfad |
+| --- | --- | --- | --- | --- |
+| Browser | .html | 8080|  | Socket/x.html |
+| FrontEnd HTTP-Schnittstelle | socket.cpp | 8080 | ./Socket | Socket/httpSocket/socket.cpp |
+| FrontEnd RPC-Schnittstelle | socket.cpp | 9090 | ./client (Auto)| Socket/httpSocket/socket.cpp |
+| Buchmacher | PythonServer | 9090 | python3 PythonServer.py | /socket/RPCWettanbieter/server/PythonServer.py |
+
+___
+## Tests P2
+- CPP-Client Ausführen
+- Zeit steht im Terminal
+```
+cd socket/RPCWettanbieter/gen-cpp/
+g++ Wettanbieter_types.h Wettanbieter.h Wettanbieter.cpp CppClient.cpp -o test-client -lthrift
+./test-client
+```

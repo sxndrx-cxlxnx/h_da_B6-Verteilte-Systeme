@@ -33,7 +33,7 @@ COPY . /usr/src/code
 WORKDIR /usr/src/code/socket
 
 # Use Clang to compile the Test.cpp source file
-RUN clang++ -o Test socket.cpp
+RUN clang++ -o Socket httpSocket/socket.cpp
 
 # Run the output program from the previous step
-CMD ["./Test"]
+CMD ["./httpSocket/Socket"]
