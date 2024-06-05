@@ -13,18 +13,13 @@ RUN apt-get install -y automake bison flex g++ git libboost-all-dev libevent-dev
 RUN apt install curl
 RUN apt install -y cmake
 RUN apt-get -y install git
+RUN apt install -y python3-pip
+RUN apt install -y python3-setuptools
 RUN curl https://dlcdn.apache.org/thrift/0.20.0/thrift-0.20.0.tar.gz > thrift-0.20.0.tar.gz
 RUN tar -xvf thrift-0.20.0.tar.gz
-#RUN cd /
-#RUN cd thrift-0.20.0
-#RUN ./bootstrap.sh
-#RUN ./configure
-#RUN make
-##RUN make check
-#RUN make install
-#RUN apt install -y python3-thrift
-#RUN apt install -y python3-pip
-#RUN apt install libboost-all-dev
+RUN cd thrift-0.20.0 && ./bootstrap.sh && ./configure && make && make install
+RUN apt install -y python3-thrift
+RUN apt install libboost-all-dev
 
 # Copy the current folder which contains C++ source code to the Docker image under /usr/src
 COPY . /usr/src/code
@@ -33,7 +28,7 @@ COPY . /usr/src/code
 WORKDIR /usr/src/code/socket
 
 # Use Clang to compile the Test.cpp source file
-RUN clang++ -o Socket httpSocket/socket.cpp
+RUN g++ RPCWettanbieter/gen-cpp/Wettanbieter_types.h RPCWettanbieter/gen-cpp/Wettanbieter.h RPCWettanbieter/gen-cpp/Wettanbieter.cpp httpSocket/socket.cpp -o httpSocket/http-server -lthrift
 
 # Run the output program from the previous step
-CMD ["./httpSocket/Socket"]
+CMD ["./httpSocket/http-server"]
