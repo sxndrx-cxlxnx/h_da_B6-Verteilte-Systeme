@@ -115,10 +115,14 @@ class WettanbieterHandler:
         print(data)        
 
         returnValue = ""
+        ctr = 0
         
         for line in data:
             if line.startswith(nameanbieter + ":" + str(id) + ":") :
+                ctr += 1
                 returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
             
         return returnValue
 
@@ -129,10 +133,14 @@ class WettanbieterHandler:
         print(data)        
 
         returnValue = ""
+        ctr = 0
         
         for line in data:
             if line.startswith(nameanbieter + ":" + str(id) + ":") :
+                ctr += 1
                 returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
             
         return returnValue
 
@@ -140,7 +148,7 @@ class WettanbieterHandler:
     def setBettor(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
 
         file = open("bettor.txt", "a")
-        file.write(nameanbieter + ":" + str(betid) + ":" + namebettor + ":" + str(moneyset) + ":" + str(ending) + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + "\n")
+        file.write(nameanbieter + ":" + str(betid) + ":" + namebettor + ":" + str(moneyset) + ":" + str(ending) + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
         file.close()
         return True
 

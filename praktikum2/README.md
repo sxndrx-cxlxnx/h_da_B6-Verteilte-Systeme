@@ -13,8 +13,19 @@ ___
 
 - Tutorial: https://thrift-tutorial.readthedocs.io/en/latest/installation.html
 - **stehe im Dev-Container!!!**
-- beim Bauen des Docker-Images wurden (aus unbekannten Gründen) einige Befehle, die vorgesehen waren, nicht ausgeführt -> muss händisch ausgeführt werden (die Befehle stehen **auskommentiert im Dockerfile**)
+- beim Bauen des Docker-Images wurden (aus unbekannten Gründen) einige Befehle, die vorgesehen waren, nicht ausgeführt -> muss händisch ausgeführt werden
+-> Gründe sind nun bekannt: Docker merkt sich cd nicht
+-> läuft jetzt direkt :D
 - Vorsicht: dauert ne Weile
+```
+cd /
+cd thrift-0.20.0
+./bootstrap.sh
+./configure
+make               # dauert ne Weile
+#(optional) make check
+make install       # dauert ne Weile
+```
 
 ___
 ## CPP-Client für Python Server starten
@@ -22,7 +33,7 @@ ___
 
 ### Python Server starten
 ```
-cd workspaces/praktikum2/socket/RPCWettanbieter/server/
+cd socket/RPCWettanbieter/server/
 python3 PythonServer.py
 ```
 
