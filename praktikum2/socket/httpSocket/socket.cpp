@@ -405,6 +405,27 @@ void setBettor(string nameanbieter, int betid, string namebettor, double moneyse
 
 }
 
+void addBet(string nameanbieter, int id, string playera, string playerb, double winachance, double winbchance, double even){
+    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    try
+    {
+        transport->open();
+
+        client.addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+
+        transport->close();
+
+    } catch (TException& tx) {
+    cout << "ERROR in setBettor(): " << tx.what() << endl;
+    }
+    cout << "added Bet" << endl;
+
+}
+
 vector<Wettoption> getAllBets()  // Schnittstelle, die der Client aufruft
 //string getAllBets()
 {
@@ -510,7 +531,7 @@ int main() {
                     if((filename.find("wettender.html")) != string::npos){
                         htmlVariable = "{bettor_post_get_Selection}";
                         //vector<Wettoption> alleWetten = getAllBets();
-                        vector<Wettoption> alleWetten = getAllBetsFromWettanbieter("Fred und George", "localhost", 9090);
+                        vector<Wettoption> alleWetten = getAllBetsFromWettanbieter("Hogwarts", "localhost", 9090);
 
                         for(int i = 0; i < alleWetten.size(); i++)
                         {
@@ -583,7 +604,7 @@ int main() {
                     string TRENNUNG = "AA";
                     string AUSGEWAEHLT = "gewaehlteMannschaft=";
                     string TEAM_A = "Team+A";
-                    string TEAM_B = "Team+A";
+                    string TEAM_B = "Team+B";
                     string EVEN = "Even";
                     string AMPERSAND = "&";
                     string WETTEINSATZ = "Wetteinsatz=";
@@ -689,7 +710,97 @@ int main() {
 
                     }                      
                     
-                }    
+                } else if(request.referer.find("wettanbieter",0) != -1) {
+
+                //idbet=5&teama=a&AGewinnquote=1.5&teamb=b&BGewinnquote=1.5&even=1.5&nameanbieter=baum  
+
+                cout << "POST bei wettanbieter" << endl;
+                    
+                    string GEWINNQUOTEA = "AGewinnquote=";
+                    string GEWINNQUOTEB = "BGewinnquote=";
+                    string EVENQUOTE = "even=";
+                    string TEAM_A = "teama=";
+                    string TEAM_B = "teamb=";
+                    string IDBET = "idbet=";
+                    string AMPERSAND = "&";
+                    string NAME = "nameanbieter=";
+                    string CARRIAGERETURN = "%0D%0A";
+
+                    string anbieter = "";
+                    string spielid = "";
+                    string playerA = "";
+                    string playerB = "";
+                    string aQuote = "";
+                    string bQuote = "";
+                    string evenQuote = "";
+
+                    string post = request.data;
+
+                    cout << "*post: " << post << endl;
+
+                    if((post.find(IDBET,0) == 0)){
+                        post.erase(0, IDBET.size());                        
+                        cout << "*post: " << post << endl;
+
+                        if((post.find(CARRIAGERETURN,0) == 0)){
+                            cout << "found Carriagereturn" << endl;
+                            post.erase(0, CARRIAGERETURN.size());
+                            cout << "*post: " << post << endl;
+                        }
+                        int pos = post.find(AMPERSAND,0);
+
+                        spielid = post.substr(0,pos);
+                        post.erase(0, spielid.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        
+                        post.erase(0, TEAM_A.size());
+                        pos = post.find(AMPERSAND,0);
+                        playerA = post.substr(0,pos);
+                        post.erase(0, playerA.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+                        
+                        post.erase(0, GEWINNQUOTEA.size());
+                        pos = post.find(AMPERSAND,0);
+                        aQuote = post.substr(0,pos);
+                        post.erase(0, aQuote.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        post.erase(0, TEAM_B.size());
+                        pos = post.find(AMPERSAND,0);
+                        playerB = post.substr(0,pos);
+                        post.erase(0, playerB.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;                       
+
+                        post.erase(0, GEWINNQUOTEB.size());
+                        pos = post.find(AMPERSAND,0);
+                        bQuote = post.substr(0,pos);
+                        post.erase(0, bQuote.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post vor even: " << post << endl;
+
+                        post.erase(0, EVENQUOTE.size());
+                        cout << "*post: " << post << endl;
+                        pos = post.find(AMPERSAND,0);
+                        evenQuote = post.substr(0,pos);
+                        post.erase(0, evenQuote.size());
+                        cout << "*post: " << post << endl;
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        post.erase(0, NAME.size());
+                        anbieter = post;
+                        cout << "*post: " << post << endl;
+
+                        addBet(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+
+                    }
+
+                }
                 int length = request.data.length(); 
                 char* bufferPostHeader = new char[length + 1]; 
                 strcpy(bufferPostHeader, request.data.c_str());  

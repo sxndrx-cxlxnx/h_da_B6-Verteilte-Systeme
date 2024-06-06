@@ -12,13 +12,21 @@
             <section class="content" id="neue-wette">
                 <h2>Wette hinzufügen</h2> <!-- via: HTTP POST -->
                 <form method="post" action="http://localhost:8080">
-                    Team A: <input name = "Input Team A" type="text" id = newTeamA>
-                    Gewinnquote: <input type = "number" name = "A Gewinnquote" id = "GewinnquoteA"
+                    ID: <input id = "IDBet" type="text" id = idbet name = idbet>
+                    <br>
+                    Team A: <input teamb = "Input Team A" type="text" id = newTeamA name = teama>
+                    Gewinnquote: <input type = "number" name = "AGewinnquote" id = "GewinnquoteA"
 										min = "1" step="0.5" value = 1.5>
                     <br>
-                    Team B: <input name = "Input Team B" type="text" id = newTeamB>
-                    Gewinnquote: <input type = "number" name = "B Gewinnquote" id = "GewinnquoteB"
+                    Team B: <input teama = "Input Team B" type="text" id = newTeamB name = teamb>
+                    Gewinnquote: <input type = "number" name = "BGewinnquote" id = "GewinnquoteB"
 										min = "1" step="0.5" value = 1.5>
+                    <br>
+                    Quote Even: <input type = "number" name = "even" id = "even"
+										min = "1" step="0.5" value = 1.5>
+                    <br><br>
+                    Ihr Name: <input anbieter = "Input Team B" type="text" id = nameAnbieter name = nameanbieter>
+                    
                     <br><br>
                     <input type="submit" value="Abschicken">
                     <input type="reset" value="Zurücksetzen">
