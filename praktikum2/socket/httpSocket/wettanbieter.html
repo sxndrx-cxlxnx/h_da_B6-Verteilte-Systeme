@@ -10,7 +10,7 @@
 		</header>
 		<main>
             <section class="content" id="neue-wette">
-                <h2>Wette hinzufügen</h2> <!-- via: HTTP POST -->
+                <h2>Wette hinzufügen oder bestehende Wette ändern</h2> <!-- via: HTTP POST -->
                 <form method="post" action="http://localhost:8080">
                     ID: <input id = "IDBet" type="text" id = idbet name = idbet>
                     <br>
@@ -55,29 +55,11 @@
 
             <!-- TODO: Wetten auf Risiko prüfen -->
             <section class="content" id="Wetten-anpassen">
-                <h2>Gewinnquote anpassen</h2>
+                <h2>Wette löschen</h2>
                     <form method="post" action="http://localhost:8080">
-                        <select name = "Spiel"> 
-                            {booker_update_get_bets_of_this_bookmaker}
-                            <!--
-                            <option value = "Ravenclaw vs. Hufflepuff" selected> Ravenclaw (1.5) vs. Hufflepuff (2.0)</option>
-                            <option value = "Gryffindor vs. Slytherin">Gryffindor (3.5) vs. Slytherin (1.3)</option>
-                            <option value = "Chudley Cannons vs. Holyhead Harpines">Chudley Cannons (2.0) vs. Holyhead Harpines (1.5)</option>
-                            -->
-                        </select>
-
-                        <br><br>
-
-                        <!-- TODO: akutelle Quote mit HTTP GET auslesen und als default nehmen-->
-                        <!-- via JavaScript -->
-                        Gewinnquote A: <input type = "number" name = "A Gewinnquote" id = "newGewinnquoteA"
-                                            min = "1" step="0.5" value = 1.5>
-                        <br>
-                        Gewinnquote B: <input type = "number" name = "B Gewinnquote" id = "newGewinnquoteB"
-                        min = "1" step="0.5" value = 1.5>
-                        <br>
-                        Gewinnquote Even: <input type = "number" name = "Even Gewinnquote" id = "newGewinnquoteEven"
-                        min = "1" step="0.5" value = 1.5>
+                        
+                        ID: <input id = "IDBetDel" type="text" id = idbetdel name = idbetdel>
+                        Ihr Name: <input anbieter = "name" type="text" id = nameAnbieterDel name = nameanbieteDel>
 
                         <br><br>
                         <input type="submit" value="Abschicken">

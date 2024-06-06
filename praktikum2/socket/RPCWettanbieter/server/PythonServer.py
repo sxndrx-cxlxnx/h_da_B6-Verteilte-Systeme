@@ -152,6 +152,18 @@ class WettanbieterHandler:
         file.close()
         return True
 
+    def betExists(self, nameanbieter, betid):
+        with open('bets.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+        
+        for line in data:
+            if line.startswith(nameanbieter + ":" + str(betid) + ":") :
+                print("Bet Found")
+                return True
+        print("Bet not Found")    
+        return False
+
 
 
 # set handler to our implementation

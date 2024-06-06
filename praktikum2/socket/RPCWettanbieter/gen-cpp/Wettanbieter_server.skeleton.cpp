@@ -35,6 +35,11 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("deleteBet\n");
   }
 
+  bool betExists(const std::string& nameanbieter, const int32_t betid) {
+    // Your implementation goes here
+    printf("betExists\n");
+  }
+
   void getMyBets(std::string& _return, const std::string& nameanbieter) {
     // Your implementation goes here
     printf("getMyBets\n");

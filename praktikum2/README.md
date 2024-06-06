@@ -54,8 +54,11 @@ ___
 ## Wenn ein RPC-File (+Thrift) geändert wurde
 - **Vorsicht**: in gen-cpp ist der Client mit drin - **nicht löschen**
 - Ordner gen-py / gen-cpp löschen
-- Docker-Image neu bauen
-- [Thrift neu einrichten](#Thrift_einrichten)
+- wenn Wettanbieter.thrift Datei geändert wurde müssen die Dateien neu generiert werden:
+``` 
+thrift --gen cpp Wettanbieter.thrift
+thrift --gen py Wettanbieter.thrift
+```
 
 ___
 ## Wenn RPC in den .cpp verwendet wird

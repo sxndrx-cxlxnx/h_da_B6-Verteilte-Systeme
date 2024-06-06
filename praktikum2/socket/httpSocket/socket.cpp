@@ -401,7 +401,7 @@ void setBettor(string nameanbieter, int betid, string namebettor, double moneyse
     } catch (TException& tx) {
     cout << "ERROR in setBettor(): " << tx.what() << endl;
     }
-    cout << "added Bet" << endl;
+    cout << "added Bettor" << endl;
 
 }
 
@@ -420,9 +420,67 @@ void addBet(string nameanbieter, int id, string playera, string playerb, double 
         transport->close();
 
     } catch (TException& tx) {
-    cout << "ERROR in setBettor(): " << tx.what() << endl;
+    cout << "ERROR in addBet(): " << tx.what() << endl;
     }
     cout << "added Bet" << endl;
+
+}
+
+void changeBet(string nameanbieter, int id, string playera, string playerb, double winachance, double winbchance, double even){
+    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    try
+    {
+        transport->open();
+        client.changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+        transport->close();
+    } catch (TException& tx) {
+    cout << "ERROR in changeBet(): " << tx.what() << endl;
+    }
+    cout << "Bet changed" << endl;
+
+}
+
+void deleteBet(string nameanbieter, int id){
+    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    try
+    {
+        transport->open();
+        client.deleteBet(nameanbieter, id);
+        transport->close();
+
+    } catch (TException& tx) {
+    cout << "ERROR in deleteBet(): " << tx.what() << endl;
+    }
+    cout << "delete Bet" << endl;
+}
+
+bool betExists(string nameanbieter, int id){
+    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    bool response = false;
+
+    try
+    {
+        transport->open();
+        response = client.betExists(nameanbieter, id);
+        transport->close();
+
+    } catch (TException& tx) {
+    cout << "ERROR in betExists(): " << tx.what() << endl;
+    }
+    cout << "betExists" << endl;
+    return response;
 
 }
 
@@ -722,8 +780,10 @@ int main() {
                     string TEAM_A = "teama=";
                     string TEAM_B = "teamb=";
                     string IDBET = "idbet=";
+                    string IDBET_DELETE = "idbetdel=";
                     string AMPERSAND = "&";
                     string NAME = "nameanbieter=";
+                    string NAME_DELETE = "nameanbieteDel=";
                     string CARRIAGERETURN = "%0D%0A";
 
                     string anbieter = "";
@@ -796,17 +856,49 @@ int main() {
                         anbieter = post;
                         cout << "*post: " << post << endl;
 
-                        addBet(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                        cout << "* anbieter und id: " << anbieter << ":" << stoi(spielid) << endl;
 
+                        if(betExists(anbieter, stoi(spielid))){
+                        
+                            changeBet(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                        }else{
+                            addBet(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                        }
+                    }else if ((post.find(IDBET_DELETE,0) == 0)){                        
+                        //idbetdel=3&nameanbieteDel=Hogwarts
+
+                        post.erase(0, IDBET_DELETE.size());                        
+                        cout << "*post: " << post << endl;
+
+                        if((post.find(CARRIAGERETURN,0) == 0)){
+                            cout << "found Carriagereturn" << endl;
+                            post.erase(0, CARRIAGERETURN.size());
+                            cout << "*post: " << post << endl;
+                        }
+                        int pos = post.find(AMPERSAND,0);
+
+                        spielid = post.substr(0,pos);
+                        post.erase(0, spielid.size());
+                        post.erase(0, AMPERSAND.size());
+                        cout << "*post: " << post << endl;
+
+                        
+                        post.erase(0, NAME_DELETE.size());
+                        anbieter = post;
+                        cout << "*post: " << post << endl;
+
+                        if(betExists(anbieter, stoi(spielid))){                        
+                            deleteBet(anbieter, stoi(spielid));
+                        }else{
+                            cout << "Bet does not exist" << endl;
+                        }
                     }
-
                 }
                 int length = request.data.length(); 
                 char* bufferPostHeader = new char[length + 1]; 
                 strcpy(bufferPostHeader, request.data.c_str());  
                 cout << "Message from client: " << bufferPostHeader << endl;
-                send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);           
-
+                send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
                 
             }
             if (errorPage){

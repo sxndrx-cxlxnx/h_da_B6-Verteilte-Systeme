@@ -27,24 +27,25 @@ int main(int argc, char **argv)
 
     //source: https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
 
-    auto start = high_resolution_clock::now();
+    while(true){
+        auto start = high_resolution_clock::now();
 
-    try
-    {
-        transport->open();
+        try
+        {
+            transport->open();
 
-        client.addBet("cpp", 42, "A", "B", 1.0, 2.0, 3.0);
+            client.addBet("cpp", 42, "A", "B", 1.0, 2.0, 3.0);
 
-        transport->close();
+            transport->close();
 
-    } catch (TException& tx) {
-    cout << "ERROR: " << tx.what() << endl;
+        } catch (TException& tx) {
+        cout << "ERROR: " << tx.what() << endl;
+        }
+
+        auto end = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(end - start);
+
+        cout << "addBet: Dauer in Microsekunden: "<< duration.count() << endl;
     }
-
-    auto end = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(end - start);
-
-    cout << "addBet: Dauer in Microsekunden: "<< duration.count() << endl;
-
     return 0;
 }

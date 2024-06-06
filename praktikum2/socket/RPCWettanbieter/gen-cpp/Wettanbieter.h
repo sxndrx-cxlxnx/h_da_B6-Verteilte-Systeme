@@ -25,6 +25,7 @@ class WettanbieterIf {
   virtual bool addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) = 0;
   virtual bool changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) = 0;
   virtual bool deleteBet(const std::string& nameanbieter, const int32_t id) = 0;
+  virtual bool betExists(const std::string& nameanbieter, const int32_t betid) = 0;
   virtual void getMyBets(std::string& _return, const std::string& nameanbieter) = 0;
   virtual void getAllBets(std::string& _return) = 0;
   virtual void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
@@ -69,6 +70,10 @@ class WettanbieterNull : virtual public WettanbieterIf {
     return _return;
   }
   bool deleteBet(const std::string& /* nameanbieter */, const int32_t /* id */) override {
+    bool _return = false;
+    return _return;
+  }
+  bool betExists(const std::string& /* nameanbieter */, const int32_t /* betid */) override {
     bool _return = false;
     return _return;
   }
@@ -510,6 +515,120 @@ class Wettanbieter_deleteBet_presult {
   bool* success;
 
   _Wettanbieter_deleteBet_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_betExists_args__isset {
+  _Wettanbieter_betExists_args__isset() : nameanbieter(false), betid(false) {}
+  bool nameanbieter :1;
+  bool betid :1;
+} _Wettanbieter_betExists_args__isset;
+
+class Wettanbieter_betExists_args {
+ public:
+
+  Wettanbieter_betExists_args(const Wettanbieter_betExists_args&);
+  Wettanbieter_betExists_args& operator=(const Wettanbieter_betExists_args&);
+  Wettanbieter_betExists_args() noexcept
+                              : nameanbieter(),
+                                betid(0) {
+  }
+
+  virtual ~Wettanbieter_betExists_args() noexcept;
+  std::string nameanbieter;
+  int32_t betid;
+
+  _Wettanbieter_betExists_args__isset __isset;
+
+  void __set_nameanbieter(const std::string& val);
+
+  void __set_betid(const int32_t val);
+
+  bool operator == (const Wettanbieter_betExists_args & rhs) const
+  {
+    if (!(nameanbieter == rhs.nameanbieter))
+      return false;
+    if (!(betid == rhs.betid))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_betExists_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_betExists_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_betExists_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_betExists_pargs() noexcept;
+  const std::string* nameanbieter;
+  const int32_t* betid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_betExists_result__isset {
+  _Wettanbieter_betExists_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_betExists_result__isset;
+
+class Wettanbieter_betExists_result {
+ public:
+
+  Wettanbieter_betExists_result(const Wettanbieter_betExists_result&) noexcept;
+  Wettanbieter_betExists_result& operator=(const Wettanbieter_betExists_result&) noexcept;
+  Wettanbieter_betExists_result() noexcept
+                                : success(0) {
+  }
+
+  virtual ~Wettanbieter_betExists_result() noexcept;
+  bool success;
+
+  _Wettanbieter_betExists_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_betExists_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_betExists_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_betExists_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_betExists_presult__isset {
+  _Wettanbieter_betExists_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_betExists_presult__isset;
+
+class Wettanbieter_betExists_presult {
+ public:
+
+
+  virtual ~Wettanbieter_betExists_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_betExists_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -1252,6 +1371,9 @@ class WettanbieterClient : virtual public WettanbieterIf {
   bool deleteBet(const std::string& nameanbieter, const int32_t id) override;
   void send_deleteBet(const std::string& nameanbieter, const int32_t id);
   bool recv_deleteBet();
+  bool betExists(const std::string& nameanbieter, const int32_t betid) override;
+  void send_betExists(const std::string& nameanbieter, const int32_t betid);
+  bool recv_betExists();
   void getMyBets(std::string& _return, const std::string& nameanbieter) override;
   void send_getMyBets(const std::string& nameanbieter);
   void recv_getMyBets(std::string& _return);
@@ -1288,6 +1410,7 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_addBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_changeBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_deleteBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_betExists(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getMyBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getAllBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getSpecificBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -1300,6 +1423,7 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["addBet"] = &WettanbieterProcessor::process_addBet;
     processMap_["changeBet"] = &WettanbieterProcessor::process_changeBet;
     processMap_["deleteBet"] = &WettanbieterProcessor::process_deleteBet;
+    processMap_["betExists"] = &WettanbieterProcessor::process_betExists;
     processMap_["getMyBets"] = &WettanbieterProcessor::process_getMyBets;
     processMap_["getAllBets"] = &WettanbieterProcessor::process_getAllBets;
     processMap_["getSpecificBet"] = &WettanbieterProcessor::process_getSpecificBet;
@@ -1359,6 +1483,15 @@ class WettanbieterMultiface : virtual public WettanbieterIf {
       ifaces_[i]->deleteBet(nameanbieter, id);
     }
     return ifaces_[i]->deleteBet(nameanbieter, id);
+  }
+
+  bool betExists(const std::string& nameanbieter, const int32_t betid) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->betExists(nameanbieter, betid);
+    }
+    return ifaces_[i]->betExists(nameanbieter, betid);
   }
 
   void getMyBets(std::string& _return, const std::string& nameanbieter) override {
@@ -1461,6 +1594,9 @@ class WettanbieterConcurrentClient : virtual public WettanbieterIf {
   bool deleteBet(const std::string& nameanbieter, const int32_t id) override;
   int32_t send_deleteBet(const std::string& nameanbieter, const int32_t id);
   bool recv_deleteBet(const int32_t seqid);
+  bool betExists(const std::string& nameanbieter, const int32_t betid) override;
+  int32_t send_betExists(const std::string& nameanbieter, const int32_t betid);
+  bool recv_betExists(const int32_t seqid);
   void getMyBets(std::string& _return, const std::string& nameanbieter) override;
   int32_t send_getMyBets(const std::string& nameanbieter);
   void recv_getMyBets(std::string& _return, const int32_t seqid);

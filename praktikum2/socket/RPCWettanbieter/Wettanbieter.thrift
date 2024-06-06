@@ -6,6 +6,8 @@ service Wettanbieter {
     bool changeBet(1: string nameanbieter, 2: i32 id, 3: string playera, 4: string playerb, 5: double winachance, 6: double winbchance, 7: double even),
     bool deleteBet(1: string nameanbieter, 2: i32 id),
 
+    bool betExists(1: string nameanbieter, 2: i32 betid),
+
     string getMyBets(1: string nameanbieter),
     string getAllBets(),
     string getSpecificBet(1: string nameanbieter, 2: i32 id),

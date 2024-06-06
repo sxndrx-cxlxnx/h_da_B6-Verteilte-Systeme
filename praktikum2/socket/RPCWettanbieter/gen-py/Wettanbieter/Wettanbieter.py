@@ -56,6 +56,15 @@ class Iface(object):
         """
         pass
 
+    def betExists(self, nameanbieter, betid):
+        """
+        Parameters:
+         - nameanbieter
+         - betid
+
+        """
+        pass
+
     def getMyBets(self, nameanbieter):
         """
         Parameters:
@@ -238,6 +247,40 @@ class Client(Iface):
         if result.success is not None:
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "deleteBet failed: unknown result")
+
+    def betExists(self, nameanbieter, betid):
+        """
+        Parameters:
+         - nameanbieter
+         - betid
+
+        """
+        self.send_betExists(nameanbieter, betid)
+        return self.recv_betExists()
+
+    def send_betExists(self, nameanbieter, betid):
+        self._oprot.writeMessageBegin('betExists', TMessageType.CALL, self._seqid)
+        args = betExists_args()
+        args.nameanbieter = nameanbieter
+        args.betid = betid
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_betExists(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = betExists_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "betExists failed: unknown result")
 
     def getMyBets(self, nameanbieter):
         """
@@ -453,6 +496,7 @@ class Processor(Iface, TProcessor):
         self._processMap["addBet"] = Processor.process_addBet
         self._processMap["changeBet"] = Processor.process_changeBet
         self._processMap["deleteBet"] = Processor.process_deleteBet
+        self._processMap["betExists"] = Processor.process_betExists
         self._processMap["getMyBets"] = Processor.process_getMyBets
         self._processMap["getAllBets"] = Processor.process_getAllBets
         self._processMap["getSpecificBet"] = Processor.process_getSpecificBet
@@ -546,6 +590,29 @@ class Processor(Iface, TProcessor):
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
         oprot.writeMessageBegin("deleteBet", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_betExists(self, seqid, iprot, oprot):
+        args = betExists_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = betExists_result()
+        try:
+            result.success = self._handler.betExists(args.nameanbieter, args.betid)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("betExists", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -1212,6 +1279,141 @@ class deleteBet_result(object):
         return not (self == other)
 all_structs.append(deleteBet_result)
 deleteBet_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class betExists_args(object):
+    """
+    Attributes:
+     - nameanbieter
+     - betid
+
+    """
+
+
+    def __init__(self, nameanbieter=None, betid=None,):
+        self.nameanbieter = nameanbieter
+        self.betid = betid
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.STRING:
+                    self.nameanbieter = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 2:
+                if ftype == TType.I32:
+                    self.betid = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('betExists_args')
+        if self.nameanbieter is not None:
+            oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
+            oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
+            oprot.writeFieldEnd()
+        if self.betid is not None:
+            oprot.writeFieldBegin('betid', TType.I32, 2)
+            oprot.writeI32(self.betid)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(betExists_args)
+betExists_args.thrift_spec = (
+    None,  # 0
+    (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
+    (2, TType.I32, 'betid', None, None, ),  # 2
+)
+
+
+class betExists_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('betExists_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(betExists_result)
+betExists_result.thrift_spec = (
     (0, TType.BOOL, 'success', None, None, ),  # 0
 )
 
