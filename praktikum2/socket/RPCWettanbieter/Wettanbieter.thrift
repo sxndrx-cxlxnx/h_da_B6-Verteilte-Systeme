@@ -8,11 +8,11 @@ service Wettanbieter {
 
     bool betExists(1: string nameanbieter, 2: i32 betid),
 
-    string getMyBets(1: string nameanbieter),
-    string getAllBets(),
-    string getSpecificBet(1: string nameanbieter, 2: i32 id),
-    string getBettors(1: string nameanbieter, 2: i32 id),
-    string getAllPlacedBetsToAnBetOffer(1: string nameanbieter, 2: i32 id),
+    string getMyBetOptions(1: string nameanbieter),
+    string getAllBetOptions(),
+    string getSpecificBetOption(1: string nameanbieter, 2: i32 id),
+    string getAllPlacedBets(),
+    string getAllPlacedBetsToABetOption(1: string nameanbieter, 2: i32 id),
 
-    bool setBettor(1: string nameanbieter, 2: i32 betid, 3: string namebettor, 4: double moneyset, 5: i32 ending, 6: double winachance, 7: double winbchance, 8: double even)
+    bool placeNewBet(1: string nameanbieter, 2: i32 betid, 3: string namebettor, 4: double moneyset, 5: i32 ending, 6: double winachance, 7: double winbchance, 8: double even)
 }

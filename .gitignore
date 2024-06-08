@@ -1,3 +1,5 @@
 .vscode/*
 praktikum1/.vscode/*
 praktikum2/.vscode/*
+__pycache__
+*.pdf:Zone.Identifier

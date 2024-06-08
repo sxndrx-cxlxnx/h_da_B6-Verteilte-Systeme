@@ -40,34 +40,34 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("betExists\n");
   }
 
-  void getMyBets(std::string& _return, const std::string& nameanbieter) {
+  void getMyBetOptions(std::string& _return, const std::string& nameanbieter) {
     // Your implementation goes here
-    printf("getMyBets\n");
+    printf("getMyBetOptions\n");
   }
 
-  void getAllBets(std::string& _return) {
+  void getAllBetOptions(std::string& _return) {
     // Your implementation goes here
-    printf("getAllBets\n");
+    printf("getAllBetOptions\n");
   }
 
-  void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) {
+  void getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) {
     // Your implementation goes here
-    printf("getSpecificBet\n");
+    printf("getSpecificBetOption\n");
   }
 
-  void getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id) {
+  void getAllPlacedBets(std::string& _return) {
     // Your implementation goes here
-    printf("getBettors\n");
+    printf("getAllPlacedBets\n");
   }
 
-  void getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id) {
+  void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) {
     // Your implementation goes here
-    printf("getAllPlacedBetsToAnBetOffer\n");
+    printf("getAllPlacedBetsToABetOption\n");
   }
 
-  bool setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) {
+  bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) {
     // Your implementation goes here
-    printf("setBettor\n");
+    printf("placeNewBet\n");
   }
 
 };

@@ -65,7 +65,7 @@ class Iface(object):
         """
         pass
 
-    def getMyBets(self, nameanbieter):
+    def getMyBetOptions(self, nameanbieter):
         """
         Parameters:
          - nameanbieter
@@ -73,19 +73,10 @@ class Iface(object):
         """
         pass
 
-    def getAllBets(self):
+    def getAllBetOptions(self):
         pass
 
-    def getSpecificBet(self, nameanbieter, id):
-        """
-        Parameters:
-         - nameanbieter
-         - id
-
-        """
-        pass
-
-    def getBettors(self, nameanbieter, id):
+    def getSpecificBetOption(self, nameanbieter, id):
         """
         Parameters:
          - nameanbieter
@@ -94,7 +85,10 @@ class Iface(object):
         """
         pass
 
-    def getAllPlacedBetsToAnBetOffer(self, nameanbieter, id):
+    def getAllPlacedBets(self):
+        pass
+
+    def getAllPlacedBetsToABetOption(self, nameanbieter, id):
         """
         Parameters:
          - nameanbieter
@@ -103,7 +97,7 @@ class Iface(object):
         """
         pass
 
-    def setBettor(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
+    def placeNewBet(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
         """
         Parameters:
          - nameanbieter
@@ -282,24 +276,24 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "betExists failed: unknown result")
 
-    def getMyBets(self, nameanbieter):
+    def getMyBetOptions(self, nameanbieter):
         """
         Parameters:
          - nameanbieter
 
         """
-        self.send_getMyBets(nameanbieter)
-        return self.recv_getMyBets()
+        self.send_getMyBetOptions(nameanbieter)
+        return self.recv_getMyBetOptions()
 
-    def send_getMyBets(self, nameanbieter):
-        self._oprot.writeMessageBegin('getMyBets', TMessageType.CALL, self._seqid)
-        args = getMyBets_args()
+    def send_getMyBetOptions(self, nameanbieter):
+        self._oprot.writeMessageBegin('getMyBetOptions', TMessageType.CALL, self._seqid)
+        args = getMyBetOptions_args()
         args.nameanbieter = nameanbieter
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_getMyBets(self):
+    def recv_getMyBetOptions(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -307,25 +301,25 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = getMyBets_result()
+        result = getMyBetOptions_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "getMyBets failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getMyBetOptions failed: unknown result")
 
-    def getAllBets(self):
-        self.send_getAllBets()
-        return self.recv_getAllBets()
+    def getAllBetOptions(self):
+        self.send_getAllBetOptions()
+        return self.recv_getAllBetOptions()
 
-    def send_getAllBets(self):
-        self._oprot.writeMessageBegin('getAllBets', TMessageType.CALL, self._seqid)
-        args = getAllBets_args()
+    def send_getAllBetOptions(self):
+        self._oprot.writeMessageBegin('getAllBetOptions', TMessageType.CALL, self._seqid)
+        args = getAllBetOptions_args()
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_getAllBets(self):
+    def recv_getAllBetOptions(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -333,67 +327,33 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = getAllBets_result()
+        result = getAllBetOptions_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllBets failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllBetOptions failed: unknown result")
 
-    def getSpecificBet(self, nameanbieter, id):
-        """
-        Parameters:
-         - nameanbieter
-         - id
-
-        """
-        self.send_getSpecificBet(nameanbieter, id)
-        return self.recv_getSpecificBet()
-
-    def send_getSpecificBet(self, nameanbieter, id):
-        self._oprot.writeMessageBegin('getSpecificBet', TMessageType.CALL, self._seqid)
-        args = getSpecificBet_args()
-        args.nameanbieter = nameanbieter
-        args.id = id
-        args.write(self._oprot)
-        self._oprot.writeMessageEnd()
-        self._oprot.trans.flush()
-
-    def recv_getSpecificBet(self):
-        iprot = self._iprot
-        (fname, mtype, rseqid) = iprot.readMessageBegin()
-        if mtype == TMessageType.EXCEPTION:
-            x = TApplicationException()
-            x.read(iprot)
-            iprot.readMessageEnd()
-            raise x
-        result = getSpecificBet_result()
-        result.read(iprot)
-        iprot.readMessageEnd()
-        if result.success is not None:
-            return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "getSpecificBet failed: unknown result")
-
-    def getBettors(self, nameanbieter, id):
+    def getSpecificBetOption(self, nameanbieter, id):
         """
         Parameters:
          - nameanbieter
          - id
 
         """
-        self.send_getBettors(nameanbieter, id)
-        return self.recv_getBettors()
+        self.send_getSpecificBetOption(nameanbieter, id)
+        return self.recv_getSpecificBetOption()
 
-    def send_getBettors(self, nameanbieter, id):
-        self._oprot.writeMessageBegin('getBettors', TMessageType.CALL, self._seqid)
-        args = getBettors_args()
+    def send_getSpecificBetOption(self, nameanbieter, id):
+        self._oprot.writeMessageBegin('getSpecificBetOption', TMessageType.CALL, self._seqid)
+        args = getSpecificBetOption_args()
         args.nameanbieter = nameanbieter
         args.id = id
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_getBettors(self):
+    def recv_getSpecificBetOption(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -401,33 +361,59 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = getBettors_result()
+        result = getSpecificBetOption_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "getBettors failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getSpecificBetOption failed: unknown result")
 
-    def getAllPlacedBetsToAnBetOffer(self, nameanbieter, id):
+    def getAllPlacedBets(self):
+        self.send_getAllPlacedBets()
+        return self.recv_getAllPlacedBets()
+
+    def send_getAllPlacedBets(self):
+        self._oprot.writeMessageBegin('getAllPlacedBets', TMessageType.CALL, self._seqid)
+        args = getAllPlacedBets_args()
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_getAllPlacedBets(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = getAllPlacedBets_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllPlacedBets failed: unknown result")
+
+    def getAllPlacedBetsToABetOption(self, nameanbieter, id):
         """
         Parameters:
          - nameanbieter
          - id
 
         """
-        self.send_getAllPlacedBetsToAnBetOffer(nameanbieter, id)
-        return self.recv_getAllPlacedBetsToAnBetOffer()
+        self.send_getAllPlacedBetsToABetOption(nameanbieter, id)
+        return self.recv_getAllPlacedBetsToABetOption()
 
-    def send_getAllPlacedBetsToAnBetOffer(self, nameanbieter, id):
-        self._oprot.writeMessageBegin('getAllPlacedBetsToAnBetOffer', TMessageType.CALL, self._seqid)
-        args = getAllPlacedBetsToAnBetOffer_args()
+    def send_getAllPlacedBetsToABetOption(self, nameanbieter, id):
+        self._oprot.writeMessageBegin('getAllPlacedBetsToABetOption', TMessageType.CALL, self._seqid)
+        args = getAllPlacedBetsToABetOption_args()
         args.nameanbieter = nameanbieter
         args.id = id
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_getAllPlacedBetsToAnBetOffer(self):
+    def recv_getAllPlacedBetsToABetOption(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -435,14 +421,14 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = getAllPlacedBetsToAnBetOffer_result()
+        result = getAllPlacedBetsToABetOption_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllPlacedBetsToAnBetOffer failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllPlacedBetsToABetOption failed: unknown result")
 
-    def setBettor(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
+    def placeNewBet(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
         """
         Parameters:
          - nameanbieter
@@ -455,12 +441,12 @@ class Client(Iface):
          - even
 
         """
-        self.send_setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even)
-        return self.recv_setBettor()
+        self.send_placeNewBet(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even)
+        return self.recv_placeNewBet()
 
-    def send_setBettor(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
-        self._oprot.writeMessageBegin('setBettor', TMessageType.CALL, self._seqid)
-        args = setBettor_args()
+    def send_placeNewBet(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
+        self._oprot.writeMessageBegin('placeNewBet', TMessageType.CALL, self._seqid)
+        args = placeNewBet_args()
         args.nameanbieter = nameanbieter
         args.betid = betid
         args.namebettor = namebettor
@@ -473,7 +459,7 @@ class Client(Iface):
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_setBettor(self):
+    def recv_placeNewBet(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -481,12 +467,12 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = setBettor_result()
+        result = placeNewBet_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "setBettor failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "placeNewBet failed: unknown result")
 
 
 class Processor(Iface, TProcessor):
@@ -497,12 +483,12 @@ class Processor(Iface, TProcessor):
         self._processMap["changeBet"] = Processor.process_changeBet
         self._processMap["deleteBet"] = Processor.process_deleteBet
         self._processMap["betExists"] = Processor.process_betExists
-        self._processMap["getMyBets"] = Processor.process_getMyBets
-        self._processMap["getAllBets"] = Processor.process_getAllBets
-        self._processMap["getSpecificBet"] = Processor.process_getSpecificBet
-        self._processMap["getBettors"] = Processor.process_getBettors
-        self._processMap["getAllPlacedBetsToAnBetOffer"] = Processor.process_getAllPlacedBetsToAnBetOffer
-        self._processMap["setBettor"] = Processor.process_setBettor
+        self._processMap["getMyBetOptions"] = Processor.process_getMyBetOptions
+        self._processMap["getAllBetOptions"] = Processor.process_getAllBetOptions
+        self._processMap["getSpecificBetOption"] = Processor.process_getSpecificBetOption
+        self._processMap["getAllPlacedBets"] = Processor.process_getAllPlacedBets
+        self._processMap["getAllPlacedBetsToABetOption"] = Processor.process_getAllPlacedBetsToABetOption
+        self._processMap["placeNewBet"] = Processor.process_placeNewBet
         self._on_message_begin = None
 
     def on_message_begin(self, func):
@@ -617,13 +603,13 @@ class Processor(Iface, TProcessor):
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_getMyBets(self, seqid, iprot, oprot):
-        args = getMyBets_args()
+    def process_getMyBetOptions(self, seqid, iprot, oprot):
+        args = getMyBetOptions_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = getMyBets_result()
+        result = getMyBetOptions_result()
         try:
-            result.success = self._handler.getMyBets(args.nameanbieter)
+            result.success = self._handler.getMyBetOptions(args.nameanbieter)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -635,18 +621,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("getMyBets", msg_type, seqid)
+        oprot.writeMessageBegin("getMyBetOptions", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_getAllBets(self, seqid, iprot, oprot):
-        args = getAllBets_args()
+    def process_getAllBetOptions(self, seqid, iprot, oprot):
+        args = getAllBetOptions_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = getAllBets_result()
+        result = getAllBetOptions_result()
         try:
-            result.success = self._handler.getAllBets()
+            result.success = self._handler.getAllBetOptions()
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -658,18 +644,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("getAllBets", msg_type, seqid)
+        oprot.writeMessageBegin("getAllBetOptions", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_getSpecificBet(self, seqid, iprot, oprot):
-        args = getSpecificBet_args()
+    def process_getSpecificBetOption(self, seqid, iprot, oprot):
+        args = getSpecificBetOption_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = getSpecificBet_result()
+        result = getSpecificBetOption_result()
         try:
-            result.success = self._handler.getSpecificBet(args.nameanbieter, args.id)
+            result.success = self._handler.getSpecificBetOption(args.nameanbieter, args.id)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -681,18 +667,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("getSpecificBet", msg_type, seqid)
+        oprot.writeMessageBegin("getSpecificBetOption", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_getBettors(self, seqid, iprot, oprot):
-        args = getBettors_args()
+    def process_getAllPlacedBets(self, seqid, iprot, oprot):
+        args = getAllPlacedBets_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = getBettors_result()
+        result = getAllPlacedBets_result()
         try:
-            result.success = self._handler.getBettors(args.nameanbieter, args.id)
+            result.success = self._handler.getAllPlacedBets()
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -704,18 +690,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("getBettors", msg_type, seqid)
+        oprot.writeMessageBegin("getAllPlacedBets", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_getAllPlacedBetsToAnBetOffer(self, seqid, iprot, oprot):
-        args = getAllPlacedBetsToAnBetOffer_args()
+    def process_getAllPlacedBetsToABetOption(self, seqid, iprot, oprot):
+        args = getAllPlacedBetsToABetOption_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = getAllPlacedBetsToAnBetOffer_result()
+        result = getAllPlacedBetsToABetOption_result()
         try:
-            result.success = self._handler.getAllPlacedBetsToAnBetOffer(args.nameanbieter, args.id)
+            result.success = self._handler.getAllPlacedBetsToABetOption(args.nameanbieter, args.id)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -727,18 +713,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("getAllPlacedBetsToAnBetOffer", msg_type, seqid)
+        oprot.writeMessageBegin("getAllPlacedBetsToABetOption", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_setBettor(self, seqid, iprot, oprot):
-        args = setBettor_args()
+    def process_placeNewBet(self, seqid, iprot, oprot):
+        args = placeNewBet_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = setBettor_result()
+        result = placeNewBet_result()
         try:
-            result.success = self._handler.setBettor(args.nameanbieter, args.betid, args.namebettor, args.moneyset, args.ending, args.winachance, args.winbchance, args.even)
+            result.success = self._handler.placeNewBet(args.nameanbieter, args.betid, args.namebettor, args.moneyset, args.ending, args.winachance, args.winbchance, args.even)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -750,7 +736,7 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("setBettor", msg_type, seqid)
+        oprot.writeMessageBegin("placeNewBet", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -1418,7 +1404,7 @@ betExists_result.thrift_spec = (
 )
 
 
-class getMyBets_args(object):
+class getMyBetOptions_args(object):
     """
     Attributes:
      - nameanbieter
@@ -1452,7 +1438,7 @@ class getMyBets_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getMyBets_args')
+        oprot.writeStructBegin('getMyBetOptions_args')
         if self.nameanbieter is not None:
             oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
             oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
@@ -1473,14 +1459,14 @@ class getMyBets_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getMyBets_args)
-getMyBets_args.thrift_spec = (
+all_structs.append(getMyBetOptions_args)
+getMyBetOptions_args.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
 )
 
 
-class getMyBets_result(object):
+class getMyBetOptions_result(object):
     """
     Attributes:
      - success
@@ -1514,7 +1500,7 @@ class getMyBets_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getMyBets_result')
+        oprot.writeStructBegin('getMyBetOptions_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.STRING, 0)
             oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
@@ -1535,13 +1521,13 @@ class getMyBets_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getMyBets_result)
-getMyBets_result.thrift_spec = (
+all_structs.append(getMyBetOptions_result)
+getMyBetOptions_result.thrift_spec = (
     (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 
 
-class getAllBets_args(object):
+class getAllBetOptions_args(object):
 
 
     def read(self, iprot):
@@ -1562,7 +1548,7 @@ class getAllBets_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getAllBets_args')
+        oprot.writeStructBegin('getAllBetOptions_args')
         oprot.writeFieldStop()
         oprot.writeStructEnd()
 
@@ -1579,12 +1565,12 @@ class getAllBets_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getAllBets_args)
-getAllBets_args.thrift_spec = (
+all_structs.append(getAllBetOptions_args)
+getAllBetOptions_args.thrift_spec = (
 )
 
 
-class getAllBets_result(object):
+class getAllBetOptions_result(object):
     """
     Attributes:
      - success
@@ -1618,7 +1604,7 @@ class getAllBets_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getAllBets_result')
+        oprot.writeStructBegin('getAllBetOptions_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.STRING, 0)
             oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
@@ -1639,13 +1625,13 @@ class getAllBets_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getAllBets_result)
-getAllBets_result.thrift_spec = (
+all_structs.append(getAllBetOptions_result)
+getAllBetOptions_result.thrift_spec = (
     (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 
 
-class getSpecificBet_args(object):
+class getSpecificBetOption_args(object):
     """
     Attributes:
      - nameanbieter
@@ -1686,7 +1672,7 @@ class getSpecificBet_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getSpecificBet_args')
+        oprot.writeStructBegin('getSpecificBetOption_args')
         if self.nameanbieter is not None:
             oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
             oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
@@ -1711,15 +1697,15 @@ class getSpecificBet_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getSpecificBet_args)
-getSpecificBet_args.thrift_spec = (
+all_structs.append(getSpecificBetOption_args)
+getSpecificBetOption_args.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
     (2, TType.I32, 'id', None, None, ),  # 2
 )
 
 
-class getSpecificBet_result(object):
+class getSpecificBetOption_result(object):
     """
     Attributes:
      - success
@@ -1753,7 +1739,7 @@ class getSpecificBet_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getSpecificBet_result')
+        oprot.writeStructBegin('getSpecificBetOption_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.STRING, 0)
             oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
@@ -1774,13 +1760,117 @@ class getSpecificBet_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getSpecificBet_result)
-getSpecificBet_result.thrift_spec = (
+all_structs.append(getSpecificBetOption_result)
+getSpecificBetOption_result.thrift_spec = (
     (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 
 
-class getBettors_args(object):
+class getAllPlacedBets_args(object):
+
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllPlacedBets_args')
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllPlacedBets_args)
+getAllPlacedBets_args.thrift_spec = (
+)
+
+
+class getAllPlacedBets_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllPlacedBets_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllPlacedBets_result)
+getAllPlacedBets_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
+)
+
+
+class getAllPlacedBetsToABetOption_args(object):
     """
     Attributes:
      - nameanbieter
@@ -1821,7 +1911,7 @@ class getBettors_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getBettors_args')
+        oprot.writeStructBegin('getAllPlacedBetsToABetOption_args')
         if self.nameanbieter is not None:
             oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
             oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
@@ -1846,15 +1936,15 @@ class getBettors_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getBettors_args)
-getBettors_args.thrift_spec = (
+all_structs.append(getAllPlacedBetsToABetOption_args)
+getAllPlacedBetsToABetOption_args.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
     (2, TType.I32, 'id', None, None, ),  # 2
 )
 
 
-class getBettors_result(object):
+class getAllPlacedBetsToABetOption_result(object):
     """
     Attributes:
      - success
@@ -1888,7 +1978,7 @@ class getBettors_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('getBettors_result')
+        oprot.writeStructBegin('getAllPlacedBetsToABetOption_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.STRING, 0)
             oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
@@ -1909,148 +1999,13 @@ class getBettors_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(getBettors_result)
-getBettors_result.thrift_spec = (
+all_structs.append(getAllPlacedBetsToABetOption_result)
+getAllPlacedBetsToABetOption_result.thrift_spec = (
     (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 
 
-class getAllPlacedBetsToAnBetOffer_args(object):
-    """
-    Attributes:
-     - nameanbieter
-     - id
-
-    """
-
-
-    def __init__(self, nameanbieter=None, id=None,):
-        self.nameanbieter = nameanbieter
-        self.id = id
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRING:
-                    self.nameanbieter = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.I32:
-                    self.id = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('getAllPlacedBetsToAnBetOffer_args')
-        if self.nameanbieter is not None:
-            oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
-            oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
-            oprot.writeFieldEnd()
-        if self.id is not None:
-            oprot.writeFieldBegin('id', TType.I32, 2)
-            oprot.writeI32(self.id)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(getAllPlacedBetsToAnBetOffer_args)
-getAllPlacedBetsToAnBetOffer_args.thrift_spec = (
-    None,  # 0
-    (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
-    (2, TType.I32, 'id', None, None, ),  # 2
-)
-
-
-class getAllPlacedBetsToAnBetOffer_result(object):
-    """
-    Attributes:
-     - success
-
-    """
-
-
-    def __init__(self, success=None,):
-        self.success = success
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 0:
-                if ftype == TType.STRING:
-                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('getAllPlacedBetsToAnBetOffer_result')
-        if self.success is not None:
-            oprot.writeFieldBegin('success', TType.STRING, 0)
-            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(getAllPlacedBetsToAnBetOffer_result)
-getAllPlacedBetsToAnBetOffer_result.thrift_spec = (
-    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
-)
-
-
-class setBettor_args(object):
+class placeNewBet_args(object):
     """
     Attributes:
      - nameanbieter
@@ -2133,7 +2088,7 @@ class setBettor_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('setBettor_args')
+        oprot.writeStructBegin('placeNewBet_args')
         if self.nameanbieter is not None:
             oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
             oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
@@ -2182,8 +2137,8 @@ class setBettor_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(setBettor_args)
-setBettor_args.thrift_spec = (
+all_structs.append(placeNewBet_args)
+placeNewBet_args.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
     (2, TType.I32, 'betid', None, None, ),  # 2
@@ -2196,7 +2151,7 @@ setBettor_args.thrift_spec = (
 )
 
 
-class setBettor_result(object):
+class placeNewBet_result(object):
     """
     Attributes:
      - success
@@ -2230,7 +2185,7 @@ class setBettor_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('setBettor_result')
+        oprot.writeStructBegin('placeNewBet_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.BOOL, 0)
             oprot.writeBool(self.success)
@@ -2251,8 +2206,8 @@ class setBettor_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(setBettor_result)
-setBettor_result.thrift_spec = (
+all_structs.append(placeNewBet_result)
+placeNewBet_result.thrift_spec = (
     (0, TType.BOOL, 'success', None, None, ),  # 0
 )
 fix_spec(all_structs)

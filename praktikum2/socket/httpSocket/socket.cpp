@@ -22,8 +22,35 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
 using namespace Wettanbietercpp;
-
 using namespace std;
+
+#define ADRESSE     "localhost"
+#define HTTP_PORT   8080
+#define RPC_PORT    9090
+
+#define ENDING_TEAM_A   1
+#define ENDING_TEAM_B   2
+#define ENDING_EVEN     3
+
+string gameEnding(int ending)
+{
+    if (ending == ENDING_TEAM_A)
+    {
+        return "Team A";
+    }
+    else if (ending == ENDING_TEAM_B)
+    {
+        return "Team B";
+    }
+    else if (ending == ENDING_EVEN)
+    {
+        return "Even";
+    }
+    else
+    {
+        return "not decided";
+    }
+}
 
 /*
 void str_echo(int socketForClient){
@@ -219,9 +246,9 @@ struct Wettoption{
     string anbieterName;
     string playerA;
     string playerB;
-    float quoteA;
-    float quoteB;
-    float quoteEven;
+    double quoteA;
+    double quoteB;
+    double quoteEven;
 };
 
 struct Wettanbieter{
@@ -230,14 +257,86 @@ struct Wettanbieter{
     int port;
 };
 
-struct platzierteWette{
+struct PlatzierteWette{
     string namebettor;
-    float moneyset;
-    string ending;
+    double moneyset;
+    int ending;
     Wettoption wettoption;    // nameAnbieter, wett-id, winachance, winbchance, even
 };
 
 vector <Wettanbieter> alleWettanbieter;
+
+Wettoption newWettoption(int pid, string panbieterName, string pplayerA, string pplayerB, double pquoteA, double pquoteB, double pquoteEven)
+{
+    Wettoption wettoption;
+
+    wettoption.id = pid;
+    wettoption.anbieterName = panbieterName;
+    wettoption.playerA = pplayerA;
+    wettoption.playerB = pplayerB;
+    wettoption.quoteA = pquoteA;
+    wettoption.quoteB = pquoteB;
+    wettoption.quoteEven = pquoteEven;
+
+    return wettoption;
+}
+
+Wettanbieter newWettanbieter(string pname, string padresse, int pport)
+{
+    Wettanbieter anbieter;
+
+    anbieter.name = pname;
+    anbieter.adresse = padresse;
+    anbieter.port = pport;
+
+    return anbieter;
+}
+
+PlatzierteWette newPlatzierteWette(string pnamebettor, double pmoneyset, int pending, Wettoption pwettoption)
+{
+    PlatzierteWette wette;
+
+    wette.namebettor = pnamebettor;
+    wette.moneyset = pmoneyset;
+    wette.ending = pending;
+    wette.wettoption = pwettoption;
+
+    return wette;
+}
+
+void getAllWettanbieter()   // initial
+{
+    // File pointer 
+    ifstream wettanbieterCSV; 
+  
+    // Open an existing file 
+    wettanbieterCSV.open("wettanbieter.csv", ios::in);
+
+    // Read the Data from the file 
+    string line;
+    string csv_name, csv_adresse, csv_port;
+
+    while(!wettanbieterCSV.eof())
+    {
+        // read an entire row and 
+        // store it in a string variable 'line' 
+        getline(wettanbieterCSV, line);
+  
+        // used for breaking words 
+        stringstream sLine(line); 
+  
+        // read every column data of a row and 
+        // store it in a string variable 
+        getline(sLine, csv_name, ',');
+        getline(sLine, csv_adresse, ',');
+        getline(sLine, csv_port, '\n');
+
+        alleWettanbieter.push_back( newWettanbieter(csv_name, csv_adresse, stoi(csv_port)) );
+    } 
+
+    wettanbieterCSV.close();
+    cout << "*got all Wettanbieter" << endl;
+}
 
 void sendResponse(char* const fileBuffer, string httpCode, int newClientSocket)
 {
@@ -273,119 +372,13 @@ bool replace(std::string& str, const std::string& from, const std::string& to)
     return true;
 }
 
-void getAlleWettanbieter()   // initial
+// ******************************
+// RPC - Create
+// ******************************
+
+void placeNewBet(string nameanbieter, int betid, string namebettor, double moneyset, int ending, double winachance, double winbchance, double even)
 {
-    // File pointer 
-    ifstream wettanbieterCSV; 
-  
-    // Open an existing file 
-    wettanbieterCSV.open("wettanbieter.csv", ios::in);
-
-    // Read the Data from the file 
-    string line;
-    string csv_name, csv_adresse, csv_port;
-
-    while(!wettanbieterCSV.eof())
-    {
-        // read an entire row and 
-        // store it in a string variable 'line' 
-        getline(wettanbieterCSV, line);
-  
-        // used for breaking words 
-        stringstream sLine(line); 
-  
-        // read every column data of a row and 
-        // store it in a string variable, 'word' 
-        getline(sLine, csv_name, ',');
-        getline(sLine, csv_adresse, ',');
-        getline(sLine, csv_port, '\n');
-
-        Wettanbieter thisAnbieter;
-        thisAnbieter.name = csv_name;
-        thisAnbieter.adresse = csv_adresse;
-        thisAnbieter.port = stoi(csv_port);
-
-        alleWettanbieter.push_back(thisAnbieter);
-    } 
-    wettanbieterCSV.close();
-}
-
-vector<Wettoption> getAllBetsFromWettanbieter(string anbieterName, string adresse, int port) // rpc call
-{
-    // rpc call
-    std::shared_ptr<TTransport> socket(new TSocket(adresse, port));
-    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-    WettanbieterClient client(protocol);
-
-    string rpc;
-    vector<Wettoption> allBets;
-
-    try
-    {
-        transport->open();
-        client.getMyBets(rpc, anbieterName);     // return string - \n fehlt
-        transport->close();
-    
-    } catch (TException& tx) {
-        cout << "ERROR: " << tx.what() << endl;
-    }
-    //cout << "RPC: " << anbieterName << " " << rpc << endl;
-    // Output
-    // RPC: Fred und George 2#Fred und George:2:Ravenclaw:Slytherin:1.0:2.0:3.5;
-    //      Fred und George:2:Gryffindor:Hufflepuff:1.5:2.5:3.5;
-
-    string readAnbieterName, wettID, teamA, teamB, quoteA, quoteB, quoteEven;
-    string line = "";
-    stringstream sRPC;
-    sRPC << rpc; 
-    string sLoopCtr = "";
-    int loopCtr = 0;
-
-    getline(sRPC, sLoopCtr, '#');
-    loopCtr = stoi(sLoopCtr);
-
-    // read an every entire row and 
-    // store it in a string variable 'line' 
-    cout << loopCtr << endl;
-    for(int i = 0; i < loopCtr; i++)
-    {
-        //getline(sRPC, line, ';');
-        // used for breaking words 
-  
-        // read every column data of a row and 
-        // store it in a string variable, 'word' 
-        getline(sRPC, readAnbieterName, ':');
-        getline(sRPC, wettID, ':');
-        getline(sRPC, teamA, ':');
-        getline(sRPC, teamB, ':');
-        getline(sRPC, quoteA, ':');
-        getline(sRPC, quoteB, ':');
-        getline(sRPC, quoteEven, ';');
-
-        Wettoption* thisOption = new Wettoption;
-        thisOption->id = stoi(wettID);
-        thisOption->anbieterName = readAnbieterName;
-        thisOption->playerA = teamA;
-        thisOption->playerB = teamB;
-        thisOption->quoteA = stof(quoteA);
-        thisOption->quoteB = stof(quoteB);
-        thisOption->quoteEven = stof(quoteEven);
-        
-        /*
-        cout << thisOption->id << " " << anbieterName  << " "
-             << thisOption->playerA  << " " << thisOption->playerB  << endl;
-        cout << "Quote A: " << thisOption->quoteA << endl;
-        */
-        allBets.push_back(*thisOption);
-        delete thisOption;
-    }
-
-    return allBets;
-}
-
-void setBettor(string nameanbieter, int betid, string namebettor, double moneyset, int ending, double winachance, double winbchance, double even){
-    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
     std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
     WettanbieterClient client(protocol);
@@ -393,20 +386,19 @@ void setBettor(string nameanbieter, int betid, string namebettor, double moneyse
     try
     {
         transport->open();
-
-        client.setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
-
+        client.placeNewBet(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
         transport->close();
 
     } catch (TException& tx) {
-    cout << "ERROR in setBettor(): " << tx.what() << endl;
+        cout << "ERROR in placeNewBet(): " << tx.what() << endl;
     }
-    cout << "added Bettor" << endl;
 
+    cout << "*new Bet placed" << endl;
 }
 
-void addBet(string nameanbieter, int id, string playera, string playerb, double winachance, double winbchance, double even){
-    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+void addBetOption(string nameanbieter, int id, string playera, string playerb, double winachance, double winbchance, double even)
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
     std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
     WettanbieterClient client(protocol);
@@ -414,56 +406,22 @@ void addBet(string nameanbieter, int id, string playera, string playerb, double 
     try
     {
         transport->open();
-
         client.addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
-
         transport->close();
 
     } catch (TException& tx) {
-    cout << "ERROR in addBet(): " << tx.what() << endl;
+        cout << "ERROR in addBetOption(): " << tx.what() << endl;
     }
-    cout << "added Bet" << endl;
 
+    cout << "*added BetOption" << endl;
 }
 
-void changeBet(string nameanbieter, int id, string playera, string playerb, double winachance, double winbchance, double even){
-    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-    WettanbieterClient client(protocol);
-
-    try
-    {
-        transport->open();
-        client.changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
-        transport->close();
-    } catch (TException& tx) {
-    cout << "ERROR in changeBet(): " << tx.what() << endl;
-    }
-    cout << "Bet changed" << endl;
-
-}
-
-void deleteBet(string nameanbieter, int id){
-    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-    WettanbieterClient client(protocol);
-
-    try
-    {
-        transport->open();
-        client.deleteBet(nameanbieter, id);
-        transport->close();
-
-    } catch (TException& tx) {
-    cout << "ERROR in deleteBet(): " << tx.what() << endl;
-    }
-    cout << "delete Bet" << endl;
-}
-
-bool betExists(string nameanbieter, int id){
-    std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+// ******************************
+// RPC - Read
+// ******************************
+bool betExists(string nameanbieter, int id)
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
     std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
     WettanbieterClient client(protocol);
@@ -477,39 +435,316 @@ bool betExists(string nameanbieter, int id){
         transport->close();
 
     } catch (TException& tx) {
-    cout << "ERROR in betExists(): " << tx.what() << endl;
+        cout << "ERROR in betExists(): " << tx.what() << endl;
     }
-    cout << "betExists" << endl;
-    return response;
+    cout << "*betExists" << endl;
 
+    return response;
 }
 
-vector<Wettoption> getAllBets()  // Schnittstelle, die der Client aufruft
-//string getAllBets()
+Wettoption readWettoption (stringstream* sRPC)
 {
-    vector<Wettoption> alleWetten;
-    string sAlleWetten = "";
-        
-    //cout << " alleWettanbieter.size(): " << alleWettanbieter.size() << endl;
+    string readAnbieterName, wettID, teamA, teamB, quoteA, quoteB, quoteEven, nulln;
 
-    // nimm alle Buchhalter
-    for(int i = 0; i < alleWettanbieter.size(); i++)     // size-1 weil die csv eine headline hat
+    //cout << "Read line" << endl << flush;
+
+    // read every column data of a row and 
+    // store it in a string variable
+    getline(*sRPC, readAnbieterName, ':');
+    getline(*sRPC, wettID, ':');
+    getline(*sRPC, teamA, ':');
+    getline(*sRPC, teamB, ':');
+    getline(*sRPC, quoteA, ':');
+    getline(*sRPC, quoteB, ':');
+    getline(*sRPC, quoteEven, ';');
+    getline(*sRPC, nulln, '\n');
+
+    //cout << readAnbieterName << wettID << teamA << teamB << quoteA << quoteB << quoteEven << endl << flush;
+
+    return newWettoption(stoi(wettID), readAnbieterName, teamA, teamB, stod(quoteA), stod(quoteB), stod(quoteEven));
+}
+
+Wettoption getSpecificBetOption(string nameAnbieter, int id)
+{
+    cout << "get specific BetOption" << endl;
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+
+    try
     {
-        // stelle für jeden Buchhalter eine Anfrage
-        vector<Wettoption> alleAktuellenWetten;
-        alleAktuellenWetten = getAllBetsFromWettanbieter(alleWettanbieter[i].name, alleWettanbieter[i].adresse, alleWettanbieter[i].port);
-        //sAlleWetten += getAllBetsFromWettanbieter(alleWettanbieter[i].name, alleWettanbieter[i].adresse, alleWettanbieter[i].port);
-        
-        //cout << i << alleWettanbieter[i].name << " " << alleWettanbieter[i].adresse << " " << alleWettanbieter[i].port << endl;
-
-        for(int i = 0; i < alleAktuellenWetten.size(); i++)
-        {
-            alleWetten.push_back(alleAktuellenWetten[i]);
-        }
+        transport->open();
+        client.getSpecificBetOption(rpc, nameAnbieter, id);     // return string - \n fehlt
+        transport->close();
     
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+    }
+    cout << "RPC: " << rpc << endl;
+    // Output
+    // RPC: Fred_und_George:2:Ravenclaw:Slytherin:1.0:2.0:3.5;
+
+    stringstream sRPC;
+    sRPC << rpc;
+
+    Wettoption specificBetOption = readWettoption(&sRPC);
+
+    cout << "*got specific BetOption" << endl;
+
+    return specificBetOption;
+}
+
+PlatzierteWette readPlatzierteWette(stringstream* sRPC)
+{
+    string readAnbieterName, wettID, namebettor, moneyset, ending, quoteA, quoteB, quoteEven, nulln;
+
+    // read every column data of a row and 
+    // store it in a string variable
+    getline(*sRPC, readAnbieterName, ':');
+    getline(*sRPC, wettID, ':');
+    getline(*sRPC, namebettor, ':');
+    getline(*sRPC, moneyset, ':');
+    getline(*sRPC, ending, ':');
+    getline(*sRPC, quoteA, ':');
+    getline(*sRPC, quoteB, ':');
+    getline(*sRPC, quoteEven, ';');
+    getline(*sRPC, nulln, '\n');
+
+    //cout << readAnbieterName << wettID << namebettor << moneyset << ending << quoteA << quoteB << quoteEven << endl << flush;
+
+    return newPlatzierteWette(namebettor, stod(moneyset), stoi(ending), getSpecificBetOption(readAnbieterName, stoi(wettID)) );
+}
+
+vector<Wettoption> getAllBetOptionsFromWettanbieter(string anbieterName)
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+    vector<Wettoption> allBets;
+
+    try
+    {
+        transport->open();
+        client.getMyBetOptions(rpc, anbieterName);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptionsFromWettanbieter(): " << tx.what() << endl;
+    }
+    //cout << "RPC: " << anbieterName << " " << rpc << endl;
+    // Output
+    // RPC: Fred_und_George 2#Fred_und_George:2:Ravenclaw:Slytherin:1.0:2.0:3.5;
+    //      Fred_und_George:2:Gryffindor:Hufflepuff:1.5:2.5:3.5;
+
+    stringstream sRPC;
+    sRPC << rpc; 
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    //cout << "LoopCtr getAllBetOptionsFromWettanbieter(): " << loopCtr << endl;
+    for(int i = 0; i < loopCtr; i++)
+    {  
+        allBets.push_back( readWettoption(&sRPC) );
     }
 
-    return alleWetten;
+    cout << "*got all BetOptions from Wettanbieter" << endl;
+
+    return allBets;
+}
+
+vector<Wettoption> getAllBetOptions()
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+    vector<Wettoption> allBetOptions;
+
+    try
+    {
+        transport->open();
+        client.getAllBetOptions(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+    }
+    //cout << "RPC: " << rpc << endl;
+    // Output
+    // RPC: 2#Fred_und_George:2:Ravenclaw:Slytherin:1.0:2.0:3.5;
+    //      Fred_und_George:2:Gryffindor:Hufflepuff:1.5:2.5:3.5;
+
+    stringstream sRPC;
+    sRPC << rpc; 
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        allBetOptions.push_back( readWettoption(&sRPC) );
+    }
+    cout << "*got all BetOptions" << endl;
+
+    return allBetOptions;
+}
+
+vector<PlatzierteWette> getAllPlacedBets()
+{
+    // rpc call
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+    vector<PlatzierteWette> allPlacedBets;
+
+    try
+    {
+        transport->open();
+        client.getAllPlacedBets(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllPlacedBets(): " << tx.what() << endl;
+    }
+    //cout << "getAllPlacedBets - RPC: " << rpc << endl;
+    // Output
+    // RPC: nr#ich:3:huhu:30.0:1:3.0:2.0:2.0
+
+    stringstream sRPC;
+    sRPC << rpc; 
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        allPlacedBets.push_back( readPlatzierteWette(&sRPC) );
+    }
+    cout << "*got all PlacedBets" << endl;
+
+    return allPlacedBets;
+}
+
+vector<PlatzierteWette> getAllMyPlacedBets(string myName)
+{
+    vector<PlatzierteWette> allPlacedBets;
+    vector<PlatzierteWette> myPlacedBets;
+
+    allPlacedBets = getAllPlacedBets();
+
+    for (int i = 0; i < allPlacedBets.size(); i++)
+    {
+        if (strcmp(allPlacedBets[i].namebettor.c_str(), myName.c_str()) == 0)
+        {
+            myPlacedBets.push_back(allPlacedBets[i]);
+        }
+    }
+    cout << "*got all my PlacedBets" << endl;
+
+    return myPlacedBets;
+}
+
+vector<PlatzierteWette> getAllPlacedBetsToABetOption(string nameAnbieter, int id)
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+    vector<PlatzierteWette> allPlacedBets;
+
+    try
+    {
+        transport->open();
+        client.getAllPlacedBetsToABetOption(rpc, nameAnbieter, id);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllPlacedBetsToABetOption(): " << tx.what() << endl;
+    }
+    //cout << "getAllPlacedBetsToABetOption - RPC: " << rpc << endl;
+    // Output
+    // RPC: nr#ich:3:huhu:30.0:1:3.0:2.0:2.0
+
+    stringstream sRPC;
+    sRPC << rpc; 
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        allPlacedBets.push_back( readPlatzierteWette(&sRPC));
+    }
+    cout << "*got all PlacedBets to a BetOption" << endl;
+
+    return allPlacedBets;
+}
+
+// ******************************
+// RPC - Update
+// ******************************
+void changeBetOption(string nameanbieter, int id, string playera, string playerb, double winachance, double winbchance, double even)
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    try
+    {
+        transport->open();
+        client.changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+        transport->close();
+    } catch (TException& tx) {
+        cout << "ERROR in changeBetOption(): " << tx.what() << endl;
+    }
+
+    cout << "*Updated BetOption" << endl;
+}
+
+// ******************************
+// RPC - Delete
+// ******************************
+void deleteBetOption(string nameanbieter, int id)             // keine Sicherheit, ob noch platzierte Wetten existieren :(
+{
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    try
+    {
+        transport->open();
+        client.deleteBet(nameanbieter, id);
+        transport->close();
+
+    } catch (TException& tx) {
+        cout << "ERROR in deleteBetOption(): " << tx.what() << endl;
+    }
+
+    cout << "*deleted BetOption" << endl;
 }
 
 int main() {
@@ -518,7 +753,7 @@ int main() {
     auto socketServer = socket(AF_INET, SOCK_STREAM, 0);                   //AF_INET = IPv4 protocol family, SOCK_STREAM = socket is a stream (TCP)       
     sockaddr_in serverAddress;
     serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = htons(8080);
+    serverAddress.sin_port = htons(HTTP_PORT);
     serverAddress.sin_addr.s_addr = INADDR_ANY;
 
     cout << "bind Socket"<< endl;
@@ -527,7 +762,7 @@ int main() {
     cout << "listen"<< endl;
     listen(socketServer, 5);
 
-    getAlleWettanbieter();
+    getAllWettanbieter();
 
     while(true){
         cout << "in while-loop"<< endl;
@@ -582,72 +817,127 @@ int main() {
                     while(file.get(originFileBuffer[pos++]));
 
                     // Variablen in html ersetzen
-                    string htmlVariable = "";
-                    string newHTML = "";
                     string sEditFileBuffer(originFileBuffer);
 
-                    if((filename.find("wettender.html")) != string::npos){
-                        htmlVariable = "{bettor_post_get_Selection}";
-                        //vector<Wettoption> alleWetten = getAllBets();
-                        vector<Wettoption> alleWetten = getAllBetsFromWettanbieter("Hogwarts", "localhost", 9090);
+                    if((filename.find("wettender.html")) != string::npos)
+                    {
+                        // <option value = "Gryffindor vs. Slytherin">Gryffindor (3.5) vs. Slytherin (1.3) - Even (4.0)</option>
+                        string htmlVariable = "{bettor_post_get_Selection}";
+                        string newHTML_getSelection = "";
+                        vector<Wettoption> alleWetten = getAllBetOptions();
 
                         for(int i = 0; i < alleWetten.size(); i++)
                         {
                             string quoteA = to_string(alleWetten[i].quoteA);
                             string quoteB = to_string(alleWetten[i].quoteB);
                             string quoteEven = to_string(alleWetten[i].quoteEven);
-                            /*
-                            newHTML += "<option value = \"" + alleWetten[i].playerA + " vs. " + alleWetten[i].playerB + "\">"
-                                      + alleWetten[i].playerA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
-                                      + alleWetten[i].playerB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                      + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</option>";
-                            */
 
-                            cout << alleWetten[i].anbieterName << endl;
-                            newHTML += "<option value = \"" + alleWetten[i].anbieterName + "AA" + to_string(alleWetten[i].id) + "AA" + alleWetten[i].playerA + "AA" + alleWetten[i].playerB + "AA" 
+                            //cout << "wettender.html alleWettoptionen: " << alleWetten[i].anbieterName << endl;
+                            newHTML_getSelection += "<option value = \"" + alleWetten[i].anbieterName + "AA" + to_string(alleWetten[i].id) + "AA" + alleWetten[i].playerA + "AA" + alleWetten[i].playerB + "AA" 
                                         + quoteA.substr(0, quoteA.find('.')+3) + "AA" + quoteB.substr(0, quoteA.find('.')+3) + "AA" + quoteEven.substr(0, quoteA.find('.')+3) + "\">"
                                         + alleWetten[i].playerA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
                                         + alleWetten[i].playerB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                        + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</option>";
+                                        + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]</option>";
+                        }
+                        replace(sEditFileBuffer, htmlVariable, newHTML_getSelection);
+
+                        // <li>Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Even (4.0) : [Anbieter]<br> 15 auf Team B</li>
+                        string htmlVariableCurrentBets = "{bettor_get_my_current_bets}";
+                        string htmlVariablePreviousBets = "{bettor_get_my_previous_bets}";
+                        string newHTMLcurrent = "";
+                        string newHTMLprevious = "";
+                        vector<PlatzierteWette> alleMeineWetten = getAllMyPlacedBets("emmy");
+
+                        for(int i = 0; i < alleMeineWetten.size(); i++)
+                        {
+                            string quoteA = to_string(alleMeineWetten[i].wettoption.quoteA);
+                            string quoteB = to_string(alleMeineWetten[i].wettoption.quoteB);
+                            string quoteEven = to_string(alleMeineWetten[i].wettoption.quoteEven);
+                            string moneyset = to_string(alleMeineWetten[i].moneyset);
+
+                            // if (game is open) -> current_bets
+
+                            //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
+                            newHTMLcurrent += "<li>" + alleMeineWetten[i].wettoption.playerA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
+                                            + alleMeineWetten[i].wettoption.playerB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                            + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]<br>"
+                                            + moneyset.substr(0, moneyset.find('.')+3) + "€ auf " + gameEnding(alleMeineWetten[i].ending) + "</li>";
+
+                            // else (game is closed)-> previous bets
                             /*
-                            newHTML += "<p> " + alleWetten[i].playerA + " vs. " + alleWetten[i].playerB + "\">"
-                                      + alleWetten[i].playerA + "(" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
-                                      + alleWetten[i].playerB + "(" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                      + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ")</p>";
+                            newHTMLprevious += "<li>" + alleMeineWetten[i].wettoption.playerA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
+                                            + alleMeineWetten[i].wettoption.playerB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                            + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]<br>"
+                                            + moneyset.substr(0, moneyset.find('.')+3) + "€ auf " + gameEnding(alleMeineWetten[i].ending) + "</li>";
                             */
                         }
-                        // <option value = "Gryffindor vs. Slytherin">Gryffindor (3.5) vs. Slytherin (1.3) - Even (4.0)</option>
-                        replace(sEditFileBuffer, htmlVariable, newHTML);
-                    } else if ((filename.find("wettanbieter.html")) != string::npos){
-                        htmlVariable = "{booker_get_bets_of_this_bookmaker}";
-                        /*vector<Wettoption> alleWAWetten = getAllBetsFromWettanbieter("Fred und George", "localhost", 9090);       // ToDo - statischen Anbieter in dynamisch ändern
-                        int sumA = 0;
-                        int sumB = 0;
-                        int sumEven = 0;
-                        for(int i = 0; i < alleWAWetten.size(); i++)
+                        replace(sEditFileBuffer, htmlVariableCurrentBets, newHTMLcurrent);
+                        replace(sEditFileBuffer, htmlVariablePreviousBets, newHTMLcurrent);
+
+                    }
+                    else if ((filename.find("wettanbieter.html")) != string::npos)
+                    {
+                        string htmlVariable = "{booker_get_bets_of_this_bookmaker}";
+                        string newHTML = "";
+                        string thisAnbieter = "Fred_und_George";        // TODO: dynamisch
+                        //vector<Wettoption> alleWAWetten = getAllBetOptionsFromWettanbieter(thisAnbieter);       // ToDo - statischen Anbieter in dynamisch ändern
+                        vector<Wettoption> alleWAWetten = getAllBetOptions();
+                        double sumA = 0;
+                        double sumB = 0;
+                        double sumEven = 0;
+                        int anzahlPlatzierteWetten;
+
+                        for(int ctr_wette = 0; ctr_wette < alleWAWetten.size(); ctr_wette++)
                         {
-                            newHTML += "<li> " + alleWAWetten[i].playerA + " (" + to_string(alleWAWetten[i].quoteA) + ") "
-                                    + "vs. " + alleWAWetten[i].playerB + " (" + to_string(alleWAWetten[i].quoteB) + ") - "
-                                    + "Even (" + to_string(alleWAWetten[i].quoteEven) + ") <br>"
-                                    + to_string(sumA) + "€ vs. " + to_string(sumB) + "€ - " + to_string(sumEven) + "€</li>";
-                            //  TODO: 1) Liste aller eigenen platzierten Wetten - bettors.txt - über RPC-Call
-                            // 2) alle Wetten zu diesem Wettangebot raussuchen
-                            // 3) je nach "Ending" zu A/B/Even zuaddieren
-                        //        40€ vs. 10€ - 0€</li>";
+                            sumA = 0;
+                            sumB = 0;
+                            sumEven = 0;
 
-                        }*/
-                        //newHTML = getAllBetsFromWettanbieter("Fred und George", "localhost", 9090);
-                        replace(sEditFileBuffer, htmlVariable, newHTML);
+                            //vector<PlatzierteWette> thisOptionsPlaced = getAllPlacedBetsToABetOption(thisAnbieter, alleWAWetten[ctr_wette].id);
+                            vector<PlatzierteWette> thisOptionsPlaced = getAllPlacedBetsToABetOption(alleWAWetten[ctr_wette].anbieterName, alleWAWetten[ctr_wette].id);
 
-                        htmlVariable = "{booker_update_get_bets_of_this_bookmaker}";
-                        // <option value = "Ravenclaw vs. Hufflepuff"> Ravenclaw (1.5) vs. Hufflepuff (2.0)</option>
+                            for(int ctr_placed = 0; ctr_placed < thisOptionsPlaced.size(); ctr_placed++)
+                            {
+                                if(thisOptionsPlaced[ctr_placed].ending == ENDING_TEAM_A)
+                                {
+                                    sumA += thisOptionsPlaced[ctr_placed].moneyset;
+                                }
+                                else if(thisOptionsPlaced[ctr_placed].ending == ENDING_TEAM_B)
+                                {
+                                    sumB += thisOptionsPlaced[ctr_placed].moneyset;
+                                }
+                                else if(thisOptionsPlaced[ctr_placed].ending == ENDING_EVEN)
+                                {
+                                    sumEven += thisOptionsPlaced[ctr_placed].moneyset;
+                                }
+                            }
+
+                            string quoteA = to_string(alleWAWetten[ctr_wette].quoteA);
+                            string quoteB = to_string(alleWAWetten[ctr_wette].quoteB);
+                            string quoteEven = to_string(alleWAWetten[ctr_wette].quoteEven);
+                            string ssumA = to_string(sumA).substr(0, to_string(sumA).find('.')+3);
+                            string ssumB = to_string(sumB).substr(0, to_string(sumB).find('.')+3);
+                            string ssumEven = to_string(sumEven).substr(0, to_string(sumEven).find('.')+3);
+                            anzahlPlatzierteWetten = thisOptionsPlaced.size();
+
+                            newHTML += "<li> <b>" + alleWAWetten[ctr_wette].playerA + "</b> (" + quoteA.substr(0, quoteA.find('.')+3) + ") "
+                                    + "vs. <b>" + alleWAWetten[ctr_wette].playerB + "</b> (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                    + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : "
+                                    + "[" + alleWAWetten[ctr_wette].anbieterName + "]<br>"
+                                    + to_string(anzahlPlatzierteWetten) + " platzierte Wetten: " + ssumA + "€ vs. " + ssumB + "€ - " + ssumEven + "€</li>";
+                        }
+                        // <span class="rot">rote Schrift</span>
+                        /* HTML im Head-Bereich:
+                            <syle type="text/css">
+                            .rot {color: #f00;}
+                            </style>
+                        */
                         replace(sEditFileBuffer, htmlVariable, newHTML);
                     }
 
                     char* updatedFileBuffer = new char[sEditFileBuffer.length() + 1];
                     strcpy(updatedFileBuffer, sEditFileBuffer.c_str());
                     delete[] originFileBuffer;
-                    
 
                     sendResponse(updatedFileBuffer, "HTTP/1.1 200 Ok", newClientSocket);
                 }
@@ -657,7 +947,7 @@ int main() {
                 cout << "!"<< endl;
                 if(request.referer.find("wettender",0) != -1){
                     cout << "POST bei wettender" << endl;
-                    //Wettender Beispiel POST-String: Spiel=Fred+und+GeorgeAA2AARavenclawAASlytherinAA1.00AA2.00AA3.50&gewaehlteMannschaft=Team+A&Wetteinsatz=10&Name=emmy
+                    //Wettender Beispiel POST-String: Spiel=Fred_und_GeorgeAA2AARavenclawAASlytherinAA1.00AA2.00AA3.50&gewaehlteMannschaft=Team+A&Wetteinsatz=10&Name=emmy
                     string SPIEL = "Spiel=";
                     string TRENNUNG = "AA";
                     string AUSGEWAEHLT = "gewaehlteMannschaft=";
@@ -764,14 +1054,12 @@ int main() {
                         name = post;
                         cout << "*post: " << post << endl;
 
-                        setBettor(anbieter, stoi(spielid), name, stod(einsatz), ergebnis, stod(aQuote), stod(bQuote), stod(evenQuote));
-
-                    }                      
-                    
-                } else if(request.referer.find("wettanbieter",0) != -1) {
-
+                        placeNewBet(anbieter, stoi(spielid), name, stod(einsatz), ergebnis, stod(aQuote), stod(bQuote), stod(evenQuote));
+                    }
+                }
+                else if(request.referer.find("wettanbieter",0) != -1)
+                {
                 //idbet=5&teama=a&AGewinnquote=1.5&teamb=b&BGewinnquote=1.5&even=1.5&nameanbieter=baum  
-
                 cout << "POST bei wettanbieter" << endl;
                     
                     string GEWINNQUOTEA = "AGewinnquote=";
@@ -807,13 +1095,13 @@ int main() {
                             post.erase(0, CARRIAGERETURN.size());
                             cout << "*post: " << post << endl;
                         }
+
                         int pos = post.find(AMPERSAND,0);
 
                         spielid = post.substr(0,pos);
                         post.erase(0, spielid.size());
                         post.erase(0, AMPERSAND.size());
                         cout << "*post: " << post << endl;
-
                         
                         post.erase(0, TEAM_A.size());
                         pos = post.find(AMPERSAND,0);
@@ -858,38 +1146,46 @@ int main() {
 
                         cout << "* anbieter und id: " << anbieter << ":" << stoi(spielid) << endl;
 
-                        if(betExists(anbieter, stoi(spielid))){
-                        
-                            changeBet(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
-                        }else{
-                            addBet(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                        if(betExists(anbieter, stoi(spielid)))
+                        {
+                            changeBetOption(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
                         }
-                    }else if ((post.find(IDBET_DELETE,0) == 0)){                        
+                        else
+                        {
+                            addBetOption(anbieter, stoi(spielid),  playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                        }
+                    }
+                    else if ((post.find(IDBET_DELETE,0) == 0))
+                    {                        
                         //idbetdel=3&nameanbieteDel=Hogwarts
 
                         post.erase(0, IDBET_DELETE.size());                        
                         cout << "*post: " << post << endl;
 
-                        if((post.find(CARRIAGERETURN,0) == 0)){
+                        if((post.find(CARRIAGERETURN,0) == 0))
+                        {
                             cout << "found Carriagereturn" << endl;
                             post.erase(0, CARRIAGERETURN.size());
                             cout << "*post: " << post << endl;
                         }
+
                         int pos = post.find(AMPERSAND,0);
 
                         spielid = post.substr(0,pos);
                         post.erase(0, spielid.size());
                         post.erase(0, AMPERSAND.size());
                         cout << "*post: " << post << endl;
-
                         
                         post.erase(0, NAME_DELETE.size());
                         anbieter = post;
                         cout << "*post: " << post << endl;
 
-                        if(betExists(anbieter, stoi(spielid))){                        
-                            deleteBet(anbieter, stoi(spielid));
-                        }else{
+                        if(betExists(anbieter, stoi(spielid)))
+                        {                        
+                            deleteBetOption(anbieter, stoi(spielid));
+                        }
+                        else
+                        {
                             cout << "Bet does not exist" << endl;
                         }
                     }
@@ -899,14 +1195,18 @@ int main() {
                 strcpy(bufferPostHeader, request.data.c_str());  
                 cout << "Message from client: " << bufferPostHeader << endl;
                 send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
-                
             }
-            if (errorPage){
+
+            if (errorPage)
+            {
                 string filename = "error.html";
                 ifstream file(filename, ios::binary);
-                if(!file.good()){
+                if(!file.good())
+                {
                     cout << "file cannot be opened (error page)"<< endl;
-                } else{
+                }
+                else
+                {
                     std::filesystem::path p(filename);
                     auto buffersize = std::filesystem::file_size(p); 
                     char* const fileBuffer = new char[buffersize];
@@ -918,7 +1218,8 @@ int main() {
                 }
             }       
             exit(0);
-        }   
+        }
+
         cout << "close newClientSocket"<< endl;
         close(newClientSocket); 
     }

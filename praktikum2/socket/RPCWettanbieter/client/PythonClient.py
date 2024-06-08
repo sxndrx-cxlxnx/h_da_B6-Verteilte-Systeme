@@ -59,9 +59,9 @@ try:
             pid = int(input("ID?: "))
             playera = input("Player A?: ")
             playerb = input("Player B?: ")
-            wina = float(input("Chance A?: "))
-            winb = float(input("Chance B?: "))
-            even = float(input("Even?: "))
+            wina = double(input("Chance A?: "))
+            winb = double(input("Chance B?: "))
+            even = double(input("Even?: "))
 
             result = client.addBet(name, pid, playera, playerb, wina, winb, even)
             print (result)
@@ -72,9 +72,9 @@ try:
             pid = int(input("ID?: "))
             playera = input("Player A?: ")
             playerb = input("Player B?: ")
-            wina = float(input("Chance A?: "))
-            winb = float(input("Chance B?: "))
-            even = float(input("Even?: "))
+            wina = double(input("Chance A?: "))
+            winb = double(input("Chance B?: "))
+            even = double(input("Even?: "))
 
             result = client.changeBet(name, pid, playera, playerb, wina, winb, even)
             print (result)
@@ -91,7 +91,7 @@ try:
 
             name = input("Your Name?: ")
 
-            result = client.getMyBets(name)
+            result = client.getMyBetOptions(name)
             print (result)
         
         elif input2 == 5:
@@ -99,7 +99,7 @@ try:
             name = input("Your Name?: ")
             pid = int(input("ID?: "))
 
-            result = client.getBettors(name, pid)
+            result = client.getAllPlacedBetsToABetOption(name, pid)
             print (result)
 
         elif input2 == 6:
@@ -107,20 +107,20 @@ try:
             nameanbieter = input("Name bookmaker?: ")
             pid = int(input("ID?: "))
 
-            result1 = client.getSpecificBet(nameanbieter, pid)
+            result1 = client.getSpecificBetOption(nameanbieter, pid)
             if result1 :
                 name = input("Your Name?: ")
-                moneyset = float(input("Money?: "))
+                moneyset = double(input("Money?: "))
 
                 ending = int(input("wina (1), winb(2), even (3)?: "))
 
                 arrayResult = result1.split(":")
 
-                wina = float(arrayResult[-3])
-                winb = float(arrayResult[-2])
-                even = float(arrayResult[-1].removesuffix(';\n'))
+                wina = double(arrayResult[-3])
+                winb = double(arrayResult[-2])
+                even = double(arrayResult[-1].removesuffix(';\n'))
 
-                result = client.setBettor(nameanbieter, pid, name, moneyset, ending, wina, winb, even)
+                result = client.placeNewBet(nameanbieter, pid, name, moneyset, ending, wina, winb, even)
                 print (result)
             else :
                 print ("No bet found with this id and bookmaker")
@@ -130,7 +130,7 @@ try:
             nameanbieter = input("Name bookmaker?: ")
             pid = int(input("ID?: "))
 
-            result1 = client.getSpecificBet(nameanbieter, pid)
+            result1 = client.getSpecificBetOption(nameanbieter, pid)
             print(result1)
             
             

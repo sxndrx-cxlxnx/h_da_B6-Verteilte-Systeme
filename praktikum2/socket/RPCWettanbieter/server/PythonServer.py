@@ -28,7 +28,7 @@ from thrift.server import TServer
 class WettanbieterHandler:
 
     def addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
-        file = open("bets.txt", "a")
+        file = open("betOptions.txt", "a")
         file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
         file.close()
         return True
@@ -36,11 +36,11 @@ class WettanbieterHandler:
     def changeBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
         # source: https://www.geeksforgeeks.org/python-program-to-replace-specific-line-in-file/
         # source: https://stackoverflow.com/questions/4710067/how-to-delete-a-specific-line-in-a-text-file-using-python
-        with open('bets.txt','r',encoding='utf-8') as file:
+        with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
 
-        with open("bets.txt", "w", encoding='utf-8') as file:
+        with open("betOptions.txt", "w", encoding='utf-8') as file:
             for line in data:
                 if line.startswith(nameanbieter + ":" + str(id) + ":") :
                     file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
@@ -53,20 +53,20 @@ class WettanbieterHandler:
         # source: https://www.geeksforgeeks.org/python-program-to-replace-specific-line-in-file/
         # source: https://stackoverflow.com/questions/4710067/how-to-delete-a-specific-line-in-a-text-file-using-python
         
-        with open('bets.txt','r',encoding='utf-8') as file:
+        with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
 
-        with open("bets.txt", "w", encoding='utf-8') as file:
+        with open("betOptions.txt", "w", encoding='utf-8') as file:
             for line in data:
                 if not line.startswith(nameanbieter + ":" + str(id) + ":") :
                     file.write(line)
 
         return True
     
-    def getMyBets(self, nameanbieter):
+    def getMyBetOptions(self, nameanbieter):
 
-        with open('bets.txt','r',encoding='utf-8') as file:
+        with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
 
@@ -82,35 +82,54 @@ class WettanbieterHandler:
             
         return returnValue
 
-    def getAllBets(self):
+    def getAllBetOptions(self):
 
-        with open('bets.txt','r',encoding='utf-8') as file:
+        with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
 
         returnValue = ""
+        ctr = 0
         
         for line in data:
-            returnValue += line + "\n"
+                ctr += 1
+                returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
             
         return returnValue
 
-    def getSpecificBet(self, nameanbieter, id):
-        with open('bets.txt','r',encoding='utf-8') as file:
+    def getSpecificBetOption(self, nameanbieter, id):
+        with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
-        print(data)        
-
-        returnValue = ""
+        print(data)
         
         for line in data:
             if line.startswith(nameanbieter + ":" + str(id) + ":") :
-                returnValue += line
+                return line
+        
+        return "SpecificBetOption not found >>" + nameanbieter + str(id) + "<<"
+
+    def getAllPlacedBets(self):
+
+        with open('placedBets.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        ctr = 0
+        
+        for line in data:
+            ctr += 1
+            returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
             
         return returnValue
 
-    def getBettors(self, nameanbieter, id):
+    def getAllPlacedBetsToABetOption(self, nameanbieter, id):
 
-        with open('bettor.txt','r',encoding='utf-8') as file:
+        with open('placedBets.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
 
@@ -126,34 +145,15 @@ class WettanbieterHandler:
             
         return returnValue
 
-    def getAllPlacedBetsToAnBetOffer(self, nameanbieter, id):
+    def placeNewBet(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
 
-        with open('bettor.txt','r',encoding='utf-8') as file:
-            data = file.readlines()
-        print(data)        
-
-        returnValue = ""
-        ctr = 0
-        
-        for line in data:
-            if line.startswith(nameanbieter + ":" + str(id) + ":") :
-                ctr += 1
-                returnValue += line
-
-        returnValue = str(ctr) + "#" + returnValue
-            
-        return returnValue
-
-
-    def setBettor(self, nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even):
-
-        file = open("bettor.txt", "a")
+        file = open("placedBets.txt", "a")
         file.write(nameanbieter + ":" + str(betid) + ":" + namebettor + ":" + str(moneyset) + ":" + str(ending) + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
         file.close()
         return True
 
     def betExists(self, nameanbieter, betid):
-        with open('bets.txt','r',encoding='utf-8') as file:
+        with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)        
         
