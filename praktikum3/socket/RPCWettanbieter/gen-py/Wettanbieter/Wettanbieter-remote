@@ -35,7 +35,6 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  string getAllPlacedBetsToABetOption(string nameanbieter, i32 id)')
     print('  bool placeNewBet(string nameanbieter, i32 betid, string namebettor, double moneyset, i32 ending, double winachance, double winbchance, double even)')
     print('  bool addGame(i32 spielid, string playera, string playerb)')
-    print('  bool startGame(i32 spielid)')
     print('  bool endGame(i32 spielid, i32 pointsA, i32 pointsB)')
     print('  bool isGameOpen(i32 spielid)')
     print('  string getAllOpenGames()')
@@ -185,12 +184,6 @@ elif cmd == 'addGame':
         print('addGame requires 3 args')
         sys.exit(1)
     pp.pprint(client.addGame(eval(args[0]), args[1], args[2],))
-
-elif cmd == 'startGame':
-    if len(args) != 1:
-        print('startGame requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.startGame(eval(args[0]),))
 
 elif cmd == 'endGame':
     if len(args) != 3:

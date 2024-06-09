@@ -56,27 +56,25 @@ try:
         if input2 == 1:
 
             name = input("Your Name?: ")
-            pid = int(input("ID?: "))
-            playera = input("Player A?: ")
-            playerb = input("Player B?: ")
-            wina = double(input("Chance A?: "))
-            winb = double(input("Chance B?: "))
-            even = double(input("Even?: "))
+            pid = int(input("Wett-ID?: "))
+            gameid = int(input("Spiel-ID?: "))
+            wina = float(input("Chance A?: "))
+            winb = float(input("Chance B?: "))
+            even = float(input("Even?: "))
 
-            result = client.addBet(name, pid, playera, playerb, wina, winb, even)
+            result = client.addBet(name, pid, gameid, wina, winb, even)
             print (result)
 
         elif input2 == 2:
 
             name = input("Your Name?: ")
-            pid = int(input("ID?: "))
-            playera = input("Player A?: ")
-            playerb = input("Player B?: ")
-            wina = double(input("Chance A?: "))
-            winb = double(input("Chance B?: "))
-            even = double(input("Even?: "))
+            pid = int(input("Wett-ID?: "))
+            gameid = int(input("Spiel-ID?: "))
+            wina = float(input("Chance A?: "))
+            winb = float(input("Chance B?: "))
+            even = float(input("Even?: "))
 
-            result = client.changeBet(name, pid, playera, playerb, wina, winb, even)
+            result = client.changeBet(name, pid, gameid, wina, winb, even)
             print (result)
 
         elif input2 == 3:
@@ -116,9 +114,9 @@ try:
 
                 arrayResult = result1.split(":")
 
-                wina = double(arrayResult[-3])
-                winb = double(arrayResult[-2])
-                even = double(arrayResult[-1].removesuffix(';\n'))
+                wina = float(arrayResult[-3])
+                winb = float(arrayResult[-2])
+                even = float(arrayResult[-1].removesuffix(';\n'))
 
                 result = client.placeNewBet(nameanbieter, pid, name, moneyset, ending, wina, winb, even)
                 print (result)

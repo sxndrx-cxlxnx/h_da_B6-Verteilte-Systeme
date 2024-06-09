@@ -17,8 +17,8 @@ service Wettanbieter {
     bool placeNewBet(1: string nameanbieter, 2: i32 betid, 3: string namebettor, 4: double moneyset, 5: i32 ending, 6: double winachance, 7: double winbchance, 8: double even),
 
     bool addGame(1: i32 spielid, 2: string playera, 3: string playerb),
-    bool startGame(1: i32 spielid),
     bool endGame(1: i32 spielid, 2: i32 pointsA, 3: i32 pointsB),
+
     bool isGameOpen(1: i32 spielid),
     string getAllOpenGames(),
     string getAllClosedGames(),

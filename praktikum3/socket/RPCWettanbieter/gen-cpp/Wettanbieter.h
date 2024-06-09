@@ -33,7 +33,6 @@ class WettanbieterIf {
   virtual void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
   virtual bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) = 0;
   virtual bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) = 0;
-  virtual bool startGame(const int32_t spielid) = 0;
   virtual bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) = 0;
   virtual bool isGameOpen(const int32_t spielid) = 0;
   virtual void getAllOpenGames(std::string& _return) = 0;
@@ -104,10 +103,6 @@ class WettanbieterNull : virtual public WettanbieterIf {
     return _return;
   }
   bool addGame(const int32_t /* spielid */, const std::string& /* playera */, const std::string& /* playerb */) override {
-    bool _return = false;
-    return _return;
-  }
-  bool startGame(const int32_t /* spielid */) override {
     bool _return = false;
     return _return;
   }
@@ -1454,112 +1449,6 @@ class Wettanbieter_addGame_presult {
 
 };
 
-typedef struct _Wettanbieter_startGame_args__isset {
-  _Wettanbieter_startGame_args__isset() : spielid(false) {}
-  bool spielid :1;
-} _Wettanbieter_startGame_args__isset;
-
-class Wettanbieter_startGame_args {
- public:
-
-  Wettanbieter_startGame_args(const Wettanbieter_startGame_args&) noexcept;
-  Wettanbieter_startGame_args& operator=(const Wettanbieter_startGame_args&) noexcept;
-  Wettanbieter_startGame_args() noexcept
-                              : spielid(0) {
-  }
-
-  virtual ~Wettanbieter_startGame_args() noexcept;
-  int32_t spielid;
-
-  _Wettanbieter_startGame_args__isset __isset;
-
-  void __set_spielid(const int32_t val);
-
-  bool operator == (const Wettanbieter_startGame_args & rhs) const
-  {
-    if (!(spielid == rhs.spielid))
-      return false;
-    return true;
-  }
-  bool operator != (const Wettanbieter_startGame_args &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const Wettanbieter_startGame_args & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-
-class Wettanbieter_startGame_pargs {
- public:
-
-
-  virtual ~Wettanbieter_startGame_pargs() noexcept;
-  const int32_t* spielid;
-
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-typedef struct _Wettanbieter_startGame_result__isset {
-  _Wettanbieter_startGame_result__isset() : success(false) {}
-  bool success :1;
-} _Wettanbieter_startGame_result__isset;
-
-class Wettanbieter_startGame_result {
- public:
-
-  Wettanbieter_startGame_result(const Wettanbieter_startGame_result&) noexcept;
-  Wettanbieter_startGame_result& operator=(const Wettanbieter_startGame_result&) noexcept;
-  Wettanbieter_startGame_result() noexcept
-                                : success(0) {
-  }
-
-  virtual ~Wettanbieter_startGame_result() noexcept;
-  bool success;
-
-  _Wettanbieter_startGame_result__isset __isset;
-
-  void __set_success(const bool val);
-
-  bool operator == (const Wettanbieter_startGame_result & rhs) const
-  {
-    if (!(success == rhs.success))
-      return false;
-    return true;
-  }
-  bool operator != (const Wettanbieter_startGame_result &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const Wettanbieter_startGame_result & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-typedef struct _Wettanbieter_startGame_presult__isset {
-  _Wettanbieter_startGame_presult__isset() : success(false) {}
-  bool success :1;
-} _Wettanbieter_startGame_presult__isset;
-
-class Wettanbieter_startGame_presult {
- public:
-
-
-  virtual ~Wettanbieter_startGame_presult() noexcept;
-  bool* success;
-
-  _Wettanbieter_startGame_presult__isset __isset;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-
-};
-
 typedef struct _Wettanbieter_endGame_args__isset {
   _Wettanbieter_endGame_args__isset() : spielid(false), pointsA(false), pointsB(false) {}
   bool spielid :1;
@@ -2138,9 +2027,6 @@ class WettanbieterClient : virtual public WettanbieterIf {
   bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) override;
   void send_addGame(const int32_t spielid, const std::string& playera, const std::string& playerb);
   bool recv_addGame();
-  bool startGame(const int32_t spielid) override;
-  void send_startGame(const int32_t spielid);
-  bool recv_startGame();
   bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) override;
   void send_endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB);
   bool recv_endGame();
@@ -2182,7 +2068,6 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_getAllPlacedBetsToABetOption(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_placeNewBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_addGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_startGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_endGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_isGameOpen(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getAllOpenGames(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -2202,7 +2087,6 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["getAllPlacedBetsToABetOption"] = &WettanbieterProcessor::process_getAllPlacedBetsToABetOption;
     processMap_["placeNewBet"] = &WettanbieterProcessor::process_placeNewBet;
     processMap_["addGame"] = &WettanbieterProcessor::process_addGame;
-    processMap_["startGame"] = &WettanbieterProcessor::process_startGame;
     processMap_["endGame"] = &WettanbieterProcessor::process_endGame;
     processMap_["isGameOpen"] = &WettanbieterProcessor::process_isGameOpen;
     processMap_["getAllOpenGames"] = &WettanbieterProcessor::process_getAllOpenGames;
@@ -2340,15 +2224,6 @@ class WettanbieterMultiface : virtual public WettanbieterIf {
     return ifaces_[i]->addGame(spielid, playera, playerb);
   }
 
-  bool startGame(const int32_t spielid) override {
-    size_t sz = ifaces_.size();
-    size_t i = 0;
-    for (; i < (sz - 1); ++i) {
-      ifaces_[i]->startGame(spielid);
-    }
-    return ifaces_[i]->startGame(spielid);
-  }
-
   bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
@@ -2462,9 +2337,6 @@ class WettanbieterConcurrentClient : virtual public WettanbieterIf {
   bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) override;
   int32_t send_addGame(const int32_t spielid, const std::string& playera, const std::string& playerb);
   bool recv_addGame(const int32_t seqid);
-  bool startGame(const int32_t spielid) override;
-  int32_t send_startGame(const int32_t spielid);
-  bool recv_startGame(const int32_t seqid);
   bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) override;
   int32_t send_endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB);
   bool recv_endGame(const int32_t seqid);

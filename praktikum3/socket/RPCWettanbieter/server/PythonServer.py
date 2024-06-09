@@ -27,13 +27,13 @@ from thrift.server import TServer
 # Server implementation
 class WettanbieterHandler:
 
-    def addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def addBet(self, nameanbieter, betid, gameid, winachance, winbchance, even):
         file = open("betOptions.txt", "a")
-        file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
+        file.write(nameanbieter + ":" + str(betid) + ":" + str(gameid) + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
         file.close()
         return True
 
-    def changeBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def changeBet(self, nameanbieter, betid, gameid, winachance, winbchance, even):
         # source: https://www.geeksforgeeks.org/python-program-to-replace-specific-line-in-file/
         # source: https://stackoverflow.com/questions/4710067/how-to-delete-a-specific-line-in-a-text-file-using-python
         with open('betOptions.txt','r',encoding='utf-8') as file:
@@ -42,8 +42,8 @@ class WettanbieterHandler:
 
         with open("betOptions.txt", "w", encoding='utf-8') as file:
             for line in data:
-                if line.startswith(nameanbieter + ":" + str(id) + ":") :
-                    file.write(nameanbieter + ":" + str(id) + ":" + playera + ":" + playerb + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
+                if line.startswith(nameanbieter + ":" + str(betid) + ":") :
+                    file.write(nameanbieter + ":" + str(betid) + ":" + str(gameid) + ":" + str(winachance) + ":" + str(winbchance) + ":" + str(even) + ";\n")
                 else :
                     file.write(line)
 
@@ -164,6 +164,109 @@ class WettanbieterHandler:
         print("Bet not Found")    
         return False
 
+    def addGame(self, gameid, playerA, playerB):
+        file = open("openGames.csv", "a")
+        file.write(str(gameid) + ":" + playerA + ":" + playerB + ":" + str(1) + ";\n")
+        file.close()
+        return True
+
+    def endGame(self, gameid, pointsA, pointsB):
+        with open('openGames.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)  
+
+        gameline   
+
+        with open("openGames.csv", "w", encoding='utf-8') as file:
+            for line in data:
+                if not line.startswith(str(gameid) + ":") :
+                    file.write(line)
+                else:
+                    gameline = line
+
+        ending
+
+        if pointsA > pointsB:
+            ending = 1
+        elif pointsB > pointsA:
+            ending = 2
+        else:
+            ending = 3
+
+        file = open("closedGames.csv", "a")
+        file.write(gameline.replace(';\n', '') + ":" + str(ending) + ":" + str(pointsA) + ":" + str(pointsB) + ";\n")
+        file.close()
+
+        return True
+
+
+    def isGameOpen(self, gameid):
+        with open('openGames.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)     
+
+        for line in data:
+            if line.startswith(str(gameid) + ":") :
+                return True
+
+        return False
+
+    def getAllOpenGames(self):
+
+        with open('openGames.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        ctr = 0
+        
+        for line in data:
+            ctr += 1
+            returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
+            
+        return returnValue
+
+
+    def getAllClosedGames(self):
+
+        with open('closedGames.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)        
+
+        returnValue = ""
+        ctr = 0
+        
+        for line in data:
+            ctr += 1
+            returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
+            
+        return returnValue
+
+    
+    def getSpecificGame(self, gameid):
+
+        with open('openGames.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)     
+
+        for line in data:
+            if line.startswith(str(gameid) + ":") :
+                return "closed:" + line
+
+
+        with open('closedGames.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)     
+
+        for line in data:
+            if line.startswith(str(gameid) + ":") :
+                return "closed:" + line
+
+        return "game not found"
 
 
 # set handler to our implementation

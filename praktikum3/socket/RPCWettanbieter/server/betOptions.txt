@@ -1,8 +1,2 @@
 # Ändern zu NameAnbieter, WettID, SpielID, A, B, Even
-x:1:4:1.0:2.0:3.0;
-x:2:5:3.0:2.0:1.0;
-Fred_und_George:2:4:1.0:2.0:3.5;
-Fred_und_George:3:5:1.5:2.5:3.5;
-Hogwarts:1:6:1.5:1.5:1.5;
-Hogwarts:2:4:2.5:3.5:1.5;
-Hogwarts:3:7:4.5:1.5:1.5;
+emmy:1:4:3.0:2.0:2.0;

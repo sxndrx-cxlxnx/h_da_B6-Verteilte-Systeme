@@ -120,14 +120,6 @@ class Iface(object):
         """
         pass
 
-    def startGame(self, spielid):
-        """
-        Parameters:
-         - spielid
-
-        """
-        pass
-
     def endGame(self, spielid, pointsA, pointsB):
         """
         Parameters:
@@ -554,38 +546,6 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "addGame failed: unknown result")
 
-    def startGame(self, spielid):
-        """
-        Parameters:
-         - spielid
-
-        """
-        self.send_startGame(spielid)
-        return self.recv_startGame()
-
-    def send_startGame(self, spielid):
-        self._oprot.writeMessageBegin('startGame', TMessageType.CALL, self._seqid)
-        args = startGame_args()
-        args.spielid = spielid
-        args.write(self._oprot)
-        self._oprot.writeMessageEnd()
-        self._oprot.trans.flush()
-
-    def recv_startGame(self):
-        iprot = self._iprot
-        (fname, mtype, rseqid) = iprot.readMessageBegin()
-        if mtype == TMessageType.EXCEPTION:
-            x = TApplicationException()
-            x.read(iprot)
-            iprot.readMessageEnd()
-            raise x
-        result = startGame_result()
-        result.read(iprot)
-        iprot.readMessageEnd()
-        if result.success is not None:
-            return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "startGame failed: unknown result")
-
     def endGame(self, spielid, pointsA, pointsB):
         """
         Parameters:
@@ -754,7 +714,6 @@ class Processor(Iface, TProcessor):
         self._processMap["getAllPlacedBetsToABetOption"] = Processor.process_getAllPlacedBetsToABetOption
         self._processMap["placeNewBet"] = Processor.process_placeNewBet
         self._processMap["addGame"] = Processor.process_addGame
-        self._processMap["startGame"] = Processor.process_startGame
         self._processMap["endGame"] = Processor.process_endGame
         self._processMap["isGameOpen"] = Processor.process_isGameOpen
         self._processMap["getAllOpenGames"] = Processor.process_getAllOpenGames
@@ -1031,29 +990,6 @@ class Processor(Iface, TProcessor):
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
         oprot.writeMessageBegin("addGame", msg_type, seqid)
-        result.write(oprot)
-        oprot.writeMessageEnd()
-        oprot.trans.flush()
-
-    def process_startGame(self, seqid, iprot, oprot):
-        args = startGame_args()
-        args.read(iprot)
-        iprot.readMessageEnd()
-        result = startGame_result()
-        try:
-            result.success = self._handler.startGame(args.spielid)
-            msg_type = TMessageType.REPLY
-        except TTransport.TTransportException:
-            raise
-        except TApplicationException as ex:
-            logging.exception('TApplication exception in handler')
-            msg_type = TMessageType.EXCEPTION
-            result = ex
-        except Exception:
-            logging.exception('Unexpected exception in handler')
-            msg_type = TMessageType.EXCEPTION
-            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("startGame", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -2763,129 +2699,6 @@ class addGame_result(object):
         return not (self == other)
 all_structs.append(addGame_result)
 addGame_result.thrift_spec = (
-    (0, TType.BOOL, 'success', None, None, ),  # 0
-)
-
-
-class startGame_args(object):
-    """
-    Attributes:
-     - spielid
-
-    """
-
-
-    def __init__(self, spielid=None,):
-        self.spielid = spielid
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.spielid = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('startGame_args')
-        if self.spielid is not None:
-            oprot.writeFieldBegin('spielid', TType.I32, 1)
-            oprot.writeI32(self.spielid)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(startGame_args)
-startGame_args.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'spielid', None, None, ),  # 1
-)
-
-
-class startGame_result(object):
-    """
-    Attributes:
-     - success
-
-    """
-
-
-    def __init__(self, success=None,):
-        self.success = success
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 0:
-                if ftype == TType.BOOL:
-                    self.success = iprot.readBool()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('startGame_result')
-        if self.success is not None:
-            oprot.writeFieldBegin('success', TType.BOOL, 0)
-            oprot.writeBool(self.success)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(startGame_result)
-startGame_result.thrift_spec = (
     (0, TType.BOOL, 'success', None, None, ),  # 0
 )
 

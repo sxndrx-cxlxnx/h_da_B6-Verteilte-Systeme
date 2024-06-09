@@ -75,11 +75,6 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("addGame\n");
   }
 
-  bool startGame(const int32_t spielid) {
-    // Your implementation goes here
-    printf("startGame\n");
-  }
-
   bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) {
     // Your implementation goes here
     printf("endGame\n");
