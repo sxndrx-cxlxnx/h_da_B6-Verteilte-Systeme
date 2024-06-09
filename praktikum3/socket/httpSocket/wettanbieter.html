@@ -1,0 +1,99 @@
+<!DOCTYPE html>             <!-- TODO: Wetten auf Risiko prüfen -->
+<html lang="de">
+	<head>
+		<meta charset="UTF-8">
+		<title>Wettanbieter</title>
+	</head>
+	<body>
+		<header>
+			<h1>Wettanbieter</h1>
+		</header>
+		<main>
+            <section class="content" id="neue-wette">
+                <h2>Wette hinzufügen oder bestehende Wette ändern</h2> <!-- via: HTTP POST -->
+                <form method="post" action="http://localhost:8080">
+                    ID: <input id = "IDBet" type="text" id = idbet name = idbet>
+                    <br>
+                    Team A: <input teamb = "Input Team A" type="text" id = newTeamA name = teama>
+                    Gewinnquote: <input type = "number" name = "AGewinnquote" id = "GewinnquoteA"
+										min = "1" step="0.5" value = 1.5>
+                    <br>
+                    Team B: <input teama = "Input Team B" type="text" id = newTeamB name = teamb>
+                    Gewinnquote: <input type = "number" name = "BGewinnquote" id = "GewinnquoteB"
+										min = "1" step="0.5" value = 1.5>
+                    <br>
+                    Quote Even: <input type = "number" name = "even" id = "even"
+										min = "1" step="0.5" value = 1.5>
+                    <br><br>
+                    Ihr Name: <input anbieter = "Anbieter" type="text" id = nameAnbieter name = nameanbieter>
+                    
+                    <br><br>
+                    <input type="submit" value="Abschicken">
+                    <input type="reset" value="Zurücksetzen">
+                </form>
+            </section>
+
+            <hr>
+
+			<section class="content" id="aktuelle-wetten">
+				<h2>aktuell angebotene Wetten</h2> <!-- TODO: Infos über HTTP GET holen -->
+				Mannschaft A vs. Mannschaft B - Even
+					<ul> 
+                        {booker_get_bets_of_this_bookmaker}
+                        <!--
+						<li> Ravenclaw (1.5) vs. Hufflepuff (2.0) <br>
+                            40€ vs. 10€ - 0€</li>
+						<li> Gryffindor (3.5) vs. Slytherin (1.3) <br>
+                            40€ vs. 10€ - 0€</li>
+						<li> Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) <br>
+                            150€ vs. 200€ - 0€</li>
+                        -->
+                    </ul>
+            </section>
+
+            <hr>
+
+            <!-- TODO: Wetten auf Risiko prüfen -->
+            <section class="content" id="Wetten-anpassen">
+                <h2>Wette löschen</h2>
+                    <form method="post" action="http://localhost:8080">
+                        
+                        ID: <input id = "IDBetDel" type="text" id = idbetdel name = idbetdel>
+                        Ihr Name: <input anbieter = "name" type="text" id = nameAnbieterDel name = nameanbieteDel>
+
+                        <br><br>
+                        <input type="submit" value="Abschicken">
+                        <input type="reset" value="Zurücksetzen">
+                    </form>
+			</section>
+		</main>
+
+        <hr>
+
+		<footer>
+			<p>Quidditch-Wettsystem ©</p>
+		</footer>
+	</body>
+</html>
+
+<!--
+    Appleby Arrows
+    Ballycastle Bats
+    Banchory Bangers
+    Barnton
+    Caerphilly Catapults
+    Chudley Cannons
+    Cork
+    Falmouth Falcons
+    Holyhead Harpies
+    Ilkley
+    Kenmare Kestrels
+    Lancashire
+    Montrose Magpies
+    Pride of Portree
+    Eintracht Pfützensee
+    Tutshill Tornados
+    Wigtown Wanderers
+    Wimbourner Wespen
+    Yorkshire
+-->

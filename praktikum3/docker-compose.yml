@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  praktikum1:
+    image: praktikum1
+    container_name: p3-socket
+    ports:
+      - 8080:8080
+      - 9090:9090
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - vs
+      
+networks:
+  vs:
+    external: true

@@ -1,0 +1,8 @@
+x:1:Ravenclaw:Slytherin:1.0:2.0:3.0;
+x:2:Gryffindor:Hufflepuff:3.0:2.0:1.0;
+Fred_und_George:2:Ravenclaw:Slytherin:1.0:2.0:3.5;
+Fred_und_George:3:Gryffindor:Hufflepuff:1.5:2.5:3.5;
+baum:5:a:b:1.5:1.5:1.5;
+Hogwarts:1:Gryffindor:Slytherin:1.5:1.5:1.5;
+Hogwarts:2:Ravenclaw:Slytherin:2.5:3.5:1.5;
+Hogwarts:3:Hufflepuff:Gryffindor:4.5:1.5:1.5;
