@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  rpcclient:
+    image: rpcclient
+    container_name: rpcclient2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - vs
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    
+networks:
+  vs:
+    external: true

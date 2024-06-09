@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  newsfeed:
+    image: newsfeed
+    container_name: newsfeed
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - vs
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    
+networks:
+  vs:
+    external: true

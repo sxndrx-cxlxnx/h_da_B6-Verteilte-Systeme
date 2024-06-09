@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  newsfeed:
+    image: newsfeed
+    build:
+      context: .
+      dockerfile: ./Dockerfile

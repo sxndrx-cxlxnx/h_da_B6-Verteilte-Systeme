@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  autowetter:
+    image: autowetter
+    container_name: autowetter
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - vs
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    
+networks:
+  vs:
+    external: true
