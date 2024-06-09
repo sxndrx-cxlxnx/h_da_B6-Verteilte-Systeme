@@ -20,12 +20,12 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     // Your initialization goes here
   }
 
-  bool addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) {
+  bool addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) {
     // Your implementation goes here
     printf("addBet\n");
   }
 
-  bool changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) {
+  bool changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) {
     // Your implementation goes here
     printf("changeBet\n");
   }
@@ -68,6 +68,41 @@ class WettanbieterHandler : virtual public WettanbieterIf {
   bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) {
     // Your implementation goes here
     printf("placeNewBet\n");
+  }
+
+  bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) {
+    // Your implementation goes here
+    printf("addGame\n");
+  }
+
+  bool startGame(const int32_t spielid) {
+    // Your implementation goes here
+    printf("startGame\n");
+  }
+
+  bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) {
+    // Your implementation goes here
+    printf("endGame\n");
+  }
+
+  bool isGameOpen(const int32_t spielid) {
+    // Your implementation goes here
+    printf("isGameOpen\n");
+  }
+
+  void getAllOpenGames(std::string& _return) {
+    // Your implementation goes here
+    printf("getAllOpenGames\n");
+  }
+
+  void getAllClosedGames(std::string& _return) {
+    // Your implementation goes here
+    printf("getAllClosedGames\n");
+  }
+
+  void getSpecificGame(std::string& _return, const int32_t spielid) {
+    // Your implementation goes here
+    printf("getSpecificGame\n");
   }
 
 };

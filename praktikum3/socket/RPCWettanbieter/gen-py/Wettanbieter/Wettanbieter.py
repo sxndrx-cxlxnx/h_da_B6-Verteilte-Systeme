@@ -19,13 +19,12 @@ all_structs = []
 
 
 class Iface(object):
-    def addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def addBet(self, nameanbieter, wettid, spielid, winachance, winbchance, even):
         """
         Parameters:
          - nameanbieter
-         - id
-         - playera
-         - playerb
+         - wettid
+         - spielid
          - winachance
          - winbchance
          - even
@@ -33,13 +32,12 @@ class Iface(object):
         """
         pass
 
-    def changeBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def changeBet(self, nameanbieter, wettid, spielid, winachance, winbchance, even):
         """
         Parameters:
          - nameanbieter
-         - id
-         - playera
-         - playerb
+         - wettid
+         - spielid
          - winachance
          - winbchance
          - even
@@ -112,6 +110,56 @@ class Iface(object):
         """
         pass
 
+    def addGame(self, spielid, playera, playerb):
+        """
+        Parameters:
+         - spielid
+         - playera
+         - playerb
+
+        """
+        pass
+
+    def startGame(self, spielid):
+        """
+        Parameters:
+         - spielid
+
+        """
+        pass
+
+    def endGame(self, spielid, pointsA, pointsB):
+        """
+        Parameters:
+         - spielid
+         - pointsA
+         - pointsB
+
+        """
+        pass
+
+    def isGameOpen(self, spielid):
+        """
+        Parameters:
+         - spielid
+
+        """
+        pass
+
+    def getAllOpenGames(self):
+        pass
+
+    def getAllClosedGames(self):
+        pass
+
+    def getSpecificGame(self, spielid):
+        """
+        Parameters:
+         - spielid
+
+        """
+        pass
+
 
 class Client(Iface):
     def __init__(self, iprot, oprot=None):
@@ -120,28 +168,26 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def addBet(self, nameanbieter, wettid, spielid, winachance, winbchance, even):
         """
         Parameters:
          - nameanbieter
-         - id
-         - playera
-         - playerb
+         - wettid
+         - spielid
          - winachance
          - winbchance
          - even
 
         """
-        self.send_addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even)
+        self.send_addBet(nameanbieter, wettid, spielid, winachance, winbchance, even)
         return self.recv_addBet()
 
-    def send_addBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def send_addBet(self, nameanbieter, wettid, spielid, winachance, winbchance, even):
         self._oprot.writeMessageBegin('addBet', TMessageType.CALL, self._seqid)
         args = addBet_args()
         args.nameanbieter = nameanbieter
-        args.id = id
-        args.playera = playera
-        args.playerb = playerb
+        args.wettid = wettid
+        args.spielid = spielid
         args.winachance = winachance
         args.winbchance = winbchance
         args.even = even
@@ -164,28 +210,26 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "addBet failed: unknown result")
 
-    def changeBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def changeBet(self, nameanbieter, wettid, spielid, winachance, winbchance, even):
         """
         Parameters:
          - nameanbieter
-         - id
-         - playera
-         - playerb
+         - wettid
+         - spielid
          - winachance
          - winbchance
          - even
 
         """
-        self.send_changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even)
+        self.send_changeBet(nameanbieter, wettid, spielid, winachance, winbchance, even)
         return self.recv_changeBet()
 
-    def send_changeBet(self, nameanbieter, id, playera, playerb, winachance, winbchance, even):
+    def send_changeBet(self, nameanbieter, wettid, spielid, winachance, winbchance, even):
         self._oprot.writeMessageBegin('changeBet', TMessageType.CALL, self._seqid)
         args = changeBet_args()
         args.nameanbieter = nameanbieter
-        args.id = id
-        args.playera = playera
-        args.playerb = playerb
+        args.wettid = wettid
+        args.spielid = spielid
         args.winachance = winachance
         args.winbchance = winbchance
         args.even = even
@@ -474,6 +518,226 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "placeNewBet failed: unknown result")
 
+    def addGame(self, spielid, playera, playerb):
+        """
+        Parameters:
+         - spielid
+         - playera
+         - playerb
+
+        """
+        self.send_addGame(spielid, playera, playerb)
+        return self.recv_addGame()
+
+    def send_addGame(self, spielid, playera, playerb):
+        self._oprot.writeMessageBegin('addGame', TMessageType.CALL, self._seqid)
+        args = addGame_args()
+        args.spielid = spielid
+        args.playera = playera
+        args.playerb = playerb
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_addGame(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = addGame_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "addGame failed: unknown result")
+
+    def startGame(self, spielid):
+        """
+        Parameters:
+         - spielid
+
+        """
+        self.send_startGame(spielid)
+        return self.recv_startGame()
+
+    def send_startGame(self, spielid):
+        self._oprot.writeMessageBegin('startGame', TMessageType.CALL, self._seqid)
+        args = startGame_args()
+        args.spielid = spielid
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_startGame(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = startGame_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "startGame failed: unknown result")
+
+    def endGame(self, spielid, pointsA, pointsB):
+        """
+        Parameters:
+         - spielid
+         - pointsA
+         - pointsB
+
+        """
+        self.send_endGame(spielid, pointsA, pointsB)
+        return self.recv_endGame()
+
+    def send_endGame(self, spielid, pointsA, pointsB):
+        self._oprot.writeMessageBegin('endGame', TMessageType.CALL, self._seqid)
+        args = endGame_args()
+        args.spielid = spielid
+        args.pointsA = pointsA
+        args.pointsB = pointsB
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_endGame(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = endGame_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "endGame failed: unknown result")
+
+    def isGameOpen(self, spielid):
+        """
+        Parameters:
+         - spielid
+
+        """
+        self.send_isGameOpen(spielid)
+        return self.recv_isGameOpen()
+
+    def send_isGameOpen(self, spielid):
+        self._oprot.writeMessageBegin('isGameOpen', TMessageType.CALL, self._seqid)
+        args = isGameOpen_args()
+        args.spielid = spielid
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_isGameOpen(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = isGameOpen_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "isGameOpen failed: unknown result")
+
+    def getAllOpenGames(self):
+        self.send_getAllOpenGames()
+        return self.recv_getAllOpenGames()
+
+    def send_getAllOpenGames(self):
+        self._oprot.writeMessageBegin('getAllOpenGames', TMessageType.CALL, self._seqid)
+        args = getAllOpenGames_args()
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_getAllOpenGames(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = getAllOpenGames_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllOpenGames failed: unknown result")
+
+    def getAllClosedGames(self):
+        self.send_getAllClosedGames()
+        return self.recv_getAllClosedGames()
+
+    def send_getAllClosedGames(self):
+        self._oprot.writeMessageBegin('getAllClosedGames', TMessageType.CALL, self._seqid)
+        args = getAllClosedGames_args()
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_getAllClosedGames(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = getAllClosedGames_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllClosedGames failed: unknown result")
+
+    def getSpecificGame(self, spielid):
+        """
+        Parameters:
+         - spielid
+
+        """
+        self.send_getSpecificGame(spielid)
+        return self.recv_getSpecificGame()
+
+    def send_getSpecificGame(self, spielid):
+        self._oprot.writeMessageBegin('getSpecificGame', TMessageType.CALL, self._seqid)
+        args = getSpecificGame_args()
+        args.spielid = spielid
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_getSpecificGame(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = getSpecificGame_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getSpecificGame failed: unknown result")
+
 
 class Processor(Iface, TProcessor):
     def __init__(self, handler):
@@ -489,6 +753,13 @@ class Processor(Iface, TProcessor):
         self._processMap["getAllPlacedBets"] = Processor.process_getAllPlacedBets
         self._processMap["getAllPlacedBetsToABetOption"] = Processor.process_getAllPlacedBetsToABetOption
         self._processMap["placeNewBet"] = Processor.process_placeNewBet
+        self._processMap["addGame"] = Processor.process_addGame
+        self._processMap["startGame"] = Processor.process_startGame
+        self._processMap["endGame"] = Processor.process_endGame
+        self._processMap["isGameOpen"] = Processor.process_isGameOpen
+        self._processMap["getAllOpenGames"] = Processor.process_getAllOpenGames
+        self._processMap["getAllClosedGames"] = Processor.process_getAllClosedGames
+        self._processMap["getSpecificGame"] = Processor.process_getSpecificGame
         self._on_message_begin = None
 
     def on_message_begin(self, func):
@@ -517,7 +788,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = addBet_result()
         try:
-            result.success = self._handler.addBet(args.nameanbieter, args.id, args.playera, args.playerb, args.winachance, args.winbchance, args.even)
+            result.success = self._handler.addBet(args.nameanbieter, args.wettid, args.spielid, args.winachance, args.winbchance, args.even)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -540,7 +811,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = changeBet_result()
         try:
-            result.success = self._handler.changeBet(args.nameanbieter, args.id, args.playera, args.playerb, args.winachance, args.winbchance, args.even)
+            result.success = self._handler.changeBet(args.nameanbieter, args.wettid, args.spielid, args.winachance, args.winbchance, args.even)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -741,6 +1012,167 @@ class Processor(Iface, TProcessor):
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
+    def process_addGame(self, seqid, iprot, oprot):
+        args = addGame_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = addGame_result()
+        try:
+            result.success = self._handler.addGame(args.spielid, args.playera, args.playerb)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("addGame", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_startGame(self, seqid, iprot, oprot):
+        args = startGame_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = startGame_result()
+        try:
+            result.success = self._handler.startGame(args.spielid)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("startGame", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_endGame(self, seqid, iprot, oprot):
+        args = endGame_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = endGame_result()
+        try:
+            result.success = self._handler.endGame(args.spielid, args.pointsA, args.pointsB)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("endGame", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_isGameOpen(self, seqid, iprot, oprot):
+        args = isGameOpen_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = isGameOpen_result()
+        try:
+            result.success = self._handler.isGameOpen(args.spielid)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("isGameOpen", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_getAllOpenGames(self, seqid, iprot, oprot):
+        args = getAllOpenGames_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = getAllOpenGames_result()
+        try:
+            result.success = self._handler.getAllOpenGames()
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("getAllOpenGames", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_getAllClosedGames(self, seqid, iprot, oprot):
+        args = getAllClosedGames_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = getAllClosedGames_result()
+        try:
+            result.success = self._handler.getAllClosedGames()
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("getAllClosedGames", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_getSpecificGame(self, seqid, iprot, oprot):
+        args = getSpecificGame_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = getSpecificGame_result()
+        try:
+            result.success = self._handler.getSpecificGame(args.spielid)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("getSpecificGame", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
 # HELPER FUNCTIONS AND STRUCTURES
 
 
@@ -748,9 +1180,8 @@ class addBet_args(object):
     """
     Attributes:
      - nameanbieter
-     - id
-     - playera
-     - playerb
+     - wettid
+     - spielid
      - winachance
      - winbchance
      - even
@@ -758,11 +1189,10 @@ class addBet_args(object):
     """
 
 
-    def __init__(self, nameanbieter=None, id=None, playera=None, playerb=None, winachance=None, winbchance=None, even=None,):
+    def __init__(self, nameanbieter=None, wettid=None, spielid=None, winachance=None, winbchance=None, even=None,):
         self.nameanbieter = nameanbieter
-        self.id = id
-        self.playera = playera
-        self.playerb = playerb
+        self.wettid = wettid
+        self.spielid = spielid
         self.winachance = winachance
         self.winbchance = winbchance
         self.even = even
@@ -783,30 +1213,25 @@ class addBet_args(object):
                     iprot.skip(ftype)
             elif fid == 2:
                 if ftype == TType.I32:
-                    self.id = iprot.readI32()
+                    self.wettid = iprot.readI32()
                 else:
                     iprot.skip(ftype)
             elif fid == 3:
-                if ftype == TType.STRING:
-                    self.playera = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
                 else:
                     iprot.skip(ftype)
             elif fid == 4:
-                if ftype == TType.STRING:
-                    self.playerb = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 5:
                 if ftype == TType.DOUBLE:
                     self.winachance = iprot.readDouble()
                 else:
                     iprot.skip(ftype)
-            elif fid == 6:
+            elif fid == 5:
                 if ftype == TType.DOUBLE:
                     self.winbchance = iprot.readDouble()
                 else:
                     iprot.skip(ftype)
-            elif fid == 7:
+            elif fid == 6:
                 if ftype == TType.DOUBLE:
                     self.even = iprot.readDouble()
                 else:
@@ -825,28 +1250,24 @@ class addBet_args(object):
             oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
             oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
             oprot.writeFieldEnd()
-        if self.id is not None:
-            oprot.writeFieldBegin('id', TType.I32, 2)
-            oprot.writeI32(self.id)
+        if self.wettid is not None:
+            oprot.writeFieldBegin('wettid', TType.I32, 2)
+            oprot.writeI32(self.wettid)
             oprot.writeFieldEnd()
-        if self.playera is not None:
-            oprot.writeFieldBegin('playera', TType.STRING, 3)
-            oprot.writeString(self.playera.encode('utf-8') if sys.version_info[0] == 2 else self.playera)
-            oprot.writeFieldEnd()
-        if self.playerb is not None:
-            oprot.writeFieldBegin('playerb', TType.STRING, 4)
-            oprot.writeString(self.playerb.encode('utf-8') if sys.version_info[0] == 2 else self.playerb)
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 3)
+            oprot.writeI32(self.spielid)
             oprot.writeFieldEnd()
         if self.winachance is not None:
-            oprot.writeFieldBegin('winachance', TType.DOUBLE, 5)
+            oprot.writeFieldBegin('winachance', TType.DOUBLE, 4)
             oprot.writeDouble(self.winachance)
             oprot.writeFieldEnd()
         if self.winbchance is not None:
-            oprot.writeFieldBegin('winbchance', TType.DOUBLE, 6)
+            oprot.writeFieldBegin('winbchance', TType.DOUBLE, 5)
             oprot.writeDouble(self.winbchance)
             oprot.writeFieldEnd()
         if self.even is not None:
-            oprot.writeFieldBegin('even', TType.DOUBLE, 7)
+            oprot.writeFieldBegin('even', TType.DOUBLE, 6)
             oprot.writeDouble(self.even)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -869,12 +1290,11 @@ all_structs.append(addBet_args)
 addBet_args.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
-    (2, TType.I32, 'id', None, None, ),  # 2
-    (3, TType.STRING, 'playera', 'UTF8', None, ),  # 3
-    (4, TType.STRING, 'playerb', 'UTF8', None, ),  # 4
-    (5, TType.DOUBLE, 'winachance', None, None, ),  # 5
-    (6, TType.DOUBLE, 'winbchance', None, None, ),  # 6
-    (7, TType.DOUBLE, 'even', None, None, ),  # 7
+    (2, TType.I32, 'wettid', None, None, ),  # 2
+    (3, TType.I32, 'spielid', None, None, ),  # 3
+    (4, TType.DOUBLE, 'winachance', None, None, ),  # 4
+    (5, TType.DOUBLE, 'winbchance', None, None, ),  # 5
+    (6, TType.DOUBLE, 'even', None, None, ),  # 6
 )
 
 
@@ -943,9 +1363,8 @@ class changeBet_args(object):
     """
     Attributes:
      - nameanbieter
-     - id
-     - playera
-     - playerb
+     - wettid
+     - spielid
      - winachance
      - winbchance
      - even
@@ -953,11 +1372,10 @@ class changeBet_args(object):
     """
 
 
-    def __init__(self, nameanbieter=None, id=None, playera=None, playerb=None, winachance=None, winbchance=None, even=None,):
+    def __init__(self, nameanbieter=None, wettid=None, spielid=None, winachance=None, winbchance=None, even=None,):
         self.nameanbieter = nameanbieter
-        self.id = id
-        self.playera = playera
-        self.playerb = playerb
+        self.wettid = wettid
+        self.spielid = spielid
         self.winachance = winachance
         self.winbchance = winbchance
         self.even = even
@@ -978,30 +1396,25 @@ class changeBet_args(object):
                     iprot.skip(ftype)
             elif fid == 2:
                 if ftype == TType.I32:
-                    self.id = iprot.readI32()
+                    self.wettid = iprot.readI32()
                 else:
                     iprot.skip(ftype)
             elif fid == 3:
-                if ftype == TType.STRING:
-                    self.playera = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
                 else:
                     iprot.skip(ftype)
             elif fid == 4:
-                if ftype == TType.STRING:
-                    self.playerb = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 5:
                 if ftype == TType.DOUBLE:
                     self.winachance = iprot.readDouble()
                 else:
                     iprot.skip(ftype)
-            elif fid == 6:
+            elif fid == 5:
                 if ftype == TType.DOUBLE:
                     self.winbchance = iprot.readDouble()
                 else:
                     iprot.skip(ftype)
-            elif fid == 7:
+            elif fid == 6:
                 if ftype == TType.DOUBLE:
                     self.even = iprot.readDouble()
                 else:
@@ -1020,28 +1433,24 @@ class changeBet_args(object):
             oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
             oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
             oprot.writeFieldEnd()
-        if self.id is not None:
-            oprot.writeFieldBegin('id', TType.I32, 2)
-            oprot.writeI32(self.id)
+        if self.wettid is not None:
+            oprot.writeFieldBegin('wettid', TType.I32, 2)
+            oprot.writeI32(self.wettid)
             oprot.writeFieldEnd()
-        if self.playera is not None:
-            oprot.writeFieldBegin('playera', TType.STRING, 3)
-            oprot.writeString(self.playera.encode('utf-8') if sys.version_info[0] == 2 else self.playera)
-            oprot.writeFieldEnd()
-        if self.playerb is not None:
-            oprot.writeFieldBegin('playerb', TType.STRING, 4)
-            oprot.writeString(self.playerb.encode('utf-8') if sys.version_info[0] == 2 else self.playerb)
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 3)
+            oprot.writeI32(self.spielid)
             oprot.writeFieldEnd()
         if self.winachance is not None:
-            oprot.writeFieldBegin('winachance', TType.DOUBLE, 5)
+            oprot.writeFieldBegin('winachance', TType.DOUBLE, 4)
             oprot.writeDouble(self.winachance)
             oprot.writeFieldEnd()
         if self.winbchance is not None:
-            oprot.writeFieldBegin('winbchance', TType.DOUBLE, 6)
+            oprot.writeFieldBegin('winbchance', TType.DOUBLE, 5)
             oprot.writeDouble(self.winbchance)
             oprot.writeFieldEnd()
         if self.even is not None:
-            oprot.writeFieldBegin('even', TType.DOUBLE, 7)
+            oprot.writeFieldBegin('even', TType.DOUBLE, 6)
             oprot.writeDouble(self.even)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -1064,12 +1473,11 @@ all_structs.append(changeBet_args)
 changeBet_args.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
-    (2, TType.I32, 'id', None, None, ),  # 2
-    (3, TType.STRING, 'playera', 'UTF8', None, ),  # 3
-    (4, TType.STRING, 'playerb', 'UTF8', None, ),  # 4
-    (5, TType.DOUBLE, 'winachance', None, None, ),  # 5
-    (6, TType.DOUBLE, 'winbchance', None, None, ),  # 6
-    (7, TType.DOUBLE, 'even', None, None, ),  # 7
+    (2, TType.I32, 'wettid', None, None, ),  # 2
+    (3, TType.I32, 'spielid', None, None, ),  # 3
+    (4, TType.DOUBLE, 'winachance', None, None, ),  # 4
+    (5, TType.DOUBLE, 'winbchance', None, None, ),  # 5
+    (6, TType.DOUBLE, 'even', None, None, ),  # 6
 )
 
 
@@ -2209,6 +2617,877 @@ class placeNewBet_result(object):
 all_structs.append(placeNewBet_result)
 placeNewBet_result.thrift_spec = (
     (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class addGame_args(object):
+    """
+    Attributes:
+     - spielid
+     - playera
+     - playerb
+
+    """
+
+
+    def __init__(self, spielid=None, playera=None, playerb=None,):
+        self.spielid = spielid
+        self.playera = playera
+        self.playerb = playerb
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 2:
+                if ftype == TType.STRING:
+                    self.playera = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 3:
+                if ftype == TType.STRING:
+                    self.playerb = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('addGame_args')
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 1)
+            oprot.writeI32(self.spielid)
+            oprot.writeFieldEnd()
+        if self.playera is not None:
+            oprot.writeFieldBegin('playera', TType.STRING, 2)
+            oprot.writeString(self.playera.encode('utf-8') if sys.version_info[0] == 2 else self.playera)
+            oprot.writeFieldEnd()
+        if self.playerb is not None:
+            oprot.writeFieldBegin('playerb', TType.STRING, 3)
+            oprot.writeString(self.playerb.encode('utf-8') if sys.version_info[0] == 2 else self.playerb)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(addGame_args)
+addGame_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'spielid', None, None, ),  # 1
+    (2, TType.STRING, 'playera', 'UTF8', None, ),  # 2
+    (3, TType.STRING, 'playerb', 'UTF8', None, ),  # 3
+)
+
+
+class addGame_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('addGame_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(addGame_result)
+addGame_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class startGame_args(object):
+    """
+    Attributes:
+     - spielid
+
+    """
+
+
+    def __init__(self, spielid=None,):
+        self.spielid = spielid
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('startGame_args')
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 1)
+            oprot.writeI32(self.spielid)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(startGame_args)
+startGame_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'spielid', None, None, ),  # 1
+)
+
+
+class startGame_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('startGame_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(startGame_result)
+startGame_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class endGame_args(object):
+    """
+    Attributes:
+     - spielid
+     - pointsA
+     - pointsB
+
+    """
+
+
+    def __init__(self, spielid=None, pointsA=None, pointsB=None,):
+        self.spielid = spielid
+        self.pointsA = pointsA
+        self.pointsB = pointsB
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 2:
+                if ftype == TType.I32:
+                    self.pointsA = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 3:
+                if ftype == TType.I32:
+                    self.pointsB = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('endGame_args')
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 1)
+            oprot.writeI32(self.spielid)
+            oprot.writeFieldEnd()
+        if self.pointsA is not None:
+            oprot.writeFieldBegin('pointsA', TType.I32, 2)
+            oprot.writeI32(self.pointsA)
+            oprot.writeFieldEnd()
+        if self.pointsB is not None:
+            oprot.writeFieldBegin('pointsB', TType.I32, 3)
+            oprot.writeI32(self.pointsB)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(endGame_args)
+endGame_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'spielid', None, None, ),  # 1
+    (2, TType.I32, 'pointsA', None, None, ),  # 2
+    (3, TType.I32, 'pointsB', None, None, ),  # 3
+)
+
+
+class endGame_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('endGame_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(endGame_result)
+endGame_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class isGameOpen_args(object):
+    """
+    Attributes:
+     - spielid
+
+    """
+
+
+    def __init__(self, spielid=None,):
+        self.spielid = spielid
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('isGameOpen_args')
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 1)
+            oprot.writeI32(self.spielid)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(isGameOpen_args)
+isGameOpen_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'spielid', None, None, ),  # 1
+)
+
+
+class isGameOpen_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('isGameOpen_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(isGameOpen_result)
+isGameOpen_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class getAllOpenGames_args(object):
+
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllOpenGames_args')
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllOpenGames_args)
+getAllOpenGames_args.thrift_spec = (
+)
+
+
+class getAllOpenGames_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllOpenGames_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllOpenGames_result)
+getAllOpenGames_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
+)
+
+
+class getAllClosedGames_args(object):
+
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllClosedGames_args')
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllClosedGames_args)
+getAllClosedGames_args.thrift_spec = (
+)
+
+
+class getAllClosedGames_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllClosedGames_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllClosedGames_result)
+getAllClosedGames_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
+)
+
+
+class getSpecificGame_args(object):
+    """
+    Attributes:
+     - spielid
+
+    """
+
+
+    def __init__(self, spielid=None,):
+        self.spielid = spielid
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.spielid = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getSpecificGame_args')
+        if self.spielid is not None:
+            oprot.writeFieldBegin('spielid', TType.I32, 1)
+            oprot.writeI32(self.spielid)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getSpecificGame_args)
+getSpecificGame_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'spielid', None, None, ),  # 1
+)
+
+
+class getSpecificGame_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getSpecificGame_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getSpecificGame_result)
+getSpecificGame_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 fix_spec(all_structs)
 del all_structs

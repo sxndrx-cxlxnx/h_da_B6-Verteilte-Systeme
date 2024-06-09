@@ -59,7 +59,6 @@ cd socket/RPCWettanbieter/
 thrift --gen cpp Wettanbieter.thrift
 thrift --gen py Wettanbieter.thrift
 ```
-- Docker-Image neu bauen -> richtet Thrift mit ein
 
 ___
 ## Überblick
