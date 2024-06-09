@@ -8,5 +8,5 @@ ___
 ```
 mosquitto -v -c ../mosquitto.conf
 ```
-- erst listener
+- erst listener (apt install -y python3-paho-mqtt)
 - dann publisher

@@ -16,6 +16,7 @@ if client.connect("localhost", 1883, 60) != 0:
 
 client.subscribe("test_topic")
 client.subscribe("topic2")
+client.subscribe("newsfeed")
 
 try:
     print("Press CTRL+C to exit...")
