@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  mqttbroker:
+    image: mqttbroker
+    build:
+      context: .
+      dockerfile: ./Dockerfile
