@@ -44,29 +44,21 @@ uint32_t Wettanbieter_addBet_args::read(::apache::thrift::protocol::TProtocol* i
         break;
       case 2:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->id);
-          this->__isset.id = true;
+          xfer += iprot->readI32(this->wettid);
+          this->__isset.wettid = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->playera);
-          this->__isset.playera = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->spielid);
+          this->__isset.spielid = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->playerb);
-          this->__isset.playerb = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 5:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->winachance);
           this->__isset.winachance = true;
@@ -74,7 +66,7 @@ uint32_t Wettanbieter_addBet_args::read(::apache::thrift::protocol::TProtocol* i
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
+      case 5:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->winbchance);
           this->__isset.winbchance = true;
@@ -82,7 +74,7 @@ uint32_t Wettanbieter_addBet_args::read(::apache::thrift::protocol::TProtocol* i
           xfer += iprot->skip(ftype);
         }
         break;
-      case 7:
+      case 6:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->even);
           this->__isset.even = true;
@@ -111,27 +103,23 @@ uint32_t Wettanbieter_addBet_args::write(::apache::thrift::protocol::TProtocol* 
   xfer += oprot->writeString(this->nameanbieter);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 2);
-  xfer += oprot->writeI32(this->id);
+  xfer += oprot->writeFieldBegin("wettid", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->wettid);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playera", ::apache::thrift::protocol::T_STRING, 3);
-  xfer += oprot->writeString(this->playera);
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32(this->spielid);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playerb", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString(this->playerb);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 5);
+  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 4);
   xfer += oprot->writeDouble(this->winachance);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 6);
+  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 5);
   xfer += oprot->writeDouble(this->winbchance);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 7);
+  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 6);
   xfer += oprot->writeDouble(this->even);
   xfer += oprot->writeFieldEnd();
 
@@ -154,27 +142,23 @@ uint32_t Wettanbieter_addBet_pargs::write(::apache::thrift::protocol::TProtocol*
   xfer += oprot->writeString((*(this->nameanbieter)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 2);
-  xfer += oprot->writeI32((*(this->id)));
+  xfer += oprot->writeFieldBegin("wettid", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->wettid)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playera", ::apache::thrift::protocol::T_STRING, 3);
-  xfer += oprot->writeString((*(this->playera)));
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((*(this->spielid)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playerb", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString((*(this->playerb)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 5);
+  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 4);
   xfer += oprot->writeDouble((*(this->winachance)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 6);
+  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 5);
   xfer += oprot->writeDouble((*(this->winbchance)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 7);
+  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 6);
   xfer += oprot->writeDouble((*(this->even)));
   xfer += oprot->writeFieldEnd();
 
@@ -327,29 +311,21 @@ uint32_t Wettanbieter_changeBet_args::read(::apache::thrift::protocol::TProtocol
         break;
       case 2:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->id);
-          this->__isset.id = true;
+          xfer += iprot->readI32(this->wettid);
+          this->__isset.wettid = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->playera);
-          this->__isset.playera = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->spielid);
+          this->__isset.spielid = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->playerb);
-          this->__isset.playerb = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 5:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->winachance);
           this->__isset.winachance = true;
@@ -357,7 +333,7 @@ uint32_t Wettanbieter_changeBet_args::read(::apache::thrift::protocol::TProtocol
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
+      case 5:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->winbchance);
           this->__isset.winbchance = true;
@@ -365,7 +341,7 @@ uint32_t Wettanbieter_changeBet_args::read(::apache::thrift::protocol::TProtocol
           xfer += iprot->skip(ftype);
         }
         break;
-      case 7:
+      case 6:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->even);
           this->__isset.even = true;
@@ -394,27 +370,23 @@ uint32_t Wettanbieter_changeBet_args::write(::apache::thrift::protocol::TProtoco
   xfer += oprot->writeString(this->nameanbieter);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 2);
-  xfer += oprot->writeI32(this->id);
+  xfer += oprot->writeFieldBegin("wettid", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->wettid);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playera", ::apache::thrift::protocol::T_STRING, 3);
-  xfer += oprot->writeString(this->playera);
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32(this->spielid);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playerb", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString(this->playerb);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 5);
+  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 4);
   xfer += oprot->writeDouble(this->winachance);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 6);
+  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 5);
   xfer += oprot->writeDouble(this->winbchance);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 7);
+  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 6);
   xfer += oprot->writeDouble(this->even);
   xfer += oprot->writeFieldEnd();
 
@@ -437,27 +409,23 @@ uint32_t Wettanbieter_changeBet_pargs::write(::apache::thrift::protocol::TProtoc
   xfer += oprot->writeString((*(this->nameanbieter)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 2);
-  xfer += oprot->writeI32((*(this->id)));
+  xfer += oprot->writeFieldBegin("wettid", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->wettid)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playera", ::apache::thrift::protocol::T_STRING, 3);
-  xfer += oprot->writeString((*(this->playera)));
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((*(this->spielid)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("playerb", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString((*(this->playerb)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 5);
+  xfer += oprot->writeFieldBegin("winachance", ::apache::thrift::protocol::T_DOUBLE, 4);
   xfer += oprot->writeDouble((*(this->winachance)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 6);
+  xfer += oprot->writeFieldBegin("winbchance", ::apache::thrift::protocol::T_DOUBLE, 5);
   xfer += oprot->writeDouble((*(this->winbchance)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 7);
+  xfer += oprot->writeFieldBegin("even", ::apache::thrift::protocol::T_DOUBLE, 6);
   xfer += oprot->writeDouble((*(this->even)));
   xfer += oprot->writeFieldEnd();
 
@@ -778,11 +746,214 @@ uint32_t Wettanbieter_deleteBet_presult::read(::apache::thrift::protocol::TProto
 }
 
 
-Wettanbieter_getMyBets_args::~Wettanbieter_getMyBets_args() noexcept {
+Wettanbieter_betExists_args::~Wettanbieter_betExists_args() noexcept {
 }
 
 
-uint32_t Wettanbieter_getMyBets_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_betExists_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->nameanbieter);
+          this->__isset.nameanbieter = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->betid);
+          this->__isset.betid = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_betExists_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_betExists_args");
+
+  xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->nameanbieter);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("betid", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->betid);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_betExists_pargs::~Wettanbieter_betExists_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_betExists_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_betExists_pargs");
+
+  xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->nameanbieter)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("betid", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->betid)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_betExists_result::~Wettanbieter_betExists_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_betExists_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_betExists_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_betExists_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_BOOL, 0);
+    xfer += oprot->writeBool(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_betExists_presult::~Wettanbieter_betExists_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_betExists_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_getMyBetOptions_args::~Wettanbieter_getMyBetOptions_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_getMyBetOptions_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -823,10 +994,10 @@ uint32_t Wettanbieter_getMyBets_args::read(::apache::thrift::protocol::TProtocol
   return xfer;
 }
 
-uint32_t Wettanbieter_getMyBets_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getMyBetOptions_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getMyBets_args");
+  xfer += oprot->writeStructBegin("Wettanbieter_getMyBetOptions_args");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString(this->nameanbieter);
@@ -838,14 +1009,14 @@ uint32_t Wettanbieter_getMyBets_args::write(::apache::thrift::protocol::TProtoco
 }
 
 
-Wettanbieter_getMyBets_pargs::~Wettanbieter_getMyBets_pargs() noexcept {
+Wettanbieter_getMyBetOptions_pargs::~Wettanbieter_getMyBetOptions_pargs() noexcept {
 }
 
 
-uint32_t Wettanbieter_getMyBets_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getMyBetOptions_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getMyBets_pargs");
+  xfer += oprot->writeStructBegin("Wettanbieter_getMyBetOptions_pargs");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString((*(this->nameanbieter)));
@@ -857,11 +1028,11 @@ uint32_t Wettanbieter_getMyBets_pargs::write(::apache::thrift::protocol::TProtoc
 }
 
 
-Wettanbieter_getMyBets_result::~Wettanbieter_getMyBets_result() noexcept {
+Wettanbieter_getMyBetOptions_result::~Wettanbieter_getMyBetOptions_result() noexcept {
 }
 
 
-uint32_t Wettanbieter_getMyBets_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getMyBetOptions_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -902,11 +1073,11 @@ uint32_t Wettanbieter_getMyBets_result::read(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-uint32_t Wettanbieter_getMyBets_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getMyBetOptions_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Wettanbieter_getMyBets_result");
+  xfer += oprot->writeStructBegin("Wettanbieter_getMyBetOptions_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
@@ -919,11 +1090,11 @@ uint32_t Wettanbieter_getMyBets_result::write(::apache::thrift::protocol::TProto
 }
 
 
-Wettanbieter_getMyBets_presult::~Wettanbieter_getMyBets_presult() noexcept {
+Wettanbieter_getMyBetOptions_presult::~Wettanbieter_getMyBetOptions_presult() noexcept {
 }
 
 
-uint32_t Wettanbieter_getMyBets_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getMyBetOptions_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -965,11 +1136,11 @@ uint32_t Wettanbieter_getMyBets_presult::read(::apache::thrift::protocol::TProto
 }
 
 
-Wettanbieter_getAllBets_args::~Wettanbieter_getAllBets_args() noexcept {
+Wettanbieter_getAllBetOptions_args::~Wettanbieter_getAllBetOptions_args() noexcept {
 }
 
 
-uint32_t Wettanbieter_getAllBets_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getAllBetOptions_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -997,10 +1168,10 @@ uint32_t Wettanbieter_getAllBets_args::read(::apache::thrift::protocol::TProtoco
   return xfer;
 }
 
-uint32_t Wettanbieter_getAllBets_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getAllBetOptions_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getAllBets_args");
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllBetOptions_args");
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -1008,14 +1179,14 @@ uint32_t Wettanbieter_getAllBets_args::write(::apache::thrift::protocol::TProtoc
 }
 
 
-Wettanbieter_getAllBets_pargs::~Wettanbieter_getAllBets_pargs() noexcept {
+Wettanbieter_getAllBetOptions_pargs::~Wettanbieter_getAllBetOptions_pargs() noexcept {
 }
 
 
-uint32_t Wettanbieter_getAllBets_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getAllBetOptions_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getAllBets_pargs");
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllBetOptions_pargs");
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -1023,11 +1194,11 @@ uint32_t Wettanbieter_getAllBets_pargs::write(::apache::thrift::protocol::TProto
 }
 
 
-Wettanbieter_getAllBets_result::~Wettanbieter_getAllBets_result() noexcept {
+Wettanbieter_getAllBetOptions_result::~Wettanbieter_getAllBetOptions_result() noexcept {
 }
 
 
-uint32_t Wettanbieter_getAllBets_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getAllBetOptions_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1068,11 +1239,11 @@ uint32_t Wettanbieter_getAllBets_result::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t Wettanbieter_getAllBets_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getAllBetOptions_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Wettanbieter_getAllBets_result");
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllBetOptions_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
@@ -1085,11 +1256,11 @@ uint32_t Wettanbieter_getAllBets_result::write(::apache::thrift::protocol::TProt
 }
 
 
-Wettanbieter_getAllBets_presult::~Wettanbieter_getAllBets_presult() noexcept {
+Wettanbieter_getAllBetOptions_presult::~Wettanbieter_getAllBetOptions_presult() noexcept {
 }
 
 
-uint32_t Wettanbieter_getAllBets_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getAllBetOptions_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1131,11 +1302,11 @@ uint32_t Wettanbieter_getAllBets_presult::read(::apache::thrift::protocol::TProt
 }
 
 
-Wettanbieter_getSpecificBet_args::~Wettanbieter_getSpecificBet_args() noexcept {
+Wettanbieter_getSpecificBetOption_args::~Wettanbieter_getSpecificBetOption_args() noexcept {
 }
 
 
-uint32_t Wettanbieter_getSpecificBet_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getSpecificBetOption_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1184,10 +1355,10 @@ uint32_t Wettanbieter_getSpecificBet_args::read(::apache::thrift::protocol::TPro
   return xfer;
 }
 
-uint32_t Wettanbieter_getSpecificBet_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getSpecificBetOption_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificBet_args");
+  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificBetOption_args");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString(this->nameanbieter);
@@ -1203,14 +1374,14 @@ uint32_t Wettanbieter_getSpecificBet_args::write(::apache::thrift::protocol::TPr
 }
 
 
-Wettanbieter_getSpecificBet_pargs::~Wettanbieter_getSpecificBet_pargs() noexcept {
+Wettanbieter_getSpecificBetOption_pargs::~Wettanbieter_getSpecificBetOption_pargs() noexcept {
 }
 
 
-uint32_t Wettanbieter_getSpecificBet_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getSpecificBetOption_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificBet_pargs");
+  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificBetOption_pargs");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString((*(this->nameanbieter)));
@@ -1226,11 +1397,11 @@ uint32_t Wettanbieter_getSpecificBet_pargs::write(::apache::thrift::protocol::TP
 }
 
 
-Wettanbieter_getSpecificBet_result::~Wettanbieter_getSpecificBet_result() noexcept {
+Wettanbieter_getSpecificBetOption_result::~Wettanbieter_getSpecificBetOption_result() noexcept {
 }
 
 
-uint32_t Wettanbieter_getSpecificBet_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getSpecificBetOption_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1271,11 +1442,11 @@ uint32_t Wettanbieter_getSpecificBet_result::read(::apache::thrift::protocol::TP
   return xfer;
 }
 
-uint32_t Wettanbieter_getSpecificBet_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getSpecificBetOption_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificBet_result");
+  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificBetOption_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
@@ -1288,11 +1459,11 @@ uint32_t Wettanbieter_getSpecificBet_result::write(::apache::thrift::protocol::T
 }
 
 
-Wettanbieter_getSpecificBet_presult::~Wettanbieter_getSpecificBet_presult() noexcept {
+Wettanbieter_getSpecificBetOption_presult::~Wettanbieter_getSpecificBetOption_presult() noexcept {
 }
 
 
-uint32_t Wettanbieter_getSpecificBet_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getSpecificBetOption_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1334,11 +1505,177 @@ uint32_t Wettanbieter_getSpecificBet_presult::read(::apache::thrift::protocol::T
 }
 
 
-Wettanbieter_getBettors_args::~Wettanbieter_getBettors_args() noexcept {
+Wettanbieter_getAllPlacedBets_args::~Wettanbieter_getAllPlacedBets_args() noexcept {
 }
 
 
-uint32_t Wettanbieter_getBettors_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getAllPlacedBets_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getAllPlacedBets_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBets_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllPlacedBets_pargs::~Wettanbieter_getAllPlacedBets_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllPlacedBets_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBets_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllPlacedBets_result::~Wettanbieter_getAllPlacedBets_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllPlacedBets_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getAllPlacedBets_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBets_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllPlacedBets_presult::~Wettanbieter_getAllPlacedBets_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllPlacedBets_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_getAllPlacedBetsToABetOption_args::~Wettanbieter_getAllPlacedBetsToABetOption_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllPlacedBetsToABetOption_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1387,10 +1724,10 @@ uint32_t Wettanbieter_getBettors_args::read(::apache::thrift::protocol::TProtoco
   return xfer;
 }
 
-uint32_t Wettanbieter_getBettors_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getAllPlacedBetsToABetOption_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getBettors_args");
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBetsToABetOption_args");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString(this->nameanbieter);
@@ -1406,14 +1743,14 @@ uint32_t Wettanbieter_getBettors_args::write(::apache::thrift::protocol::TProtoc
 }
 
 
-Wettanbieter_getBettors_pargs::~Wettanbieter_getBettors_pargs() noexcept {
+Wettanbieter_getAllPlacedBetsToABetOption_pargs::~Wettanbieter_getAllPlacedBetsToABetOption_pargs() noexcept {
 }
 
 
-uint32_t Wettanbieter_getBettors_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getAllPlacedBetsToABetOption_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getBettors_pargs");
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBetsToABetOption_pargs");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString((*(this->nameanbieter)));
@@ -1429,11 +1766,11 @@ uint32_t Wettanbieter_getBettors_pargs::write(::apache::thrift::protocol::TProto
 }
 
 
-Wettanbieter_getBettors_result::~Wettanbieter_getBettors_result() noexcept {
+Wettanbieter_getAllPlacedBetsToABetOption_result::~Wettanbieter_getAllPlacedBetsToABetOption_result() noexcept {
 }
 
 
-uint32_t Wettanbieter_getBettors_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getAllPlacedBetsToABetOption_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1474,11 +1811,11 @@ uint32_t Wettanbieter_getBettors_result::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t Wettanbieter_getBettors_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_getAllPlacedBetsToABetOption_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Wettanbieter_getBettors_result");
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBetsToABetOption_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
@@ -1491,11 +1828,11 @@ uint32_t Wettanbieter_getBettors_result::write(::apache::thrift::protocol::TProt
 }
 
 
-Wettanbieter_getBettors_presult::~Wettanbieter_getBettors_presult() noexcept {
+Wettanbieter_getAllPlacedBetsToABetOption_presult::~Wettanbieter_getAllPlacedBetsToABetOption_presult() noexcept {
 }
 
 
-uint32_t Wettanbieter_getBettors_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_getAllPlacedBetsToABetOption_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1537,214 +1874,11 @@ uint32_t Wettanbieter_getBettors_presult::read(::apache::thrift::protocol::TProt
 }
 
 
-Wettanbieter_getAllPlacedBetsToAnBetOffer_args::~Wettanbieter_getAllPlacedBetsToAnBetOffer_args() noexcept {
+Wettanbieter_placeNewBet_args::~Wettanbieter_placeNewBet_args() noexcept {
 }
 
 
-uint32_t Wettanbieter_getAllPlacedBetsToAnBetOffer_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->nameanbieter);
-          this->__isset.nameanbieter = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->id);
-          this->__isset.id = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Wettanbieter_getAllPlacedBetsToAnBetOffer_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBetsToAnBetOffer_args");
-
-  xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->nameanbieter);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 2);
-  xfer += oprot->writeI32(this->id);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-
-Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs::~Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs() noexcept {
-}
-
-
-uint32_t Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs");
-
-  xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->nameanbieter)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 2);
-  xfer += oprot->writeI32((*(this->id)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-
-Wettanbieter_getAllPlacedBetsToAnBetOffer_result::~Wettanbieter_getAllPlacedBetsToAnBetOffer_result() noexcept {
-}
-
-
-uint32_t Wettanbieter_getAllPlacedBetsToAnBetOffer_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Wettanbieter_getAllPlacedBetsToAnBetOffer_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("Wettanbieter_getAllPlacedBetsToAnBetOffer_result");
-
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
-    xfer += oprot->writeString(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-
-Wettanbieter_getAllPlacedBetsToAnBetOffer_presult::~Wettanbieter_getAllPlacedBetsToAnBetOffer_presult() noexcept {
-}
-
-
-uint32_t Wettanbieter_getAllPlacedBetsToAnBetOffer_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-
-Wettanbieter_setBettor_args::~Wettanbieter_setBettor_args() noexcept {
-}
-
-
-uint32_t Wettanbieter_setBettor_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_placeNewBet_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1841,10 +1975,10 @@ uint32_t Wettanbieter_setBettor_args::read(::apache::thrift::protocol::TProtocol
   return xfer;
 }
 
-uint32_t Wettanbieter_setBettor_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_placeNewBet_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_setBettor_args");
+  xfer += oprot->writeStructBegin("Wettanbieter_placeNewBet_args");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString(this->nameanbieter);
@@ -1884,14 +2018,14 @@ uint32_t Wettanbieter_setBettor_args::write(::apache::thrift::protocol::TProtoco
 }
 
 
-Wettanbieter_setBettor_pargs::~Wettanbieter_setBettor_pargs() noexcept {
+Wettanbieter_placeNewBet_pargs::~Wettanbieter_placeNewBet_pargs() noexcept {
 }
 
 
-uint32_t Wettanbieter_setBettor_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_placeNewBet_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("Wettanbieter_setBettor_pargs");
+  xfer += oprot->writeStructBegin("Wettanbieter_placeNewBet_pargs");
 
   xfer += oprot->writeFieldBegin("nameanbieter", ::apache::thrift::protocol::T_STRING, 1);
   xfer += oprot->writeString((*(this->nameanbieter)));
@@ -1931,11 +2065,11 @@ uint32_t Wettanbieter_setBettor_pargs::write(::apache::thrift::protocol::TProtoc
 }
 
 
-Wettanbieter_setBettor_result::~Wettanbieter_setBettor_result() noexcept {
+Wettanbieter_placeNewBet_result::~Wettanbieter_placeNewBet_result() noexcept {
 }
 
 
-uint32_t Wettanbieter_setBettor_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_placeNewBet_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1976,11 +2110,11 @@ uint32_t Wettanbieter_setBettor_result::read(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-uint32_t Wettanbieter_setBettor_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Wettanbieter_placeNewBet_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Wettanbieter_setBettor_result");
+  xfer += oprot->writeStructBegin("Wettanbieter_placeNewBet_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_BOOL, 0);
@@ -1993,11 +2127,11 @@ uint32_t Wettanbieter_setBettor_result::write(::apache::thrift::protocol::TProto
 }
 
 
-Wettanbieter_setBettor_presult::~Wettanbieter_setBettor_presult() noexcept {
+Wettanbieter_placeNewBet_presult::~Wettanbieter_placeNewBet_presult() noexcept {
 }
 
 
-uint32_t Wettanbieter_setBettor_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Wettanbieter_placeNewBet_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -2038,22 +2172,1165 @@ uint32_t Wettanbieter_setBettor_presult::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-bool WettanbieterClient::addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+
+Wettanbieter_addGame_args::~Wettanbieter_addGame_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_addGame_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->spielid);
+          this->__isset.spielid = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->playera);
+          this->__isset.playera = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->playerb);
+          this->__isset.playerb = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_addGame_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_addGame_args");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->spielid);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("playera", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->playera);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("playerb", ::apache::thrift::protocol::T_STRING, 3);
+  xfer += oprot->writeString(this->playerb);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_addGame_pargs::~Wettanbieter_addGame_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_addGame_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_addGame_pargs");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->spielid)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("playera", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->playera)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("playerb", ::apache::thrift::protocol::T_STRING, 3);
+  xfer += oprot->writeString((*(this->playerb)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_addGame_result::~Wettanbieter_addGame_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_addGame_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_addGame_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_addGame_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_BOOL, 0);
+    xfer += oprot->writeBool(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_addGame_presult::~Wettanbieter_addGame_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_addGame_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_endGame_args::~Wettanbieter_endGame_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_endGame_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->spielid);
+          this->__isset.spielid = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->pointsA);
+          this->__isset.pointsA = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->pointsB);
+          this->__isset.pointsB = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_endGame_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_endGame_args");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->spielid);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("pointsA", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->pointsA);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("pointsB", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32(this->pointsB);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_endGame_pargs::~Wettanbieter_endGame_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_endGame_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_endGame_pargs");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->spielid)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("pointsA", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->pointsA)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("pointsB", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((*(this->pointsB)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_endGame_result::~Wettanbieter_endGame_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_endGame_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_endGame_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_endGame_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_BOOL, 0);
+    xfer += oprot->writeBool(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_endGame_presult::~Wettanbieter_endGame_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_endGame_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_isGameOpen_args::~Wettanbieter_isGameOpen_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_isGameOpen_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->spielid);
+          this->__isset.spielid = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_isGameOpen_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_isGameOpen_args");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->spielid);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_isGameOpen_pargs::~Wettanbieter_isGameOpen_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_isGameOpen_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_isGameOpen_pargs");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->spielid)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_isGameOpen_result::~Wettanbieter_isGameOpen_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_isGameOpen_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_isGameOpen_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_isGameOpen_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_BOOL, 0);
+    xfer += oprot->writeBool(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_isGameOpen_presult::~Wettanbieter_isGameOpen_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_isGameOpen_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_getAllOpenGames_args::~Wettanbieter_getAllOpenGames_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllOpenGames_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getAllOpenGames_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllOpenGames_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllOpenGames_pargs::~Wettanbieter_getAllOpenGames_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllOpenGames_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllOpenGames_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllOpenGames_result::~Wettanbieter_getAllOpenGames_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllOpenGames_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getAllOpenGames_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllOpenGames_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllOpenGames_presult::~Wettanbieter_getAllOpenGames_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllOpenGames_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_getAllClosedGames_args::~Wettanbieter_getAllClosedGames_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllClosedGames_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getAllClosedGames_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllClosedGames_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllClosedGames_pargs::~Wettanbieter_getAllClosedGames_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllClosedGames_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllClosedGames_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllClosedGames_result::~Wettanbieter_getAllClosedGames_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllClosedGames_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getAllClosedGames_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_getAllClosedGames_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getAllClosedGames_presult::~Wettanbieter_getAllClosedGames_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_getAllClosedGames_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+Wettanbieter_getSpecificGame_args::~Wettanbieter_getSpecificGame_args() noexcept {
+}
+
+
+uint32_t Wettanbieter_getSpecificGame_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->spielid);
+          this->__isset.spielid = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getSpecificGame_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificGame_args");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->spielid);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getSpecificGame_pargs::~Wettanbieter_getSpecificGame_pargs() noexcept {
+}
+
+
+uint32_t Wettanbieter_getSpecificGame_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificGame_pargs");
+
+  xfer += oprot->writeFieldBegin("spielid", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->spielid)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getSpecificGame_result::~Wettanbieter_getSpecificGame_result() noexcept {
+}
+
+
+uint32_t Wettanbieter_getSpecificGame_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Wettanbieter_getSpecificGame_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Wettanbieter_getSpecificGame_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+Wettanbieter_getSpecificGame_presult::~Wettanbieter_getSpecificGame_presult() noexcept {
+}
+
+
+uint32_t Wettanbieter_getSpecificGame_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+bool WettanbieterClient::addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
-  send_addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+  send_addBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
   return recv_addBet();
 }
 
-void WettanbieterClient::send_addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+void WettanbieterClient::send_addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("addBet", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Wettanbieter_addBet_pargs args;
   args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.playera = &playera;
-  args.playerb = &playerb;
+  args.wettid = &wettid;
+  args.spielid = &spielid;
   args.winachance = &winachance;
   args.winbchance = &winbchance;
   args.even = &even;
@@ -2102,22 +3379,21 @@ bool WettanbieterClient::recv_addBet()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "addBet failed: unknown result");
 }
 
-bool WettanbieterClient::changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+bool WettanbieterClient::changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
-  send_changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+  send_changeBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
   return recv_changeBet();
 }
 
-void WettanbieterClient::send_changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+void WettanbieterClient::send_changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("changeBet", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Wettanbieter_changeBet_pargs args;
   args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.playera = &playera;
-  args.playerb = &playerb;
+  args.wettid = &wettid;
+  args.spielid = &spielid;
   args.winachance = &winachance;
   args.winbchance = &winbchance;
   args.even = &even;
@@ -2225,18 +3501,77 @@ bool WettanbieterClient::recv_deleteBet()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "deleteBet failed: unknown result");
 }
 
-void WettanbieterClient::getMyBets(std::string& _return, const std::string& nameanbieter)
+bool WettanbieterClient::betExists(const std::string& nameanbieter, const int32_t betid)
 {
-  send_getMyBets(nameanbieter);
-  recv_getMyBets(_return);
+  send_betExists(nameanbieter, betid);
+  return recv_betExists();
 }
 
-void WettanbieterClient::send_getMyBets(const std::string& nameanbieter)
+void WettanbieterClient::send_betExists(const std::string& nameanbieter, const int32_t betid)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getMyBets", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("betExists", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_getMyBets_pargs args;
+  Wettanbieter_betExists_pargs args;
+  args.nameanbieter = &nameanbieter;
+  args.betid = &betid;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+bool WettanbieterClient::recv_betExists()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("betExists") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  bool _return;
+  Wettanbieter_betExists_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    return _return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "betExists failed: unknown result");
+}
+
+void WettanbieterClient::getMyBetOptions(std::string& _return, const std::string& nameanbieter)
+{
+  send_getMyBetOptions(nameanbieter);
+  recv_getMyBetOptions(_return);
+}
+
+void WettanbieterClient::send_getMyBetOptions(const std::string& nameanbieter)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getMyBetOptions", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getMyBetOptions_pargs args;
   args.nameanbieter = &nameanbieter;
   args.write(oprot_);
 
@@ -2245,7 +3580,7 @@ void WettanbieterClient::send_getMyBets(const std::string& nameanbieter)
   oprot_->getTransport()->flush();
 }
 
-void WettanbieterClient::recv_getMyBets(std::string& _return)
+void WettanbieterClient::recv_getMyBetOptions(std::string& _return)
 {
 
   int32_t rseqid = 0;
@@ -2265,12 +3600,12 @@ void WettanbieterClient::recv_getMyBets(std::string& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("getMyBets") != 0) {
+  if (fname.compare("getMyBetOptions") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  Wettanbieter_getMyBets_presult result;
+  Wettanbieter_getMyBetOptions_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2280,21 +3615,21 @@ void WettanbieterClient::recv_getMyBets(std::string& _return)
     // _return pointer has now been filled
     return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getMyBets failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getMyBetOptions failed: unknown result");
 }
 
-void WettanbieterClient::getAllBets(std::string& _return)
+void WettanbieterClient::getAllBetOptions(std::string& _return)
 {
-  send_getAllBets();
-  recv_getAllBets(_return);
+  send_getAllBetOptions();
+  recv_getAllBetOptions(_return);
 }
 
-void WettanbieterClient::send_getAllBets()
+void WettanbieterClient::send_getAllBetOptions()
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getAllBets", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getAllBetOptions", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_getAllBets_pargs args;
+  Wettanbieter_getAllBetOptions_pargs args;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2302,7 +3637,7 @@ void WettanbieterClient::send_getAllBets()
   oprot_->getTransport()->flush();
 }
 
-void WettanbieterClient::recv_getAllBets(std::string& _return)
+void WettanbieterClient::recv_getAllBetOptions(std::string& _return)
 {
 
   int32_t rseqid = 0;
@@ -2322,12 +3657,12 @@ void WettanbieterClient::recv_getAllBets(std::string& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("getAllBets") != 0) {
+  if (fname.compare("getAllBetOptions") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  Wettanbieter_getAllBets_presult result;
+  Wettanbieter_getAllBetOptions_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2337,139 +3672,21 @@ void WettanbieterClient::recv_getAllBets(std::string& _return)
     // _return pointer has now been filled
     return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllBets failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllBetOptions failed: unknown result");
 }
 
-void WettanbieterClient::getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id)
+void WettanbieterClient::getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id)
 {
-  send_getSpecificBet(nameanbieter, id);
-  recv_getSpecificBet(_return);
+  send_getSpecificBetOption(nameanbieter, id);
+  recv_getSpecificBetOption(_return);
 }
 
-void WettanbieterClient::send_getSpecificBet(const std::string& nameanbieter, const int32_t id)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getSpecificBet", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  Wettanbieter_getSpecificBet_pargs args;
-  args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-}
-
-void WettanbieterClient::recv_getSpecificBet(std::string& _return)
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  if (fname.compare("getSpecificBet") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  Wettanbieter_getSpecificBet_presult result;
-  result.success = &_return;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  if (result.__isset.success) {
-    // _return pointer has now been filled
-    return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getSpecificBet failed: unknown result");
-}
-
-void WettanbieterClient::getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id)
-{
-  send_getBettors(nameanbieter, id);
-  recv_getBettors(_return);
-}
-
-void WettanbieterClient::send_getBettors(const std::string& nameanbieter, const int32_t id)
+void WettanbieterClient::send_getSpecificBetOption(const std::string& nameanbieter, const int32_t id)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getBettors", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getSpecificBetOption", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_getBettors_pargs args;
-  args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-}
-
-void WettanbieterClient::recv_getBettors(std::string& _return)
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  if (fname.compare("getBettors") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-  }
-  Wettanbieter_getBettors_presult result;
-  result.success = &_return;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  if (result.__isset.success) {
-    // _return pointer has now been filled
-    return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getBettors failed: unknown result");
-}
-
-void WettanbieterClient::getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id)
-{
-  send_getAllPlacedBetsToAnBetOffer(nameanbieter, id);
-  recv_getAllPlacedBetsToAnBetOffer(_return);
-}
-
-void WettanbieterClient::send_getAllPlacedBetsToAnBetOffer(const std::string& nameanbieter, const int32_t id)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("getAllPlacedBetsToAnBetOffer", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs args;
+  Wettanbieter_getSpecificBetOption_pargs args;
   args.nameanbieter = &nameanbieter;
   args.id = &id;
   args.write(oprot_);
@@ -2479,7 +3696,7 @@ void WettanbieterClient::send_getAllPlacedBetsToAnBetOffer(const std::string& na
   oprot_->getTransport()->flush();
 }
 
-void WettanbieterClient::recv_getAllPlacedBetsToAnBetOffer(std::string& _return)
+void WettanbieterClient::recv_getSpecificBetOption(std::string& _return)
 {
 
   int32_t rseqid = 0;
@@ -2499,12 +3716,12 @@ void WettanbieterClient::recv_getAllPlacedBetsToAnBetOffer(std::string& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("getAllPlacedBetsToAnBetOffer") != 0) {
+  if (fname.compare("getSpecificBetOption") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_presult result;
+  Wettanbieter_getSpecificBetOption_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2514,21 +3731,137 @@ void WettanbieterClient::recv_getAllPlacedBetsToAnBetOffer(std::string& _return)
     // _return pointer has now been filled
     return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllPlacedBetsToAnBetOffer failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getSpecificBetOption failed: unknown result");
 }
 
-bool WettanbieterClient::setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+void WettanbieterClient::getAllPlacedBets(std::string& _return)
 {
-  send_setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
-  return recv_setBettor();
+  send_getAllPlacedBets();
+  recv_getAllPlacedBets(_return);
 }
 
-void WettanbieterClient::send_setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+void WettanbieterClient::send_getAllPlacedBets()
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("setBettor", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getAllPlacedBets", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_setBettor_pargs args;
+  Wettanbieter_getAllPlacedBets_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void WettanbieterClient::recv_getAllPlacedBets(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getAllPlacedBets") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Wettanbieter_getAllPlacedBets_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllPlacedBets failed: unknown result");
+}
+
+void WettanbieterClient::getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id)
+{
+  send_getAllPlacedBetsToABetOption(nameanbieter, id);
+  recv_getAllPlacedBetsToABetOption(_return);
+}
+
+void WettanbieterClient::send_getAllPlacedBetsToABetOption(const std::string& nameanbieter, const int32_t id)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getAllPlacedBetsToABetOption", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getAllPlacedBetsToABetOption_pargs args;
+  args.nameanbieter = &nameanbieter;
+  args.id = &id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void WettanbieterClient::recv_getAllPlacedBetsToABetOption(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getAllPlacedBetsToABetOption") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Wettanbieter_getAllPlacedBetsToABetOption_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllPlacedBetsToABetOption failed: unknown result");
+}
+
+bool WettanbieterClient::placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+{
+  send_placeNewBet(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
+  return recv_placeNewBet();
+}
+
+void WettanbieterClient::send_placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("placeNewBet", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_placeNewBet_pargs args;
   args.nameanbieter = &nameanbieter;
   args.betid = &betid;
   args.namebettor = &namebettor;
@@ -2544,7 +3877,7 @@ void WettanbieterClient::send_setBettor(const std::string& nameanbieter, const i
   oprot_->getTransport()->flush();
 }
 
-bool WettanbieterClient::recv_setBettor()
+bool WettanbieterClient::recv_placeNewBet()
 {
 
   int32_t rseqid = 0;
@@ -2564,13 +3897,13 @@ bool WettanbieterClient::recv_setBettor()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  if (fname.compare("setBettor") != 0) {
+  if (fname.compare("placeNewBet") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
   bool _return;
-  Wettanbieter_setBettor_presult result;
+  Wettanbieter_placeNewBet_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2579,7 +3912,357 @@ bool WettanbieterClient::recv_setBettor()
   if (result.__isset.success) {
     return _return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "setBettor failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "placeNewBet failed: unknown result");
+}
+
+bool WettanbieterClient::addGame(const int32_t spielid, const std::string& playera, const std::string& playerb)
+{
+  send_addGame(spielid, playera, playerb);
+  return recv_addGame();
+}
+
+void WettanbieterClient::send_addGame(const int32_t spielid, const std::string& playera, const std::string& playerb)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("addGame", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_addGame_pargs args;
+  args.spielid = &spielid;
+  args.playera = &playera;
+  args.playerb = &playerb;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+bool WettanbieterClient::recv_addGame()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("addGame") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  bool _return;
+  Wettanbieter_addGame_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    return _return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "addGame failed: unknown result");
+}
+
+bool WettanbieterClient::endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB)
+{
+  send_endGame(spielid, pointsA, pointsB);
+  return recv_endGame();
+}
+
+void WettanbieterClient::send_endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("endGame", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_endGame_pargs args;
+  args.spielid = &spielid;
+  args.pointsA = &pointsA;
+  args.pointsB = &pointsB;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+bool WettanbieterClient::recv_endGame()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("endGame") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  bool _return;
+  Wettanbieter_endGame_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    return _return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "endGame failed: unknown result");
+}
+
+bool WettanbieterClient::isGameOpen(const int32_t spielid)
+{
+  send_isGameOpen(spielid);
+  return recv_isGameOpen();
+}
+
+void WettanbieterClient::send_isGameOpen(const int32_t spielid)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("isGameOpen", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_isGameOpen_pargs args;
+  args.spielid = &spielid;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+bool WettanbieterClient::recv_isGameOpen()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("isGameOpen") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  bool _return;
+  Wettanbieter_isGameOpen_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    return _return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "isGameOpen failed: unknown result");
+}
+
+void WettanbieterClient::getAllOpenGames(std::string& _return)
+{
+  send_getAllOpenGames();
+  recv_getAllOpenGames(_return);
+}
+
+void WettanbieterClient::send_getAllOpenGames()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getAllOpenGames", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getAllOpenGames_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void WettanbieterClient::recv_getAllOpenGames(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getAllOpenGames") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Wettanbieter_getAllOpenGames_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllOpenGames failed: unknown result");
+}
+
+void WettanbieterClient::getAllClosedGames(std::string& _return)
+{
+  send_getAllClosedGames();
+  recv_getAllClosedGames(_return);
+}
+
+void WettanbieterClient::send_getAllClosedGames()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getAllClosedGames", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getAllClosedGames_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void WettanbieterClient::recv_getAllClosedGames(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getAllClosedGames") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Wettanbieter_getAllClosedGames_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllClosedGames failed: unknown result");
+}
+
+void WettanbieterClient::getSpecificGame(std::string& _return, const int32_t spielid)
+{
+  send_getSpecificGame(spielid);
+  recv_getSpecificGame(_return);
+}
+
+void WettanbieterClient::send_getSpecificGame(const int32_t spielid)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getSpecificGame", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getSpecificGame_pargs args;
+  args.spielid = &spielid;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void WettanbieterClient::recv_getSpecificGame(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("getSpecificGame") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Wettanbieter_getSpecificGame_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getSpecificGame failed: unknown result");
 }
 
 bool WettanbieterProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -2624,7 +4307,7 @@ void WettanbieterProcessor::process_addBet(int32_t seqid, ::apache::thrift::prot
 
   Wettanbieter_addBet_result result;
   try {
-    result.success = iface_->addBet(args.nameanbieter, args.id, args.playera, args.playerb, args.winachance, args.winbchance, args.even);
+    result.success = iface_->addBet(args.nameanbieter, args.wettid, args.spielid, args.winachance, args.winbchance, args.even);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
@@ -2678,7 +4361,7 @@ void WettanbieterProcessor::process_changeBet(int32_t seqid, ::apache::thrift::p
 
   Wettanbieter_changeBet_result result;
   try {
-    result.success = iface_->changeBet(args.nameanbieter, args.id, args.playera, args.playerb, args.winachance, args.winbchance, args.even);
+    result.success = iface_->changeBet(args.nameanbieter, args.wettid, args.spielid, args.winachance, args.winbchance, args.even);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
@@ -2763,38 +4446,38 @@ void WettanbieterProcessor::process_deleteBet(int32_t seqid, ::apache::thrift::p
   }
 }
 
-void WettanbieterProcessor::process_getMyBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void WettanbieterProcessor::process_betExists(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = nullptr;
   if (this->eventHandler_.get() != nullptr) {
-    ctx = this->eventHandler_->getContext("Wettanbieter.getMyBets", callContext);
+    ctx = this->eventHandler_->getContext("Wettanbieter.betExists", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getMyBets");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.betExists");
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preRead(ctx, "Wettanbieter.getMyBets");
+    this->eventHandler_->preRead(ctx, "Wettanbieter.betExists");
   }
 
-  Wettanbieter_getMyBets_args args;
+  Wettanbieter_betExists_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postRead(ctx, "Wettanbieter.getMyBets", bytes);
+    this->eventHandler_->postRead(ctx, "Wettanbieter.betExists", bytes);
   }
 
-  Wettanbieter_getMyBets_result result;
+  Wettanbieter_betExists_result result;
   try {
-    iface_->getMyBets(result.success, args.nameanbieter);
+    result.success = iface_->betExists(args.nameanbieter, args.betid);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
-      this->eventHandler_->handlerError(ctx, "Wettanbieter.getMyBets");
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.betExists");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getMyBets", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("betExists", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -2803,52 +4486,52 @@ void WettanbieterProcessor::process_getMyBets(int32_t seqid, ::apache::thrift::p
   }
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preWrite(ctx, "Wettanbieter.getMyBets");
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.betExists");
   }
 
-  oprot->writeMessageBegin("getMyBets", ::apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("betExists", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postWrite(ctx, "Wettanbieter.getMyBets", bytes);
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.betExists", bytes);
   }
 }
 
-void WettanbieterProcessor::process_getAllBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void WettanbieterProcessor::process_getMyBetOptions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = nullptr;
   if (this->eventHandler_.get() != nullptr) {
-    ctx = this->eventHandler_->getContext("Wettanbieter.getAllBets", callContext);
+    ctx = this->eventHandler_->getContext("Wettanbieter.getMyBetOptions", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllBets");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getMyBetOptions");
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllBets");
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getMyBetOptions");
   }
 
-  Wettanbieter_getAllBets_args args;
+  Wettanbieter_getMyBetOptions_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllBets", bytes);
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getMyBetOptions", bytes);
   }
 
-  Wettanbieter_getAllBets_result result;
+  Wettanbieter_getMyBetOptions_result result;
   try {
-    iface_->getAllBets(result.success);
+    iface_->getMyBetOptions(result.success, args.nameanbieter);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
-      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllBets");
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getMyBetOptions");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getAllBets", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("getMyBetOptions", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -2857,52 +4540,52 @@ void WettanbieterProcessor::process_getAllBets(int32_t seqid, ::apache::thrift::
   }
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllBets");
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getMyBetOptions");
   }
 
-  oprot->writeMessageBegin("getAllBets", ::apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("getMyBetOptions", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllBets", bytes);
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getMyBetOptions", bytes);
   }
 }
 
-void WettanbieterProcessor::process_getSpecificBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void WettanbieterProcessor::process_getAllBetOptions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = nullptr;
   if (this->eventHandler_.get() != nullptr) {
-    ctx = this->eventHandler_->getContext("Wettanbieter.getSpecificBet", callContext);
+    ctx = this->eventHandler_->getContext("Wettanbieter.getAllBetOptions", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getSpecificBet");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllBetOptions");
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preRead(ctx, "Wettanbieter.getSpecificBet");
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllBetOptions");
   }
 
-  Wettanbieter_getSpecificBet_args args;
+  Wettanbieter_getAllBetOptions_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postRead(ctx, "Wettanbieter.getSpecificBet", bytes);
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllBetOptions", bytes);
   }
 
-  Wettanbieter_getSpecificBet_result result;
+  Wettanbieter_getAllBetOptions_result result;
   try {
-    iface_->getSpecificBet(result.success, args.nameanbieter, args.id);
+    iface_->getAllBetOptions(result.success);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
-      this->eventHandler_->handlerError(ctx, "Wettanbieter.getSpecificBet");
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllBetOptions");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getSpecificBet", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("getAllBetOptions", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -2911,52 +4594,52 @@ void WettanbieterProcessor::process_getSpecificBet(int32_t seqid, ::apache::thri
   }
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preWrite(ctx, "Wettanbieter.getSpecificBet");
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllBetOptions");
   }
 
-  oprot->writeMessageBegin("getSpecificBet", ::apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("getAllBetOptions", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postWrite(ctx, "Wettanbieter.getSpecificBet", bytes);
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllBetOptions", bytes);
   }
 }
 
-void WettanbieterProcessor::process_getBettors(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void WettanbieterProcessor::process_getSpecificBetOption(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = nullptr;
   if (this->eventHandler_.get() != nullptr) {
-    ctx = this->eventHandler_->getContext("Wettanbieter.getBettors", callContext);
+    ctx = this->eventHandler_->getContext("Wettanbieter.getSpecificBetOption", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getBettors");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getSpecificBetOption");
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preRead(ctx, "Wettanbieter.getBettors");
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getSpecificBetOption");
   }
 
-  Wettanbieter_getBettors_args args;
+  Wettanbieter_getSpecificBetOption_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postRead(ctx, "Wettanbieter.getBettors", bytes);
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getSpecificBetOption", bytes);
   }
 
-  Wettanbieter_getBettors_result result;
+  Wettanbieter_getSpecificBetOption_result result;
   try {
-    iface_->getBettors(result.success, args.nameanbieter, args.id);
+    iface_->getSpecificBetOption(result.success, args.nameanbieter, args.id);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
-      this->eventHandler_->handlerError(ctx, "Wettanbieter.getBettors");
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getSpecificBetOption");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getBettors", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("getSpecificBetOption", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -2965,52 +4648,52 @@ void WettanbieterProcessor::process_getBettors(int32_t seqid, ::apache::thrift::
   }
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preWrite(ctx, "Wettanbieter.getBettors");
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getSpecificBetOption");
   }
 
-  oprot->writeMessageBegin("getBettors", ::apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("getSpecificBetOption", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postWrite(ctx, "Wettanbieter.getBettors", bytes);
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getSpecificBetOption", bytes);
   }
 }
 
-void WettanbieterProcessor::process_getAllPlacedBetsToAnBetOffer(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void WettanbieterProcessor::process_getAllPlacedBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = nullptr;
   if (this->eventHandler_.get() != nullptr) {
-    ctx = this->eventHandler_->getContext("Wettanbieter.getAllPlacedBetsToAnBetOffer", callContext);
+    ctx = this->eventHandler_->getContext("Wettanbieter.getAllPlacedBets", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllPlacedBetsToAnBetOffer");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllPlacedBets");
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllPlacedBetsToAnBetOffer");
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllPlacedBets");
   }
 
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_args args;
+  Wettanbieter_getAllPlacedBets_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllPlacedBetsToAnBetOffer", bytes);
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllPlacedBets", bytes);
   }
 
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_result result;
+  Wettanbieter_getAllPlacedBets_result result;
   try {
-    iface_->getAllPlacedBetsToAnBetOffer(result.success, args.nameanbieter, args.id);
+    iface_->getAllPlacedBets(result.success);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
-      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllPlacedBetsToAnBetOffer");
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllPlacedBets");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("getAllPlacedBetsToAnBetOffer", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("getAllPlacedBets", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -3019,52 +4702,52 @@ void WettanbieterProcessor::process_getAllPlacedBetsToAnBetOffer(int32_t seqid, 
   }
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllPlacedBetsToAnBetOffer");
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllPlacedBets");
   }
 
-  oprot->writeMessageBegin("getAllPlacedBetsToAnBetOffer", ::apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("getAllPlacedBets", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllPlacedBetsToAnBetOffer", bytes);
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllPlacedBets", bytes);
   }
 }
 
-void WettanbieterProcessor::process_setBettor(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void WettanbieterProcessor::process_getAllPlacedBetsToABetOption(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = nullptr;
   if (this->eventHandler_.get() != nullptr) {
-    ctx = this->eventHandler_->getContext("Wettanbieter.setBettor", callContext);
+    ctx = this->eventHandler_->getContext("Wettanbieter.getAllPlacedBetsToABetOption", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.setBettor");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllPlacedBetsToABetOption");
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preRead(ctx, "Wettanbieter.setBettor");
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllPlacedBetsToABetOption");
   }
 
-  Wettanbieter_setBettor_args args;
+  Wettanbieter_getAllPlacedBetsToABetOption_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postRead(ctx, "Wettanbieter.setBettor", bytes);
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllPlacedBetsToABetOption", bytes);
   }
 
-  Wettanbieter_setBettor_result result;
+  Wettanbieter_getAllPlacedBetsToABetOption_result result;
   try {
-    result.success = iface_->setBettor(args.nameanbieter, args.betid, args.namebettor, args.moneyset, args.ending, args.winachance, args.winbchance, args.even);
+    iface_->getAllPlacedBetsToABetOption(result.success, args.nameanbieter, args.id);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
-      this->eventHandler_->handlerError(ctx, "Wettanbieter.setBettor");
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllPlacedBetsToABetOption");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("setBettor", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("getAllPlacedBetsToABetOption", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -3073,17 +4756,395 @@ void WettanbieterProcessor::process_setBettor(int32_t seqid, ::apache::thrift::p
   }
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->preWrite(ctx, "Wettanbieter.setBettor");
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllPlacedBetsToABetOption");
   }
 
-  oprot->writeMessageBegin("setBettor", ::apache::thrift::protocol::T_REPLY, seqid);
+  oprot->writeMessageBegin("getAllPlacedBetsToABetOption", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != nullptr) {
-    this->eventHandler_->postWrite(ctx, "Wettanbieter.setBettor", bytes);
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllPlacedBetsToABetOption", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_placeNewBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.placeNewBet", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.placeNewBet");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.placeNewBet");
+  }
+
+  Wettanbieter_placeNewBet_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.placeNewBet", bytes);
+  }
+
+  Wettanbieter_placeNewBet_result result;
+  try {
+    result.success = iface_->placeNewBet(args.nameanbieter, args.betid, args.namebettor, args.moneyset, args.ending, args.winachance, args.winbchance, args.even);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.placeNewBet");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("placeNewBet", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.placeNewBet");
+  }
+
+  oprot->writeMessageBegin("placeNewBet", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.placeNewBet", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_addGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.addGame", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.addGame");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.addGame");
+  }
+
+  Wettanbieter_addGame_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.addGame", bytes);
+  }
+
+  Wettanbieter_addGame_result result;
+  try {
+    result.success = iface_->addGame(args.spielid, args.playera, args.playerb);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.addGame");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("addGame", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.addGame");
+  }
+
+  oprot->writeMessageBegin("addGame", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.addGame", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_endGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.endGame", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.endGame");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.endGame");
+  }
+
+  Wettanbieter_endGame_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.endGame", bytes);
+  }
+
+  Wettanbieter_endGame_result result;
+  try {
+    result.success = iface_->endGame(args.spielid, args.pointsA, args.pointsB);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.endGame");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("endGame", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.endGame");
+  }
+
+  oprot->writeMessageBegin("endGame", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.endGame", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_isGameOpen(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.isGameOpen", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.isGameOpen");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.isGameOpen");
+  }
+
+  Wettanbieter_isGameOpen_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.isGameOpen", bytes);
+  }
+
+  Wettanbieter_isGameOpen_result result;
+  try {
+    result.success = iface_->isGameOpen(args.spielid);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.isGameOpen");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("isGameOpen", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.isGameOpen");
+  }
+
+  oprot->writeMessageBegin("isGameOpen", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.isGameOpen", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_getAllOpenGames(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.getAllOpenGames", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllOpenGames");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllOpenGames");
+  }
+
+  Wettanbieter_getAllOpenGames_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllOpenGames", bytes);
+  }
+
+  Wettanbieter_getAllOpenGames_result result;
+  try {
+    iface_->getAllOpenGames(result.success);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllOpenGames");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("getAllOpenGames", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllOpenGames");
+  }
+
+  oprot->writeMessageBegin("getAllOpenGames", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllOpenGames", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_getAllClosedGames(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.getAllClosedGames", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getAllClosedGames");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getAllClosedGames");
+  }
+
+  Wettanbieter_getAllClosedGames_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getAllClosedGames", bytes);
+  }
+
+  Wettanbieter_getAllClosedGames_result result;
+  try {
+    iface_->getAllClosedGames(result.success);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getAllClosedGames");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("getAllClosedGames", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getAllClosedGames");
+  }
+
+  oprot->writeMessageBegin("getAllClosedGames", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getAllClosedGames", bytes);
+  }
+}
+
+void WettanbieterProcessor::process_getSpecificGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = nullptr;
+  if (this->eventHandler_.get() != nullptr) {
+    ctx = this->eventHandler_->getContext("Wettanbieter.getSpecificGame", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "Wettanbieter.getSpecificGame");
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preRead(ctx, "Wettanbieter.getSpecificGame");
+  }
+
+  Wettanbieter_getSpecificGame_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postRead(ctx, "Wettanbieter.getSpecificGame", bytes);
+  }
+
+  Wettanbieter_getSpecificGame_result result;
+  try {
+    iface_->getSpecificGame(result.success, args.spielid);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != nullptr) {
+      this->eventHandler_->handlerError(ctx, "Wettanbieter.getSpecificGame");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("getSpecificGame", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->preWrite(ctx, "Wettanbieter.getSpecificGame");
+  }
+
+  oprot->writeMessageBegin("getSpecificGame", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != nullptr) {
+    this->eventHandler_->postWrite(ctx, "Wettanbieter.getSpecificGame", bytes);
   }
 }
 
@@ -3094,13 +5155,13 @@ void WettanbieterProcessor::process_setBettor(int32_t seqid, ::apache::thrift::p
   return processor;
 }
 
-bool WettanbieterConcurrentClient::addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+bool WettanbieterConcurrentClient::addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
-  int32_t seqid = send_addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+  int32_t seqid = send_addBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
   return recv_addBet(seqid);
 }
 
-int32_t WettanbieterConcurrentClient::send_addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+int32_t WettanbieterConcurrentClient::send_addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -3108,9 +5169,8 @@ int32_t WettanbieterConcurrentClient::send_addBet(const std::string& nameanbiete
 
   Wettanbieter_addBet_pargs args;
   args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.playera = &playera;
-  args.playerb = &playerb;
+  args.wettid = &wettid;
+  args.spielid = &spielid;
   args.winachance = &winachance;
   args.winbchance = &winbchance;
   args.even = &even;
@@ -3184,13 +5244,13 @@ bool WettanbieterConcurrentClient::recv_addBet(const int32_t seqid)
   } // end while(true)
 }
 
-bool WettanbieterConcurrentClient::changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+bool WettanbieterConcurrentClient::changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
-  int32_t seqid = send_changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+  int32_t seqid = send_changeBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
   return recv_changeBet(seqid);
 }
 
-int32_t WettanbieterConcurrentClient::send_changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even)
+int32_t WettanbieterConcurrentClient::send_changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -3198,9 +5258,8 @@ int32_t WettanbieterConcurrentClient::send_changeBet(const std::string& nameanbi
 
   Wettanbieter_changeBet_pargs args;
   args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.playera = &playera;
-  args.playerb = &playerb;
+  args.wettid = &wettid;
+  args.spielid = &spielid;
   args.winachance = &winachance;
   args.winbchance = &winbchance;
   args.even = &even;
@@ -3359,19 +5418,104 @@ bool WettanbieterConcurrentClient::recv_deleteBet(const int32_t seqid)
   } // end while(true)
 }
 
-void WettanbieterConcurrentClient::getMyBets(std::string& _return, const std::string& nameanbieter)
+bool WettanbieterConcurrentClient::betExists(const std::string& nameanbieter, const int32_t betid)
 {
-  int32_t seqid = send_getMyBets(nameanbieter);
-  recv_getMyBets(_return, seqid);
+  int32_t seqid = send_betExists(nameanbieter, betid);
+  return recv_betExists(seqid);
 }
 
-int32_t WettanbieterConcurrentClient::send_getMyBets(const std::string& nameanbieter)
+int32_t WettanbieterConcurrentClient::send_betExists(const std::string& nameanbieter, const int32_t betid)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
-  oprot_->writeMessageBegin("getMyBets", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("betExists", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_getMyBets_pargs args;
+  Wettanbieter_betExists_pargs args;
+  args.nameanbieter = &nameanbieter;
+  args.betid = &betid;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+bool WettanbieterConcurrentClient::recv_betExists(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("betExists") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      bool _return;
+      Wettanbieter_betExists_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        sentry.commit();
+        return _return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "betExists failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+void WettanbieterConcurrentClient::getMyBetOptions(std::string& _return, const std::string& nameanbieter)
+{
+  int32_t seqid = send_getMyBetOptions(nameanbieter);
+  recv_getMyBetOptions(_return, seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_getMyBetOptions(const std::string& nameanbieter)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("getMyBetOptions", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getMyBetOptions_pargs args;
   args.nameanbieter = &nameanbieter;
   args.write(oprot_);
 
@@ -3383,7 +5527,7 @@ int32_t WettanbieterConcurrentClient::send_getMyBets(const std::string& nameanbi
   return cseqid;
 }
 
-void WettanbieterConcurrentClient::recv_getMyBets(std::string& _return, const int32_t seqid)
+void WettanbieterConcurrentClient::recv_getMyBetOptions(std::string& _return, const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -3412,7 +5556,7 @@ void WettanbieterConcurrentClient::recv_getMyBets(std::string& _return, const in
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
       }
-      if (fname.compare("getMyBets") != 0) {
+      if (fname.compare("getMyBetOptions") != 0) {
         iprot_->skip(::apache::thrift::protocol::T_STRUCT);
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
@@ -3421,7 +5565,7 @@ void WettanbieterConcurrentClient::recv_getMyBets(std::string& _return, const in
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      Wettanbieter_getMyBets_presult result;
+      Wettanbieter_getMyBetOptions_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -3433,7 +5577,7 @@ void WettanbieterConcurrentClient::recv_getMyBets(std::string& _return, const in
         return;
       }
       // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getMyBets failed: unknown result");
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getMyBetOptions failed: unknown result");
     }
     // seqid != rseqid
     this->sync_->updatePending(fname, mtype, rseqid);
@@ -3443,19 +5587,19 @@ void WettanbieterConcurrentClient::recv_getMyBets(std::string& _return, const in
   } // end while(true)
 }
 
-void WettanbieterConcurrentClient::getAllBets(std::string& _return)
+void WettanbieterConcurrentClient::getAllBetOptions(std::string& _return)
 {
-  int32_t seqid = send_getAllBets();
-  recv_getAllBets(_return, seqid);
+  int32_t seqid = send_getAllBetOptions();
+  recv_getAllBetOptions(_return, seqid);
 }
 
-int32_t WettanbieterConcurrentClient::send_getAllBets()
+int32_t WettanbieterConcurrentClient::send_getAllBetOptions()
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
-  oprot_->writeMessageBegin("getAllBets", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getAllBetOptions", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_getAllBets_pargs args;
+  Wettanbieter_getAllBetOptions_pargs args;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -3466,7 +5610,7 @@ int32_t WettanbieterConcurrentClient::send_getAllBets()
   return cseqid;
 }
 
-void WettanbieterConcurrentClient::recv_getAllBets(std::string& _return, const int32_t seqid)
+void WettanbieterConcurrentClient::recv_getAllBetOptions(std::string& _return, const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -3495,7 +5639,7 @@ void WettanbieterConcurrentClient::recv_getAllBets(std::string& _return, const i
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
       }
-      if (fname.compare("getAllBets") != 0) {
+      if (fname.compare("getAllBetOptions") != 0) {
         iprot_->skip(::apache::thrift::protocol::T_STRUCT);
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
@@ -3504,7 +5648,7 @@ void WettanbieterConcurrentClient::recv_getAllBets(std::string& _return, const i
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      Wettanbieter_getAllBets_presult result;
+      Wettanbieter_getAllBetOptions_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -3516,7 +5660,7 @@ void WettanbieterConcurrentClient::recv_getAllBets(std::string& _return, const i
         return;
       }
       // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllBets failed: unknown result");
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllBetOptions failed: unknown result");
     }
     // seqid != rseqid
     this->sync_->updatePending(fname, mtype, rseqid);
@@ -3526,189 +5670,19 @@ void WettanbieterConcurrentClient::recv_getAllBets(std::string& _return, const i
   } // end while(true)
 }
 
-void WettanbieterConcurrentClient::getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id)
+void WettanbieterConcurrentClient::getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id)
 {
-  int32_t seqid = send_getSpecificBet(nameanbieter, id);
-  recv_getSpecificBet(_return, seqid);
+  int32_t seqid = send_getSpecificBetOption(nameanbieter, id);
+  recv_getSpecificBetOption(_return, seqid);
 }
 
-int32_t WettanbieterConcurrentClient::send_getSpecificBet(const std::string& nameanbieter, const int32_t id)
+int32_t WettanbieterConcurrentClient::send_getSpecificBetOption(const std::string& nameanbieter, const int32_t id)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
-  oprot_->writeMessageBegin("getSpecificBet", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getSpecificBetOption", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_getSpecificBet_pargs args;
-  args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-
-  sentry.commit();
-  return cseqid;
-}
-
-void WettanbieterConcurrentClient::recv_getSpecificBet(std::string& _return, const int32_t seqid)
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  // the read mutex gets dropped and reacquired as part of waitForWork()
-  // The destructor of this sentry wakes up other clients
-  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
-
-  while(true) {
-    if(!this->sync_->getPending(fname, mtype, rseqid)) {
-      iprot_->readMessageBegin(fname, mtype, rseqid);
-    }
-    if(seqid == rseqid) {
-      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-        ::apache::thrift::TApplicationException x;
-        x.read(iprot_);
-        iprot_->readMessageEnd();
-        iprot_->getTransport()->readEnd();
-        sentry.commit();
-        throw x;
-      }
-      if (mtype != ::apache::thrift::protocol::T_REPLY) {
-        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-        iprot_->readMessageEnd();
-        iprot_->getTransport()->readEnd();
-      }
-      if (fname.compare("getSpecificBet") != 0) {
-        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-        iprot_->readMessageEnd();
-        iprot_->getTransport()->readEnd();
-
-        // in a bad state, don't commit
-        using ::apache::thrift::protocol::TProtocolException;
-        throw TProtocolException(TProtocolException::INVALID_DATA);
-      }
-      Wettanbieter_getSpecificBet_presult result;
-      result.success = &_return;
-      result.read(iprot_);
-      iprot_->readMessageEnd();
-      iprot_->getTransport()->readEnd();
-
-      if (result.__isset.success) {
-        // _return pointer has now been filled
-        sentry.commit();
-        return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getSpecificBet failed: unknown result");
-    }
-    // seqid != rseqid
-    this->sync_->updatePending(fname, mtype, rseqid);
-
-    // this will temporarily unlock the readMutex, and let other clients get work done
-    this->sync_->waitForWork(seqid);
-  } // end while(true)
-}
-
-void WettanbieterConcurrentClient::getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id)
-{
-  int32_t seqid = send_getBettors(nameanbieter, id);
-  recv_getBettors(_return, seqid);
-}
-
-int32_t WettanbieterConcurrentClient::send_getBettors(const std::string& nameanbieter, const int32_t id)
-{
-  int32_t cseqid = this->sync_->generateSeqId();
-  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
-  oprot_->writeMessageBegin("getBettors", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  Wettanbieter_getBettors_pargs args;
-  args.nameanbieter = &nameanbieter;
-  args.id = &id;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->writeEnd();
-  oprot_->getTransport()->flush();
-
-  sentry.commit();
-  return cseqid;
-}
-
-void WettanbieterConcurrentClient::recv_getBettors(std::string& _return, const int32_t seqid)
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  // the read mutex gets dropped and reacquired as part of waitForWork()
-  // The destructor of this sentry wakes up other clients
-  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
-
-  while(true) {
-    if(!this->sync_->getPending(fname, mtype, rseqid)) {
-      iprot_->readMessageBegin(fname, mtype, rseqid);
-    }
-    if(seqid == rseqid) {
-      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-        ::apache::thrift::TApplicationException x;
-        x.read(iprot_);
-        iprot_->readMessageEnd();
-        iprot_->getTransport()->readEnd();
-        sentry.commit();
-        throw x;
-      }
-      if (mtype != ::apache::thrift::protocol::T_REPLY) {
-        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-        iprot_->readMessageEnd();
-        iprot_->getTransport()->readEnd();
-      }
-      if (fname.compare("getBettors") != 0) {
-        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-        iprot_->readMessageEnd();
-        iprot_->getTransport()->readEnd();
-
-        // in a bad state, don't commit
-        using ::apache::thrift::protocol::TProtocolException;
-        throw TProtocolException(TProtocolException::INVALID_DATA);
-      }
-      Wettanbieter_getBettors_presult result;
-      result.success = &_return;
-      result.read(iprot_);
-      iprot_->readMessageEnd();
-      iprot_->getTransport()->readEnd();
-
-      if (result.__isset.success) {
-        // _return pointer has now been filled
-        sentry.commit();
-        return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getBettors failed: unknown result");
-    }
-    // seqid != rseqid
-    this->sync_->updatePending(fname, mtype, rseqid);
-
-    // this will temporarily unlock the readMutex, and let other clients get work done
-    this->sync_->waitForWork(seqid);
-  } // end while(true)
-}
-
-void WettanbieterConcurrentClient::getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id)
-{
-  int32_t seqid = send_getAllPlacedBetsToAnBetOffer(nameanbieter, id);
-  recv_getAllPlacedBetsToAnBetOffer(_return, seqid);
-}
-
-int32_t WettanbieterConcurrentClient::send_getAllPlacedBetsToAnBetOffer(const std::string& nameanbieter, const int32_t id)
-{
-  int32_t cseqid = this->sync_->generateSeqId();
-  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
-  oprot_->writeMessageBegin("getAllPlacedBetsToAnBetOffer", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs args;
+  Wettanbieter_getSpecificBetOption_pargs args;
   args.nameanbieter = &nameanbieter;
   args.id = &id;
   args.write(oprot_);
@@ -3721,7 +5695,7 @@ int32_t WettanbieterConcurrentClient::send_getAllPlacedBetsToAnBetOffer(const st
   return cseqid;
 }
 
-void WettanbieterConcurrentClient::recv_getAllPlacedBetsToAnBetOffer(std::string& _return, const int32_t seqid)
+void WettanbieterConcurrentClient::recv_getSpecificBetOption(std::string& _return, const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -3750,7 +5724,7 @@ void WettanbieterConcurrentClient::recv_getAllPlacedBetsToAnBetOffer(std::string
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
       }
-      if (fname.compare("getAllPlacedBetsToAnBetOffer") != 0) {
+      if (fname.compare("getSpecificBetOption") != 0) {
         iprot_->skip(::apache::thrift::protocol::T_STRUCT);
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
@@ -3759,7 +5733,7 @@ void WettanbieterConcurrentClient::recv_getAllPlacedBetsToAnBetOffer(std::string
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      Wettanbieter_getAllPlacedBetsToAnBetOffer_presult result;
+      Wettanbieter_getSpecificBetOption_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -3771,7 +5745,7 @@ void WettanbieterConcurrentClient::recv_getAllPlacedBetsToAnBetOffer(std::string
         return;
       }
       // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllPlacedBetsToAnBetOffer failed: unknown result");
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getSpecificBetOption failed: unknown result");
     }
     // seqid != rseqid
     this->sync_->updatePending(fname, mtype, rseqid);
@@ -3781,19 +5755,187 @@ void WettanbieterConcurrentClient::recv_getAllPlacedBetsToAnBetOffer(std::string
   } // end while(true)
 }
 
-bool WettanbieterConcurrentClient::setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+void WettanbieterConcurrentClient::getAllPlacedBets(std::string& _return)
 {
-  int32_t seqid = send_setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
-  return recv_setBettor(seqid);
+  int32_t seqid = send_getAllPlacedBets();
+  recv_getAllPlacedBets(_return, seqid);
 }
 
-int32_t WettanbieterConcurrentClient::send_setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+int32_t WettanbieterConcurrentClient::send_getAllPlacedBets()
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
-  oprot_->writeMessageBegin("setBettor", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("getAllPlacedBets", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Wettanbieter_setBettor_pargs args;
+  Wettanbieter_getAllPlacedBets_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void WettanbieterConcurrentClient::recv_getAllPlacedBets(std::string& _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("getAllPlacedBets") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      Wettanbieter_getAllPlacedBets_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllPlacedBets failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+void WettanbieterConcurrentClient::getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id)
+{
+  int32_t seqid = send_getAllPlacedBetsToABetOption(nameanbieter, id);
+  recv_getAllPlacedBetsToABetOption(_return, seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_getAllPlacedBetsToABetOption(const std::string& nameanbieter, const int32_t id)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("getAllPlacedBetsToABetOption", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getAllPlacedBetsToABetOption_pargs args;
+  args.nameanbieter = &nameanbieter;
+  args.id = &id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void WettanbieterConcurrentClient::recv_getAllPlacedBetsToABetOption(std::string& _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("getAllPlacedBetsToABetOption") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      Wettanbieter_getAllPlacedBetsToABetOption_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllPlacedBetsToABetOption failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+bool WettanbieterConcurrentClient::placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+{
+  int32_t seqid = send_placeNewBet(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
+  return recv_placeNewBet(seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("placeNewBet", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_placeNewBet_pargs args;
   args.nameanbieter = &nameanbieter;
   args.betid = &betid;
   args.namebettor = &namebettor;
@@ -3812,7 +5954,7 @@ int32_t WettanbieterConcurrentClient::send_setBettor(const std::string& nameanbi
   return cseqid;
 }
 
-bool WettanbieterConcurrentClient::recv_setBettor(const int32_t seqid)
+bool WettanbieterConcurrentClient::recv_placeNewBet(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -3841,7 +5983,7 @@ bool WettanbieterConcurrentClient::recv_setBettor(const int32_t seqid)
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
       }
-      if (fname.compare("setBettor") != 0) {
+      if (fname.compare("placeNewBet") != 0) {
         iprot_->skip(::apache::thrift::protocol::T_STRUCT);
         iprot_->readMessageEnd();
         iprot_->getTransport()->readEnd();
@@ -3851,7 +5993,7 @@ bool WettanbieterConcurrentClient::recv_setBettor(const int32_t seqid)
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       bool _return;
-      Wettanbieter_setBettor_presult result;
+      Wettanbieter_placeNewBet_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -3862,7 +6004,513 @@ bool WettanbieterConcurrentClient::recv_setBettor(const int32_t seqid)
         return _return;
       }
       // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "setBettor failed: unknown result");
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "placeNewBet failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+bool WettanbieterConcurrentClient::addGame(const int32_t spielid, const std::string& playera, const std::string& playerb)
+{
+  int32_t seqid = send_addGame(spielid, playera, playerb);
+  return recv_addGame(seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_addGame(const int32_t spielid, const std::string& playera, const std::string& playerb)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("addGame", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_addGame_pargs args;
+  args.spielid = &spielid;
+  args.playera = &playera;
+  args.playerb = &playerb;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+bool WettanbieterConcurrentClient::recv_addGame(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("addGame") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      bool _return;
+      Wettanbieter_addGame_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        sentry.commit();
+        return _return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "addGame failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+bool WettanbieterConcurrentClient::endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB)
+{
+  int32_t seqid = send_endGame(spielid, pointsA, pointsB);
+  return recv_endGame(seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("endGame", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_endGame_pargs args;
+  args.spielid = &spielid;
+  args.pointsA = &pointsA;
+  args.pointsB = &pointsB;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+bool WettanbieterConcurrentClient::recv_endGame(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("endGame") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      bool _return;
+      Wettanbieter_endGame_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        sentry.commit();
+        return _return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "endGame failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+bool WettanbieterConcurrentClient::isGameOpen(const int32_t spielid)
+{
+  int32_t seqid = send_isGameOpen(spielid);
+  return recv_isGameOpen(seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_isGameOpen(const int32_t spielid)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("isGameOpen", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_isGameOpen_pargs args;
+  args.spielid = &spielid;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+bool WettanbieterConcurrentClient::recv_isGameOpen(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("isGameOpen") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      bool _return;
+      Wettanbieter_isGameOpen_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        sentry.commit();
+        return _return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "isGameOpen failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+void WettanbieterConcurrentClient::getAllOpenGames(std::string& _return)
+{
+  int32_t seqid = send_getAllOpenGames();
+  recv_getAllOpenGames(_return, seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_getAllOpenGames()
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("getAllOpenGames", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getAllOpenGames_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void WettanbieterConcurrentClient::recv_getAllOpenGames(std::string& _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("getAllOpenGames") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      Wettanbieter_getAllOpenGames_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllOpenGames failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+void WettanbieterConcurrentClient::getAllClosedGames(std::string& _return)
+{
+  int32_t seqid = send_getAllClosedGames();
+  recv_getAllClosedGames(_return, seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_getAllClosedGames()
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("getAllClosedGames", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getAllClosedGames_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void WettanbieterConcurrentClient::recv_getAllClosedGames(std::string& _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("getAllClosedGames") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      Wettanbieter_getAllClosedGames_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getAllClosedGames failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
+}
+
+void WettanbieterConcurrentClient::getSpecificGame(std::string& _return, const int32_t spielid)
+{
+  int32_t seqid = send_getSpecificGame(spielid);
+  recv_getSpecificGame(_return, seqid);
+}
+
+int32_t WettanbieterConcurrentClient::send_getSpecificGame(const int32_t spielid)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("getSpecificGame", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Wettanbieter_getSpecificGame_pargs args;
+  args.spielid = &spielid;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void WettanbieterConcurrentClient::recv_getSpecificGame(std::string& _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("getSpecificGame") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      Wettanbieter_getSpecificGame_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getSpecificGame failed: unknown result");
     }
     // seqid != rseqid
     this->sync_->updatePending(fname, mtype, rseqid);

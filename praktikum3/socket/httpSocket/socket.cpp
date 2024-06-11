@@ -14,7 +14,7 @@
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
-#include <defines.h>
+#include "defines.h"
 
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
@@ -160,7 +160,7 @@ bool replace(std::string& str, const std::string& from, const std::string& to)
 // ******************************
 // RPC - Create
 // ******************************
-void placeNewBet(string nameanbieter, int betid, int gameid, string namebettor, double moneyset, int prediction, double winachance, double winbchance, double even)
+void placeNewBet(string nameanbieter, int betid, string namebettor, double moneyset, int prediction, double winachance, double winbchance, double even)
 {
     std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
@@ -170,7 +170,7 @@ void placeNewBet(string nameanbieter, int betid, int gameid, string namebettor, 
     try
     {
         transport->open();
-        client.placeNewBet(nameanbieter, betid, gameid, namebettor, moneyset, prediction, winachance, winbchance, even);
+        client.placeNewBet(nameanbieter, betid, namebettor, moneyset, prediction, winachance, winbchance, even);
         transport->close();
 
     } catch (TException& tx) {
@@ -180,7 +180,7 @@ void placeNewBet(string nameanbieter, int betid, int gameid, string namebettor, 
     cout << "*new Bet placed" << endl;
 }
 
-void addBetOption(string nameanbieter, int wettID, int spielID, double winachance, double winbchance, double even)
+void addBetOption(string nameanbieter, int wettID, int gameID, double winachance, double winbchance, double even)
 {
     std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
@@ -190,7 +190,7 @@ void addBetOption(string nameanbieter, int wettID, int spielID, double winachanc
     try
     {
         transport->open();
-        client.addBet(nameanbieter, wettID, spielID, winachance, winbchance, even);
+        client.addBet(nameanbieter, wettID, gameID, winachance, winbchance, even);
         transport->close();
 
     } catch (TException& tx) {
@@ -300,7 +300,7 @@ Wettoption readWettoption (stringstream* sRPC) //
 
     //cout << readAnbieterName << wettID << spielID << quoteA << quoteB << quoteEven << endl << flush;
     
-    return newWettoption(stoi(wettID), readAnbieterName, getSpecificSpiel(spielID), stod(quoteA), stod(quoteB), stod(quoteEven));
+    return newWettoption(stoi(wettID), readAnbieterName, getSpecificSpiel(stoi(spielID)), stod(quoteA), stod(quoteB), stod(quoteEven));
 }
 
 Wettoption getSpecificBetOption(string nameAnbieter, int id)
@@ -544,7 +544,7 @@ vector<PlatzierteWette> getAllPlacedBetsToABetOption(string nameAnbieter, int id
 // ******************************
 // RPC - Update
 // ******************************
-void changeBetOption(string nameanbieter, int wettID, int SpielID, double winachance, double winbchance, double even)
+void changeBetOption(string nameanbieter, int wettID, int gameID, double winachance, double winbchance, double even)
 {
     std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
@@ -554,7 +554,7 @@ void changeBetOption(string nameanbieter, int wettID, int SpielID, double winach
     try
     {
         transport->open();
-        client.changeBet(nameanbieter, wettID, SpielID, winachance, winbchance, even);
+        client.changeBet(nameanbieter, wettID, gameID, winachance, winbchance, even);
         transport->close();
     } catch (TException& tx) {
         cout << "ERROR in changeBetOption(): " << tx.what() << endl;
@@ -695,7 +695,7 @@ int main() {
                             string moneyset = to_string(alleMeineWetten[i].moneyset);
 
                             // if (game is open) -> current_bets
-                            if(alleMeineWetten[i].spiel.ending == STATUS_OPEN)
+                            if(alleMeineWetten[i].ending == STATUS_OPEN)
                             {
                                 //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
                                 newHTMLcurrent += "<li>" + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
@@ -703,7 +703,7 @@ int main() {
                                                 + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]<br>"
                                                 + moneyset.substr(0, moneyset.find('.')+3) + "€ auf " + gameEnding(alleMeineWetten[i].ending) + "</li>";
                             }
-                            else if (alleMeineWetten[i].spiel.ending == STATUS_CLOSED)
+                            else if (alleMeineWetten[i].spiel.ending == STATUS_CLOSED)                  // S-TODO: Compiler Error: PlatzierteWette>::value_type' {aka 'struct PlatzierteWette'} has no member named 'spiel'
                             {
                                 //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
                                 newHTMLprevious += "<li>" + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
@@ -785,8 +785,9 @@ int main() {
             } else if (request.post){
                 cout << "* request.referer: " << request.referer; 
                 cout << "!"<< endl;
-                if(request.referer.find("wettender",0) != -1){      // E-TODO (html + der Parser hier)
+                if(request.referer.find("wettender",0) != -1){  
                     cout << "POST bei wettender" << endl;
+                    
                     //Wettender Beispiel POST-String: Spiel=Fred_und_GeorgeAA2AARavenclawAASlytherinAA1.00AA2.00AA3.50&gewaehlteMannschaft=Team+A&Wetteinsatz=10&Name=emmy
                     string SPIEL = "Spiel=";
                     string TRENNUNG = "AA";
@@ -899,15 +900,14 @@ int main() {
                 }
                 else if(request.referer.find("wettanbieter",0) != -1)
                 {
-                //idbet=5&teama=a&AGewinnquote=1.5&teamb=b&BGewinnquote=1.5&even=1.5&nameanbieter=baum  
-                cout << "POST bei wettanbieter" << endl;        // E-TODO (html + der Parser hier)
+                //idbet=5&idgame=3&AGewinnquote=1.5&&BGewinnquote=1.5&even=1.5&nameanbieter=baum  
+                cout << "POST bei wettanbieter" << endl;  
                     
                     string GEWINNQUOTEA = "AGewinnquote=";
                     string GEWINNQUOTEB = "BGewinnquote=";
                     string EVENQUOTE = "even=";
-                    string TEAM_A = "teama=";
-                    string TEAM_B = "teamb=";
                     string IDBET = "idbet=";
+                    string IDGAME = "idgame=";
                     string IDBET_DELETE = "idbetdel=";
                     string AMPERSAND = "&";
                     string NAME = "nameanbieter=";
@@ -916,8 +916,7 @@ int main() {
 
                     string anbieter = "";
                     string wettid = "";
-                    string playerA = "";
-                    string playerB = "";
+                    string gameid = "";
                     string aQuote = "";
                     string bQuote = "";
                     string evenQuote = "";
@@ -943,10 +942,10 @@ int main() {
                         post.erase(0, AMPERSAND.size());
                         cout << "*post: " << post << endl;
                         
-                        post.erase(0, TEAM_A.size());
+                        post.erase(0, IDGAME.size());
                         pos = post.find(AMPERSAND,0);
-                        playerA = post.substr(0,pos);
-                        post.erase(0, playerA.size());
+                        gameid= post.substr(0,pos);
+                        post.erase(0, gameid.size());
                         post.erase(0, AMPERSAND.size());
                         cout << "*post: " << post << endl;
                         
@@ -955,14 +954,7 @@ int main() {
                         aQuote = post.substr(0,pos);
                         post.erase(0, aQuote.size());
                         post.erase(0, AMPERSAND.size());
-                        cout << "*post: " << post << endl;
-
-                        post.erase(0, TEAM_B.size());
-                        pos = post.find(AMPERSAND,0);
-                        playerB = post.substr(0,pos);
-                        post.erase(0, playerB.size());
-                        post.erase(0, AMPERSAND.size());
-                        cout << "*post: " << post << endl;                       
+                        cout << "*post: " << post << endl;                      
 
                         post.erase(0, GEWINNQUOTEB.size());
                         pos = post.find(AMPERSAND,0);
@@ -986,15 +978,18 @@ int main() {
 
                         cout << "* anbieter und id: " << anbieter << ":" << stoi(wettid) << endl;
 
+
                         if(betExists(anbieter, stoi(wettid)))
                         {
-                            changeBetOption(anbieter, stoi(wettid), /*stoi(spielid),*/ playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                            changeBetOption(anbieter, stoi(wettid), stoi(gameid), stod(aQuote), stod(bQuote), stod(evenQuote));
                         }
                         else
                         {
-                            addBetOption(anbieter, stoi(wettid), /*stoi(spielid),*/ playerA,  playerB, stod(aQuote), stod(bQuote), stod(evenQuote));
+                            addBetOption(anbieter, stoi(wettid), stoi(gameid), stod(aQuote), stod(bQuote), stod(evenQuote));
                         }
+                        
                     }
+                    
                     else if ((post.find(IDBET_DELETE,0) == 0))
                     {                        
                         //idbetdel=3&nameanbieteDel=Hogwarts

@@ -24,15 +24,22 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('Usage: ' + sys.argv[0] + ' [-h host[:port]] [-u url] [-f[ramed]] [-s[sl]] [-novalidate] [-ca_certs certs] [-keyfile keyfile] [-certfile certfile] function [arg1 [arg2...]]')
     print('')
     print('Functions:')
-    print('  bool addBet(string nameanbieter, i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
-    print('  bool changeBet(string nameanbieter, i32 id, string playera, string playerb, double winachance, double winbchance, double even)')
+    print('  bool addBet(string nameanbieter, i32 wettid, i32 spielid, double winachance, double winbchance, double even)')
+    print('  bool changeBet(string nameanbieter, i32 wettid, i32 spielid, double winachance, double winbchance, double even)')
     print('  bool deleteBet(string nameanbieter, i32 id)')
-    print('  string getMyBets(string nameanbieter)')
-    print('  string getAllBets()')
-    print('  string getSpecificBet(string nameanbieter, i32 id)')
-    print('  string getBettors(string nameanbieter, i32 id)')
-    print('  string getAllPlacedBetsToAnBetOffer(string nameanbieter, i32 id)')
-    print('  bool setBettor(string nameanbieter, i32 betid, string namebettor, double moneyset, i32 ending, double winachance, double winbchance, double even)')
+    print('  bool betExists(string nameanbieter, i32 betid)')
+    print('  string getMyBetOptions(string nameanbieter)')
+    print('  string getAllBetOptions()')
+    print('  string getSpecificBetOption(string nameanbieter, i32 id)')
+    print('  string getAllPlacedBets()')
+    print('  string getAllPlacedBetsToABetOption(string nameanbieter, i32 id)')
+    print('  bool placeNewBet(string nameanbieter, i32 betid, string namebettor, double moneyset, i32 ending, double winachance, double winbchance, double even)')
+    print('  bool addGame(i32 spielid, string playera, string playerb)')
+    print('  bool endGame(i32 spielid, i32 pointsA, i32 pointsB)')
+    print('  bool isGameOpen(i32 spielid)')
+    print('  string getAllOpenGames()')
+    print('  string getAllClosedGames()')
+    print('  string getSpecificGame(i32 spielid)')
     print('')
     sys.exit(0)
 
@@ -113,16 +120,16 @@ client = Wettanbieter.Client(protocol)
 transport.open()
 
 if cmd == 'addBet':
-    if len(args) != 7:
-        print('addBet requires 7 args')
+    if len(args) != 6:
+        print('addBet requires 6 args')
         sys.exit(1)
-    pp.pprint(client.addBet(args[0], eval(args[1]), args[2], args[3], eval(args[4]), eval(args[5]), eval(args[6]),))
+    pp.pprint(client.addBet(args[0], eval(args[1]), eval(args[2]), eval(args[3]), eval(args[4]), eval(args[5]),))
 
 elif cmd == 'changeBet':
-    if len(args) != 7:
-        print('changeBet requires 7 args')
+    if len(args) != 6:
+        print('changeBet requires 6 args')
         sys.exit(1)
-    pp.pprint(client.changeBet(args[0], eval(args[1]), args[2], args[3], eval(args[4]), eval(args[5]), eval(args[6]),))
+    pp.pprint(client.changeBet(args[0], eval(args[1]), eval(args[2]), eval(args[3]), eval(args[4]), eval(args[5]),))
 
 elif cmd == 'deleteBet':
     if len(args) != 2:
@@ -130,41 +137,83 @@ elif cmd == 'deleteBet':
         sys.exit(1)
     pp.pprint(client.deleteBet(args[0], eval(args[1]),))
 
-elif cmd == 'getMyBets':
+elif cmd == 'betExists':
+    if len(args) != 2:
+        print('betExists requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.betExists(args[0], eval(args[1]),))
+
+elif cmd == 'getMyBetOptions':
     if len(args) != 1:
-        print('getMyBets requires 1 args')
+        print('getMyBetOptions requires 1 args')
         sys.exit(1)
-    pp.pprint(client.getMyBets(args[0],))
+    pp.pprint(client.getMyBetOptions(args[0],))
 
-elif cmd == 'getAllBets':
+elif cmd == 'getAllBetOptions':
     if len(args) != 0:
-        print('getAllBets requires 0 args')
+        print('getAllBetOptions requires 0 args')
         sys.exit(1)
-    pp.pprint(client.getAllBets())
+    pp.pprint(client.getAllBetOptions())
 
-elif cmd == 'getSpecificBet':
+elif cmd == 'getSpecificBetOption':
     if len(args) != 2:
-        print('getSpecificBet requires 2 args')
+        print('getSpecificBetOption requires 2 args')
         sys.exit(1)
-    pp.pprint(client.getSpecificBet(args[0], eval(args[1]),))
+    pp.pprint(client.getSpecificBetOption(args[0], eval(args[1]),))
 
-elif cmd == 'getBettors':
+elif cmd == 'getAllPlacedBets':
+    if len(args) != 0:
+        print('getAllPlacedBets requires 0 args')
+        sys.exit(1)
+    pp.pprint(client.getAllPlacedBets())
+
+elif cmd == 'getAllPlacedBetsToABetOption':
     if len(args) != 2:
-        print('getBettors requires 2 args')
+        print('getAllPlacedBetsToABetOption requires 2 args')
         sys.exit(1)
-    pp.pprint(client.getBettors(args[0], eval(args[1]),))
+    pp.pprint(client.getAllPlacedBetsToABetOption(args[0], eval(args[1]),))
 
-elif cmd == 'getAllPlacedBetsToAnBetOffer':
-    if len(args) != 2:
-        print('getAllPlacedBetsToAnBetOffer requires 2 args')
-        sys.exit(1)
-    pp.pprint(client.getAllPlacedBetsToAnBetOffer(args[0], eval(args[1]),))
-
-elif cmd == 'setBettor':
+elif cmd == 'placeNewBet':
     if len(args) != 8:
-        print('setBettor requires 8 args')
+        print('placeNewBet requires 8 args')
         sys.exit(1)
-    pp.pprint(client.setBettor(args[0], eval(args[1]), args[2], eval(args[3]), eval(args[4]), eval(args[5]), eval(args[6]), eval(args[7]),))
+    pp.pprint(client.placeNewBet(args[0], eval(args[1]), args[2], eval(args[3]), eval(args[4]), eval(args[5]), eval(args[6]), eval(args[7]),))
+
+elif cmd == 'addGame':
+    if len(args) != 3:
+        print('addGame requires 3 args')
+        sys.exit(1)
+    pp.pprint(client.addGame(eval(args[0]), args[1], args[2],))
+
+elif cmd == 'endGame':
+    if len(args) != 3:
+        print('endGame requires 3 args')
+        sys.exit(1)
+    pp.pprint(client.endGame(eval(args[0]), eval(args[1]), eval(args[2]),))
+
+elif cmd == 'isGameOpen':
+    if len(args) != 1:
+        print('isGameOpen requires 1 args')
+        sys.exit(1)
+    pp.pprint(client.isGameOpen(eval(args[0]),))
+
+elif cmd == 'getAllOpenGames':
+    if len(args) != 0:
+        print('getAllOpenGames requires 0 args')
+        sys.exit(1)
+    pp.pprint(client.getAllOpenGames())
+
+elif cmd == 'getAllClosedGames':
+    if len(args) != 0:
+        print('getAllClosedGames requires 0 args')
+        sys.exit(1)
+    pp.pprint(client.getAllClosedGames())
+
+elif cmd == 'getSpecificGame':
+    if len(args) != 1:
+        print('getSpecificGame requires 1 args')
+        sys.exit(1)
+    pp.pprint(client.getSpecificGame(eval(args[0]),))
 
 else:
     print('Unrecognized method %s' % cmd)

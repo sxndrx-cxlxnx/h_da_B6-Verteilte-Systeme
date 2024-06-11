@@ -1,4 +1,4 @@
-host = "p2-socket"
+host = "p3-socket"
 port = 9090
 
 import sys
@@ -40,6 +40,21 @@ while loop:
 
         news = pid + ":" + "Neu" + ":" + playera + ":" + playerb
 
+        try:
+
+            transport = TSocket.TSocket( host , port)
+            transport = TTransport.TBufferedTransport(transport)
+            protocol = TBinaryProtocol.TBinaryProtocol(transport)
+
+            clientrpc = Wettanbieter.Client(protocol)
+            transport.open()
+            clientrpc.addGame(int(pid), playera, playerb)
+            transport.close()
+
+        except Thrift.TException as tx:
+            print ('Something went wrong : %s' % (tx.message))            
+
+
         client = paho.Client()
 
         if client.connect("mqttbroker", 1883, 60) != 0:
@@ -48,6 +63,7 @@ while loop:
 
         client.publish("newsfeed", news, 0)
         client.disconnect()
+
 
     elif input2 == 2:
         pid = input("Spiel-ID?: ")
@@ -71,6 +87,21 @@ while loop:
         playerb = input("Stand Spieler B?: ")
 
         news = pid + ":" + "Ende" + ":" + playera + ":" + playerb
+
+        try:
+
+            transport = TSocket.TSocket( host , port)
+            transport = TTransport.TBufferedTransport(transport)
+            protocol = TBinaryProtocol.TBinaryProtocol(transport)
+
+            clientrpc = Wettanbieter.Client(protocol)
+            transport.open()
+            clientrpc.endGame(int(pid), int(playera), int(playerb))
+            transport.close()
+            
+        except Thrift.TException as tx:
+            print ('Something went wrong : %s' % (tx.message))  
+
 
         client = paho.Client()
 

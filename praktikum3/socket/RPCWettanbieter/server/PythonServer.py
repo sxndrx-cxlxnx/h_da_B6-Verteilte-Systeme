@@ -166,7 +166,7 @@ class WettanbieterHandler:
 
     def addGame(self, gameid, playerA, playerB):
         file = open("openGames.csv", "a")
-        file.write(str(gameid) + ":" + playerA + ":" + playerB + ":" + str(1) + ";\n")
+        file.write(str(gameid) + ":" + playerA + ":" + playerB + ";\n")
         file.close()
         return True
 
@@ -175,16 +175,16 @@ class WettanbieterHandler:
             data = file.readlines()
         print(data)  
 
-        gameline   
+        gameline = ""
 
         with open("openGames.csv", "w", encoding='utf-8') as file:
             for line in data:
                 if not line.startswith(str(gameid) + ":") :
                     file.write(line)
                 else:
-                    gameline = line
+                    gameline = line        
 
-        ending
+        ending = 0
 
         if pointsA > pointsB:
             ending = 1
@@ -192,9 +192,13 @@ class WettanbieterHandler:
             ending = 2
         else:
             ending = 3
+            
+        print(gameline)
+        gameline = gameline.replace(";\n", ":" + str(ending) + ":" + str(pointsA) + ":" + str(pointsB) + ";\n")
+        print(gameline)
 
         file = open("closedGames.csv", "a")
-        file.write(gameline.replace(';\n', '') + ":" + str(ending) + ":" + str(pointsA) + ":" + str(pointsB) + ";\n")
+        file.write(gameline)
         file.close()
 
         return True

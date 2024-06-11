@@ -1,3 +1,0 @@
-/workspaces/praktikum2/socket/RPCWettanbieter/gen-cpp/CMakeFiles/CppClient.dir
-/workspaces/praktikum2/socket/RPCWettanbieter/gen-cpp/CMakeFiles/edit_cache.dir
-/workspaces/praktikum2/socket/RPCWettanbieter/gen-cpp/CMakeFiles/rebuild_cache.dir

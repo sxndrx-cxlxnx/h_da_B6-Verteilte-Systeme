@@ -1,4 +1,8 @@
 #include <string.h>
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <sstream>
 
 #define ADRESSE     "localhost"
 #define HTTP_PORT   8080
@@ -11,6 +15,8 @@
 
 #define STATUS_OPEN     1
 #define STATUS_CLOSED   2
+
+using namespace std;
 
 std::string gameEnding(int ending)
 {

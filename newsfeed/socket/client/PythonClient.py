@@ -7,7 +7,7 @@
 #
 # source: https://cloudxlab.com/blog/creating-thrift-service/
 
-host = "p2-socket"
+host = "p3-socket"
 port = 9090
 
 import sys

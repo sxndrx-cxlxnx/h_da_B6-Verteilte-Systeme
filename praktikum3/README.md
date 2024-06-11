@@ -44,7 +44,7 @@ Umgebungsvariable (Path) setzen && Kompilieren der Dateien im gen-cpp Ordner:
 ```
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/thrift-0.20.0/lib/cpp/.libs
 cd socket/httpSocket/
-g++ ../RPCWettanbieter/gen-cpp/Wettanbieter_types.h ../RPCWettanbieter/gen-cpp/Wettanbieter.h ../RPCWettanbieter/gen-cpp/Wettanbieter.cpp socket.cpp -o http-server -lthrift
+g++ ../RPCWettanbieter/gen-cpp/Wettanbieter_types.h ../RPCWettanbieter/gen-cpp/Wettanbieter.h ../RPCWettanbieter/gen-cpp/Wettanbieter.cpp defines.h socket.cpp -o http-server -lthrift
 ./http-server
 ```
 
