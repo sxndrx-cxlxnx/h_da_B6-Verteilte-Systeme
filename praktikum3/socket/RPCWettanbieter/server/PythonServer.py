@@ -259,7 +259,7 @@ class WettanbieterHandler:
 
         for line in data:
             if line.startswith(str(gameid) + ":") :
-                return "closed:" + line
+                return "open:" + line
 
 
         with open('closedGames.csv','r',encoding='utf-8') as file:

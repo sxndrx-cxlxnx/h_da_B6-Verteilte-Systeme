@@ -4,23 +4,27 @@
 #include <cstring>
 #include <sstream>
 
-#define ADRESSE     "localhost"
-#define HTTP_PORT   8080
-#define RPC_PORT    9090
+#define ADRESSE    "localhost"
+#define HTTP_PORT        8080
+#define RPC_PORT         9090
 
-#define ENDING_OPEN     0
-#define ENDING_TEAM_A   1
-#define ENDING_TEAM_B   2
-#define ENDING_EVEN     3
+#define ENDING_OPEN         0
+#define ENDING_TEAM_A       1
+#define ENDING_TEAM_B       2
+#define ENDING_EVEN         3
 
-#define STATUS_OPEN     1
-#define STATUS_CLOSED   2
+#define STATUS_OPEN         1
+#define STATUS_CLOSED       2
 
 using namespace std;
 
 std::string gameEnding(int ending)
 {
-    if (ending == ENDING_TEAM_A)
+    if (ending == ENDING_OPEN)
+    {
+        return "Ending Open";
+    }
+    else if (ending == ENDING_TEAM_A)
     {
         return "Team A";
     }
@@ -30,11 +34,11 @@ std::string gameEnding(int ending)
     }
     else if (ending == ENDING_EVEN)
     {
-        return "Even";
+        return "Ending Even";
     }
     else
     {
-        return "Open";
+        return "Ending undefiniert";
     }
 }
 
@@ -42,15 +46,15 @@ std::string gameStatus(int status)
 {
     if (status == STATUS_OPEN)
     {
-        return "Offen";
+        return "Spiel Offen";
     }
     else if (status == STATUS_CLOSED)
     {
-        return "Beendet";
+        return "Spiel Beendet";
     }
     else
     {
-        return "Status undefiniert";
+        return "Spiel-Status undefiniert";
     }
 }
 

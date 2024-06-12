@@ -94,7 +94,7 @@ void getAllWettanbieter()   // initial
     ifstream wettanbieterCSV; 
   
     // Open an existing file 
-    wettanbieterCSV.open("wettanbieter.csv", ios::in);
+    wettanbieterCSV.open("../RPCWettanbieter/server/wettanbieter.csv", ios::in);
 
     // Read the Data from the file 
     string line;
@@ -226,32 +226,57 @@ bool betExists(string nameanbieter, int id)
     return response;
 }
 
-Spiel readSpiel(stringstream* sRPC)     // S-TODO
+Spiel readSpiel(stringstream* sRPC)
 {
-    string spielID, teamA, teamB, status, ending, standA, standB;
+    cout << "readSpiel" << endl;
+    string status, spielID, teamA, teamB, ending, standA, standB, nulln;
+    int iEnding, iStatus;
 
-    //cout << "Read line" << endl << flush;
+    getline(*sRPC, status, ':');
 
-    // read every column data of a row and 
-    // store it in a string variable
-    /*
-    getline(*sRPC, readAnbieterName, ':');
-    getline(*sRPC, wettID, ':');
-    getline(*sRPC, spielID, ':');
-    getline(*sRPC, quoteA, ':');
-    getline(*sRPC, quoteB, ':');
-    getline(*sRPC, quoteEven, ';');
-    getline(*sRPC, nulln, '\n');
-    */
-
-    //cout << readAnbieterName << wettID << spielID << quoteA << quoteB << quoteEven << endl << flush;
-    // int id, string teamA, string teamB, int status, int ending, int standA, int standB)
-    return newSpiel(stoi(spielID), teamA, teamB, stoi(status), stoi(ending), stoi(standA), stoi(standB));
+    if(strcmp(status.c_str(), "open") == 0)
+    {
+        // open:7:Hufflepuff:Gryffindor;
+        getline(*sRPC, spielID, ':');
+        getline(*sRPC, teamA, ':');
+        getline(*sRPC, teamB, ';');
+        getline(*sRPC, nulln, '\n');
+        iStatus = STATUS_OPEN;
+        iEnding = ENDING_OPEN;
+        standA = "0";
+        standB = "0";
+    }
+    else if (strcmp(status.c_str(), "closed") == 0)
+    {
+        // closed:1:Chudley_Cannons:Holyhead_Harpies:1:200:70;
+        getline(*sRPC, spielID, ':');
+        getline(*sRPC, teamA, ':');
+        getline(*sRPC, teamB, ':');
+        getline(*sRPC, ending, ':');
+        getline(*sRPC, standA, ':');
+        getline(*sRPC, standB, ';');
+        getline(*sRPC, nulln, '\n');
+        iStatus = STATUS_CLOSED;
+        iEnding = stoi(ending);
+    }
+    else
+    {
+        spielID = "-1";
+        teamA = "invalid Team A";
+        teamB = "invalid Team B";
+        iStatus = -1;
+        iEnding = -1;
+        standA = "-1";
+        standB = "-1";
+    }
+    cout << "* read Spiel:" << spielID << ":" << teamA << ":" << teamB << ":" << gameStatus(iStatus) << ":" << gameEnding(iEnding) << ":" << standA << ":" << standB << endl << flush;
+    
+    return newSpiel(stoi(spielID), teamA, teamB, iStatus, iEnding, stoi(standA), stoi(standB));
 }
 
 Spiel getSpecificSpiel(int id)
 {
-    cout << "get specific Spiel" << endl;
+    //cout << "entry: get specific Spiel" << endl;
     std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
     std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
     std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
@@ -268,9 +293,10 @@ Spiel getSpecificSpiel(int id)
     } catch (TException& tx) {
         cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
     }
-    cout << "RPC: " << rpc << endl;
+    //cout << "RPC: " << rpc << "<<" << endl;
     // Output
-    // RPC: 4:Ravenclaw:Slytherin:1;
+    // RPC: open:4:Ravenclaw:Slytherin;
+    // RPC: closed:1:Chudley_Cannons:Holyhead_Harpies:1:200:70;
 
     stringstream sRPC;
     sRPC << rpc;
@@ -286,7 +312,7 @@ Wettoption readWettoption (stringstream* sRPC) //
 {
     string readAnbieterName, wettID, spielID, quoteA, quoteB, quoteEven, nulln;
 
-    //cout << "Read line" << endl << flush;
+    //cout << "Entry Read Wettoption" << endl << flush;
 
     // read every column data of a row and 
     // store it in a string variable
@@ -298,8 +324,8 @@ Wettoption readWettoption (stringstream* sRPC) //
     getline(*sRPC, quoteEven, ';');
     getline(*sRPC, nulln, '\n');
 
-    //cout << readAnbieterName << wettID << spielID << quoteA << quoteB << quoteEven << endl << flush;
-    
+    //cout << "*Read Wettoption:" << readAnbieterName << ":" << wettID << ":" << spielID << ":" << quoteA << ":" << quoteB << ":" << quoteEven << endl << flush;
+
     return newWettoption(stoi(wettID), readAnbieterName, getSpecificSpiel(stoi(spielID)), stod(quoteA), stod(quoteB), stod(quoteEven));
 }
 
@@ -338,6 +364,7 @@ Wettoption getSpecificBetOption(string nameAnbieter, int id)
 
 PlatzierteWette readPlatzierteWette(stringstream* sRPC)
 {
+    //cout << "Entry: readPlatzierteWette" << endl;
     string readAnbieterName, wettID, namebettor, moneyset, ending, quoteA, quoteB, quoteEven, nulln;
 
     // read every column data of a row and 
@@ -352,7 +379,7 @@ PlatzierteWette readPlatzierteWette(stringstream* sRPC)
     getline(*sRPC, quoteEven, ';');
     getline(*sRPC, nulln, '\n');
 
-    //cout << readAnbieterName << wettID << namebettor << moneyset << ending << quoteA << quoteB << quoteEven << endl << flush;
+    //cout << "*Read Platzierte Wette: " << readAnbieterName << ":" << wettID << ":" << namebettor << ":" << moneyset << ":" << ending << ":" << quoteA << ":" << quoteB << ":" << quoteEven << endl << flush;
 
     return newPlatzierteWette(namebettor, stod(moneyset), stoi(ending), getSpecificBetOption(readAnbieterName, stoi(wettID)) );
 }
@@ -601,7 +628,7 @@ int main() {
     cout << "listen"<< endl;
     listen(socketServer, 5);
 
-    getAllWettanbieter();
+    //getAllWettanbieter();
 
     while(true){
         cout << "in while-loop"<< endl;
@@ -695,7 +722,7 @@ int main() {
                             string moneyset = to_string(alleMeineWetten[i].moneyset);
 
                             // if (game is open) -> current_bets
-                            if(alleMeineWetten[i].ending == STATUS_OPEN)
+                            if(alleMeineWetten[i].wettoption.spiel.ending == STATUS_OPEN)
                             {
                                 //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
                                 newHTMLcurrent += "<li>" + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
@@ -703,7 +730,7 @@ int main() {
                                                 + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]<br>"
                                                 + moneyset.substr(0, moneyset.find('.')+3) + "€ auf " + gameEnding(alleMeineWetten[i].ending) + "</li>";
                             }
-                            else if (alleMeineWetten[i].spiel.ending == STATUS_CLOSED)                  // S-TODO: Compiler Error: PlatzierteWette>::value_type' {aka 'struct PlatzierteWette'} has no member named 'spiel'
+                            else if (alleMeineWetten[i].wettoption.spiel.ending == STATUS_CLOSED)
                             {
                                 //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
                                 newHTMLprevious += "<li>" + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
@@ -878,9 +905,9 @@ int main() {
 
                         if(auswahl.find(TEAM_A,0) != -1){
                             ergebnis = 1;
-                        } else if (auswahl.find(TEAM_B,0)){
+                        } else if (auswahl.find(TEAM_B,0) != -1){
                             ergebnis = 2;
-                        }else{
+                        } else{
                             ergebnis = 3;
                         }
 
