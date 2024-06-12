@@ -226,27 +226,24 @@ bool betExists(string nameanbieter, int id)
     return response;
 }
 
-Spiel readSpiel(stringstream* sRPC)
+Spiel readSpiel(stringstream* sRPC, int status)
 {
     cout << "readSpiel" << endl;
-    string status, spielID, teamA, teamB, ending, standA, standB, nulln;
-    int iEnding, iStatus;
+    string spielID, teamA, teamB, ending, standA, standB, nulln;
+    int iEnding;
 
-    getline(*sRPC, status, ':');
-
-    if(strcmp(status.c_str(), "open") == 0)
+    if(status == STATUS_OPEN)
     {
         // open:7:Hufflepuff:Gryffindor;
         getline(*sRPC, spielID, ':');
         getline(*sRPC, teamA, ':');
         getline(*sRPC, teamB, ';');
         getline(*sRPC, nulln, '\n');
-        iStatus = STATUS_OPEN;
         iEnding = ENDING_OPEN;
         standA = "0";
         standB = "0";
     }
-    else if (strcmp(status.c_str(), "closed") == 0)
+    else if (status == STATUS_CLOSED)
     {
         // closed:1:Chudley_Cannons:Holyhead_Harpies:1:200:70;
         getline(*sRPC, spielID, ':');
@@ -256,7 +253,6 @@ Spiel readSpiel(stringstream* sRPC)
         getline(*sRPC, standA, ':');
         getline(*sRPC, standB, ';');
         getline(*sRPC, nulln, '\n');
-        iStatus = STATUS_CLOSED;
         iEnding = stoi(ending);
     }
     else
@@ -264,14 +260,13 @@ Spiel readSpiel(stringstream* sRPC)
         spielID = "-1";
         teamA = "invalid Team A";
         teamB = "invalid Team B";
-        iStatus = -1;
         iEnding = -1;
         standA = "-1";
         standB = "-1";
     }
-    cout << "* read Spiel:" << spielID << ":" << teamA << ":" << teamB << ":" << gameStatus(iStatus) << ":" << gameEnding(iEnding) << ":" << standA << ":" << standB << endl << flush;
+    cout << "* read Spiel:" << spielID << ":" << teamA << ":" << teamB << ":" << gameStatus(status) << ":" << gameEnding(iEnding) << ":" << standA << ":" << standB << endl << flush;
     
-    return newSpiel(stoi(spielID), teamA, teamB, iStatus, iEnding, stoi(standA), stoi(standB));
+    return newSpiel(stoi(spielID), teamA, teamB, status, iEnding, stoi(standA), stoi(standB));
 }
 
 Spiel getSpecificSpiel(int id)
@@ -282,7 +277,7 @@ Spiel getSpecificSpiel(int id)
     std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
     WettanbieterClient client(protocol);
 
-    string rpc;
+    string rpc, status;
 
     try
     {
@@ -300,8 +295,20 @@ Spiel getSpecificSpiel(int id)
 
     stringstream sRPC;
     sRPC << rpc;
+    int iStatus;
+    
+    getline(sRPC, status, ':');
+    cout << "Status Spiel: " << status << endl;
 
-    Spiel spefificGame = readSpiel(&sRPC);
+    if(strcmp(status.c_str(), "open") == 0){
+        iStatus = STATUS_OPEN;
+    } else if (strcmp(status.c_str(), "closed") == 0){
+        iStatus = STATUS_CLOSED;
+    } else {
+        iStatus = -1;
+    }
+
+    Spiel spefificGame = readSpiel(&sRPC, iStatus);
 
     cout << "*got specific Spiel" << endl;
 
@@ -568,6 +575,90 @@ vector<PlatzierteWette> getAllPlacedBetsToABetOption(string nameAnbieter, int id
     return allPlacedBets;
 }
 
+vector<Spiel> getAllOpenGames()
+{
+    //cout << "entry: get specific Spiel" << endl;
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    vector <Spiel> openGames;
+    string rpc;
+
+    try
+    {
+        transport->open();
+        client.getAllOpenGames(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+    }
+    //cout << "RPC: " << rpc << "<<" << endl;
+    // Output
+    // RPC: 4:Ravenclaw:Slytherin;
+
+    stringstream sRPC;
+    sRPC << rpc;
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        openGames.push_back(readSpiel(&sRPC, STATUS_OPEN));
+    }
+
+    cout << "*got all open Spiele" << endl;
+
+    return openGames;
+}
+
+vector<Spiel> getAllClosedGames()
+{
+    //cout << "entry: get specific Spiel" << endl;
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    vector <Spiel> closedGames;
+    string rpc;
+
+    try
+    {
+        transport->open();
+        client.getAllClosedGames(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+    }
+    //cout << "RPC: " << rpc << "<<" << endl;
+    // Output
+    // RPC: 1:Chudley_Cannons:Holyhead_Harpies:1:200:70;
+
+    stringstream sRPC;
+    sRPC << rpc;
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        closedGames.push_back(readSpiel(&sRPC, STATUS_CLOSED));
+    }
+
+    cout << "*got all closed Spiele" << endl;
+
+    return closedGames;
+}
+
 // ******************************
 // RPC - Update
 // ******************************
@@ -800,6 +891,46 @@ int main() {
                             </style>
                         */
                         replace(sEditFileBuffer, htmlVariable, newHTML);
+                    }
+                    else if((filename.find("news.html")) != string::npos)
+                    {
+                        string htmlVariable;
+
+                        /*
+                        // <li>motag: Dobby hat einen Klatscher gegen Harry verhext</li>
+                        htmlVariable = "{news_ticker}";
+                        string newHTML_ticker = "";
+                        vector<News> alleNews = getAllNews();
+
+                        for(int i = 0; i < alleNews.size(); i++)
+                        {
+                            newHTML_ticker += "<li>" + "message" + "</li>";
+                        }
+                        replace(sEditFileBuffer, htmlVariable, newHTML_ticker);
+                        */
+
+                        // <li>Chudley Cannons vs. Holyhead Harpines</li>
+                        htmlVariable = "{news_open_games}";
+                        string newHTML_open = "";
+                        vector<Spiel> alleOffenenSpiele = getAllOpenGames();
+
+                        for(int i = 0; i < alleOffenenSpiele.size(); i++)
+                        {
+                            newHTML_open += "<li>" + alleOffenenSpiele[i].teamA + " vs. " + alleOffenenSpiele[i].teamB + "</li>";
+                        }
+                        replace(sEditFileBuffer, htmlVariable, newHTML_open);
+
+                        // <li>Ravenclaw vs. Hufflepuff <br> 200 : 90</li>
+                        htmlVariable = "{news_closed_games}";
+                        string newHTML_closed = "";
+                        vector<Spiel> alleBeendetenSpiele = getAllClosedGames();
+
+                        for(int i = 0; i < alleBeendetenSpiele.size(); i++)
+                        {
+                            newHTML_closed += "<li><b>" + alleBeendetenSpiele[i].teamA + "</b> vs. <b>" + alleBeendetenSpiele[i].teamB + "</b><br>"
+                                            + to_string(alleBeendetenSpiele[i].standA) + " : " + to_string(alleBeendetenSpiele[i].standB) + "</li>";
+                        }
+                        replace(sEditFileBuffer, htmlVariable, newHTML_closed);
                     }
 
                     char* updatedFileBuffer = new char[sEditFileBuffer.length() + 1];
