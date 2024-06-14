@@ -22,15 +22,26 @@ namespace Wettanbietercpp {
 class WettanbieterIf {
  public:
   virtual ~WettanbieterIf() {}
-  virtual bool addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) = 0;
-  virtual bool changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) = 0;
+  virtual bool addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) = 0;
+  virtual bool changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) = 0;
   virtual bool deleteBet(const std::string& nameanbieter, const int32_t id) = 0;
-  virtual void getMyBets(std::string& _return, const std::string& nameanbieter) = 0;
-  virtual void getAllBets(std::string& _return) = 0;
-  virtual void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
-  virtual void getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
-  virtual void getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
-  virtual bool setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) = 0;
+  virtual bool betExists(const std::string& nameanbieter, const int32_t betid) = 0;
+  virtual void getMyBetOptions(std::string& _return, const std::string& nameanbieter) = 0;
+  virtual void getAllBetOptions(std::string& _return) = 0;
+  virtual void getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
+  virtual void getAllPlacedBets(std::string& _return) = 0;
+  virtual void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) = 0;
+  virtual bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) = 0;
+  virtual bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) = 0;
+  virtual bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) = 0;
+  virtual bool isGameOpen(const int32_t spielid) = 0;
+  virtual void getAllOpenGames(std::string& _return) = 0;
+  virtual void getAllClosedGames(std::string& _return) = 0;
+  virtual void getSpecificGame(std::string& _return, const int32_t spielid) = 0;
+  virtual int32_t getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending) = 0;
+  virtual int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) = 0;
+  virtual int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) = 0;
+  virtual int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) = 0;
 };
 
 class WettanbieterIfFactory {
@@ -60,11 +71,11 @@ class WettanbieterIfSingletonFactory : virtual public WettanbieterIfFactory {
 class WettanbieterNull : virtual public WettanbieterIf {
  public:
   virtual ~WettanbieterNull() {}
-  bool addBet(const std::string& /* nameanbieter */, const int32_t /* id */, const std::string& /* playera */, const std::string& /* playerb */, const double /* winachance */, const double /* winbchance */, const double /* even */) override {
+  bool addBet(const std::string& /* nameanbieter */, const int32_t /* wettid */, const int32_t /* spielid */, const double /* winachance */, const double /* winbchance */, const double /* even */) override {
     bool _return = false;
     return _return;
   }
-  bool changeBet(const std::string& /* nameanbieter */, const int32_t /* id */, const std::string& /* playera */, const std::string& /* playerb */, const double /* winachance */, const double /* winbchance */, const double /* even */) override {
+  bool changeBet(const std::string& /* nameanbieter */, const int32_t /* wettid */, const int32_t /* spielid */, const double /* winachance */, const double /* winbchance */, const double /* even */) override {
     bool _return = false;
     return _return;
   }
@@ -72,33 +83,73 @@ class WettanbieterNull : virtual public WettanbieterIf {
     bool _return = false;
     return _return;
   }
-  void getMyBets(std::string& /* _return */, const std::string& /* nameanbieter */) override {
-    return;
-  }
-  void getAllBets(std::string& /* _return */) override {
-    return;
-  }
-  void getSpecificBet(std::string& /* _return */, const std::string& /* nameanbieter */, const int32_t /* id */) override {
-    return;
-  }
-  void getBettors(std::string& /* _return */, const std::string& /* nameanbieter */, const int32_t /* id */) override {
-    return;
-  }
-  void getAllPlacedBetsToAnBetOffer(std::string& /* _return */, const std::string& /* nameanbieter */, const int32_t /* id */) override {
-    return;
-  }
-  bool setBettor(const std::string& /* nameanbieter */, const int32_t /* betid */, const std::string& /* namebettor */, const double /* moneyset */, const int32_t /* ending */, const double /* winachance */, const double /* winbchance */, const double /* even */) override {
+  bool betExists(const std::string& /* nameanbieter */, const int32_t /* betid */) override {
     bool _return = false;
+    return _return;
+  }
+  void getMyBetOptions(std::string& /* _return */, const std::string& /* nameanbieter */) override {
+    return;
+  }
+  void getAllBetOptions(std::string& /* _return */) override {
+    return;
+  }
+  void getSpecificBetOption(std::string& /* _return */, const std::string& /* nameanbieter */, const int32_t /* id */) override {
+    return;
+  }
+  void getAllPlacedBets(std::string& /* _return */) override {
+    return;
+  }
+  void getAllPlacedBetsToABetOption(std::string& /* _return */, const std::string& /* nameanbieter */, const int32_t /* id */) override {
+    return;
+  }
+  bool placeNewBet(const std::string& /* nameanbieter */, const int32_t /* betid */, const std::string& /* namebettor */, const double /* moneyset */, const int32_t /* ending */, const double /* winachance */, const double /* winbchance */, const double /* even */) override {
+    bool _return = false;
+    return _return;
+  }
+  bool addGame(const int32_t /* spielid */, const std::string& /* playera */, const std::string& /* playerb */) override {
+    bool _return = false;
+    return _return;
+  }
+  bool endGame(const int32_t /* spielid */, const int32_t /* pointsA */, const int32_t /* pointsB */) override {
+    bool _return = false;
+    return _return;
+  }
+  bool isGameOpen(const int32_t /* spielid */) override {
+    bool _return = false;
+    return _return;
+  }
+  void getAllOpenGames(std::string& /* _return */) override {
+    return;
+  }
+  void getAllClosedGames(std::string& /* _return */) override {
+    return;
+  }
+  void getSpecificGame(std::string& /* _return */, const int32_t /* spielid */) override {
+    return;
+  }
+  int32_t getPossibleEarningBookholder(const std::string& /* nameanbieter */, const int32_t /* betid */, const int32_t /* ending */) override {
+    int32_t _return = 0;
+    return _return;
+  }
+  int32_t getNumberOfBettors(const std::string& /* nameanbieter */, const int32_t /* betid */) override {
+    int32_t _return = 0;
+    return _return;
+  }
+  int32_t getEarningBettor(const std::string& /* nameanbieter */, const int32_t /* betid */, const std::string& /* namebettor */) override {
+    int32_t _return = 0;
+    return _return;
+  }
+  int32_t getEarningBookholder(const std::string& /* nameanbieter */, const int32_t /* betid */) override {
+    int32_t _return = 0;
     return _return;
   }
 };
 
 typedef struct _Wettanbieter_addBet_args__isset {
-  _Wettanbieter_addBet_args__isset() : nameanbieter(false), id(false), playera(false), playerb(false), winachance(false), winbchance(false), even(false) {}
+  _Wettanbieter_addBet_args__isset() : nameanbieter(false), wettid(false), spielid(false), winachance(false), winbchance(false), even(false) {}
   bool nameanbieter :1;
-  bool id :1;
-  bool playera :1;
-  bool playerb :1;
+  bool wettid :1;
+  bool spielid :1;
   bool winachance :1;
   bool winbchance :1;
   bool even :1;
@@ -111,9 +162,8 @@ class Wettanbieter_addBet_args {
   Wettanbieter_addBet_args& operator=(const Wettanbieter_addBet_args&);
   Wettanbieter_addBet_args() noexcept
                            : nameanbieter(),
-                             id(0),
-                             playera(),
-                             playerb(),
+                             wettid(0),
+                             spielid(0),
                              winachance(0),
                              winbchance(0),
                              even(0) {
@@ -121,9 +171,8 @@ class Wettanbieter_addBet_args {
 
   virtual ~Wettanbieter_addBet_args() noexcept;
   std::string nameanbieter;
-  int32_t id;
-  std::string playera;
-  std::string playerb;
+  int32_t wettid;
+  int32_t spielid;
   double winachance;
   double winbchance;
   double even;
@@ -132,11 +181,9 @@ class Wettanbieter_addBet_args {
 
   void __set_nameanbieter(const std::string& val);
 
-  void __set_id(const int32_t val);
+  void __set_wettid(const int32_t val);
 
-  void __set_playera(const std::string& val);
-
-  void __set_playerb(const std::string& val);
+  void __set_spielid(const int32_t val);
 
   void __set_winachance(const double val);
 
@@ -148,11 +195,9 @@ class Wettanbieter_addBet_args {
   {
     if (!(nameanbieter == rhs.nameanbieter))
       return false;
-    if (!(id == rhs.id))
+    if (!(wettid == rhs.wettid))
       return false;
-    if (!(playera == rhs.playera))
-      return false;
-    if (!(playerb == rhs.playerb))
+    if (!(spielid == rhs.spielid))
       return false;
     if (!(winachance == rhs.winachance))
       return false;
@@ -180,9 +225,8 @@ class Wettanbieter_addBet_pargs {
 
   virtual ~Wettanbieter_addBet_pargs() noexcept;
   const std::string* nameanbieter;
-  const int32_t* id;
-  const std::string* playera;
-  const std::string* playerb;
+  const int32_t* wettid;
+  const int32_t* spielid;
   const double* winachance;
   const double* winbchance;
   const double* even;
@@ -248,11 +292,10 @@ class Wettanbieter_addBet_presult {
 };
 
 typedef struct _Wettanbieter_changeBet_args__isset {
-  _Wettanbieter_changeBet_args__isset() : nameanbieter(false), id(false), playera(false), playerb(false), winachance(false), winbchance(false), even(false) {}
+  _Wettanbieter_changeBet_args__isset() : nameanbieter(false), wettid(false), spielid(false), winachance(false), winbchance(false), even(false) {}
   bool nameanbieter :1;
-  bool id :1;
-  bool playera :1;
-  bool playerb :1;
+  bool wettid :1;
+  bool spielid :1;
   bool winachance :1;
   bool winbchance :1;
   bool even :1;
@@ -265,9 +308,8 @@ class Wettanbieter_changeBet_args {
   Wettanbieter_changeBet_args& operator=(const Wettanbieter_changeBet_args&);
   Wettanbieter_changeBet_args() noexcept
                               : nameanbieter(),
-                                id(0),
-                                playera(),
-                                playerb(),
+                                wettid(0),
+                                spielid(0),
                                 winachance(0),
                                 winbchance(0),
                                 even(0) {
@@ -275,9 +317,8 @@ class Wettanbieter_changeBet_args {
 
   virtual ~Wettanbieter_changeBet_args() noexcept;
   std::string nameanbieter;
-  int32_t id;
-  std::string playera;
-  std::string playerb;
+  int32_t wettid;
+  int32_t spielid;
   double winachance;
   double winbchance;
   double even;
@@ -286,11 +327,9 @@ class Wettanbieter_changeBet_args {
 
   void __set_nameanbieter(const std::string& val);
 
-  void __set_id(const int32_t val);
+  void __set_wettid(const int32_t val);
 
-  void __set_playera(const std::string& val);
-
-  void __set_playerb(const std::string& val);
+  void __set_spielid(const int32_t val);
 
   void __set_winachance(const double val);
 
@@ -302,11 +341,9 @@ class Wettanbieter_changeBet_args {
   {
     if (!(nameanbieter == rhs.nameanbieter))
       return false;
-    if (!(id == rhs.id))
+    if (!(wettid == rhs.wettid))
       return false;
-    if (!(playera == rhs.playera))
-      return false;
-    if (!(playerb == rhs.playerb))
+    if (!(spielid == rhs.spielid))
       return false;
     if (!(winachance == rhs.winachance))
       return false;
@@ -334,9 +371,8 @@ class Wettanbieter_changeBet_pargs {
 
   virtual ~Wettanbieter_changeBet_pargs() noexcept;
   const std::string* nameanbieter;
-  const int32_t* id;
-  const std::string* playera;
-  const std::string* playerb;
+  const int32_t* wettid;
+  const int32_t* spielid;
   const double* winachance;
   const double* winbchance;
   const double* even;
@@ -515,38 +551,45 @@ class Wettanbieter_deleteBet_presult {
 
 };
 
-typedef struct _Wettanbieter_getMyBets_args__isset {
-  _Wettanbieter_getMyBets_args__isset() : nameanbieter(false) {}
+typedef struct _Wettanbieter_betExists_args__isset {
+  _Wettanbieter_betExists_args__isset() : nameanbieter(false), betid(false) {}
   bool nameanbieter :1;
-} _Wettanbieter_getMyBets_args__isset;
+  bool betid :1;
+} _Wettanbieter_betExists_args__isset;
 
-class Wettanbieter_getMyBets_args {
+class Wettanbieter_betExists_args {
  public:
 
-  Wettanbieter_getMyBets_args(const Wettanbieter_getMyBets_args&);
-  Wettanbieter_getMyBets_args& operator=(const Wettanbieter_getMyBets_args&);
-  Wettanbieter_getMyBets_args() noexcept
-                              : nameanbieter() {
+  Wettanbieter_betExists_args(const Wettanbieter_betExists_args&);
+  Wettanbieter_betExists_args& operator=(const Wettanbieter_betExists_args&);
+  Wettanbieter_betExists_args() noexcept
+                              : nameanbieter(),
+                                betid(0) {
   }
 
-  virtual ~Wettanbieter_getMyBets_args() noexcept;
+  virtual ~Wettanbieter_betExists_args() noexcept;
   std::string nameanbieter;
+  int32_t betid;
 
-  _Wettanbieter_getMyBets_args__isset __isset;
+  _Wettanbieter_betExists_args__isset __isset;
 
   void __set_nameanbieter(const std::string& val);
 
-  bool operator == (const Wettanbieter_getMyBets_args & rhs) const
+  void __set_betid(const int32_t val);
+
+  bool operator == (const Wettanbieter_betExists_args & rhs) const
   {
     if (!(nameanbieter == rhs.nameanbieter))
       return false;
+    if (!(betid == rhs.betid))
+      return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getMyBets_args &rhs) const {
+  bool operator != (const Wettanbieter_betExists_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getMyBets_args & ) const;
+  bool operator < (const Wettanbieter_betExists_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -554,93 +597,200 @@ class Wettanbieter_getMyBets_args {
 };
 
 
-class Wettanbieter_getMyBets_pargs {
+class Wettanbieter_betExists_pargs {
  public:
 
 
-  virtual ~Wettanbieter_getMyBets_pargs() noexcept;
+  virtual ~Wettanbieter_betExists_pargs() noexcept;
+  const std::string* nameanbieter;
+  const int32_t* betid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_betExists_result__isset {
+  _Wettanbieter_betExists_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_betExists_result__isset;
+
+class Wettanbieter_betExists_result {
+ public:
+
+  Wettanbieter_betExists_result(const Wettanbieter_betExists_result&) noexcept;
+  Wettanbieter_betExists_result& operator=(const Wettanbieter_betExists_result&) noexcept;
+  Wettanbieter_betExists_result() noexcept
+                                : success(0) {
+  }
+
+  virtual ~Wettanbieter_betExists_result() noexcept;
+  bool success;
+
+  _Wettanbieter_betExists_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_betExists_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_betExists_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_betExists_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_betExists_presult__isset {
+  _Wettanbieter_betExists_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_betExists_presult__isset;
+
+class Wettanbieter_betExists_presult {
+ public:
+
+
+  virtual ~Wettanbieter_betExists_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_betExists_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_getMyBetOptions_args__isset {
+  _Wettanbieter_getMyBetOptions_args__isset() : nameanbieter(false) {}
+  bool nameanbieter :1;
+} _Wettanbieter_getMyBetOptions_args__isset;
+
+class Wettanbieter_getMyBetOptions_args {
+ public:
+
+  Wettanbieter_getMyBetOptions_args(const Wettanbieter_getMyBetOptions_args&);
+  Wettanbieter_getMyBetOptions_args& operator=(const Wettanbieter_getMyBetOptions_args&);
+  Wettanbieter_getMyBetOptions_args() noexcept
+                                    : nameanbieter() {
+  }
+
+  virtual ~Wettanbieter_getMyBetOptions_args() noexcept;
+  std::string nameanbieter;
+
+  _Wettanbieter_getMyBetOptions_args__isset __isset;
+
+  void __set_nameanbieter(const std::string& val);
+
+  bool operator == (const Wettanbieter_getMyBetOptions_args & rhs) const
+  {
+    if (!(nameanbieter == rhs.nameanbieter))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getMyBetOptions_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getMyBetOptions_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getMyBetOptions_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getMyBetOptions_pargs() noexcept;
   const std::string* nameanbieter;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getMyBets_result__isset {
-  _Wettanbieter_getMyBets_result__isset() : success(false) {}
+typedef struct _Wettanbieter_getMyBetOptions_result__isset {
+  _Wettanbieter_getMyBetOptions_result__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getMyBets_result__isset;
+} _Wettanbieter_getMyBetOptions_result__isset;
 
-class Wettanbieter_getMyBets_result {
+class Wettanbieter_getMyBetOptions_result {
  public:
 
-  Wettanbieter_getMyBets_result(const Wettanbieter_getMyBets_result&);
-  Wettanbieter_getMyBets_result& operator=(const Wettanbieter_getMyBets_result&);
-  Wettanbieter_getMyBets_result() noexcept
-                                : success() {
+  Wettanbieter_getMyBetOptions_result(const Wettanbieter_getMyBetOptions_result&);
+  Wettanbieter_getMyBetOptions_result& operator=(const Wettanbieter_getMyBetOptions_result&);
+  Wettanbieter_getMyBetOptions_result() noexcept
+                                      : success() {
   }
 
-  virtual ~Wettanbieter_getMyBets_result() noexcept;
+  virtual ~Wettanbieter_getMyBetOptions_result() noexcept;
   std::string success;
 
-  _Wettanbieter_getMyBets_result__isset __isset;
+  _Wettanbieter_getMyBetOptions_result__isset __isset;
 
   void __set_success(const std::string& val);
 
-  bool operator == (const Wettanbieter_getMyBets_result & rhs) const
+  bool operator == (const Wettanbieter_getMyBetOptions_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getMyBets_result &rhs) const {
+  bool operator != (const Wettanbieter_getMyBetOptions_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getMyBets_result & ) const;
+  bool operator < (const Wettanbieter_getMyBetOptions_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getMyBets_presult__isset {
-  _Wettanbieter_getMyBets_presult__isset() : success(false) {}
+typedef struct _Wettanbieter_getMyBetOptions_presult__isset {
+  _Wettanbieter_getMyBetOptions_presult__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getMyBets_presult__isset;
+} _Wettanbieter_getMyBetOptions_presult__isset;
 
-class Wettanbieter_getMyBets_presult {
+class Wettanbieter_getMyBetOptions_presult {
  public:
 
 
-  virtual ~Wettanbieter_getMyBets_presult() noexcept;
+  virtual ~Wettanbieter_getMyBetOptions_presult() noexcept;
   std::string* success;
 
-  _Wettanbieter_getMyBets_presult__isset __isset;
+  _Wettanbieter_getMyBetOptions_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
 
-class Wettanbieter_getAllBets_args {
+class Wettanbieter_getAllBetOptions_args {
  public:
 
-  Wettanbieter_getAllBets_args(const Wettanbieter_getAllBets_args&) noexcept;
-  Wettanbieter_getAllBets_args& operator=(const Wettanbieter_getAllBets_args&) noexcept;
-  Wettanbieter_getAllBets_args() noexcept {
+  Wettanbieter_getAllBetOptions_args(const Wettanbieter_getAllBetOptions_args&) noexcept;
+  Wettanbieter_getAllBetOptions_args& operator=(const Wettanbieter_getAllBetOptions_args&) noexcept;
+  Wettanbieter_getAllBetOptions_args() noexcept {
   }
 
-  virtual ~Wettanbieter_getAllBets_args() noexcept;
+  virtual ~Wettanbieter_getAllBetOptions_args() noexcept;
 
-  bool operator == (const Wettanbieter_getAllBets_args & /* rhs */) const
+  bool operator == (const Wettanbieter_getAllBetOptions_args & /* rhs */) const
   {
     return true;
   }
-  bool operator != (const Wettanbieter_getAllBets_args &rhs) const {
+  bool operator != (const Wettanbieter_getAllBetOptions_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getAllBets_args & ) const;
+  bool operator < (const Wettanbieter_getAllBetOptions_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -648,99 +798,99 @@ class Wettanbieter_getAllBets_args {
 };
 
 
-class Wettanbieter_getAllBets_pargs {
+class Wettanbieter_getAllBetOptions_pargs {
  public:
 
 
-  virtual ~Wettanbieter_getAllBets_pargs() noexcept;
+  virtual ~Wettanbieter_getAllBetOptions_pargs() noexcept;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getAllBets_result__isset {
-  _Wettanbieter_getAllBets_result__isset() : success(false) {}
+typedef struct _Wettanbieter_getAllBetOptions_result__isset {
+  _Wettanbieter_getAllBetOptions_result__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getAllBets_result__isset;
+} _Wettanbieter_getAllBetOptions_result__isset;
 
-class Wettanbieter_getAllBets_result {
+class Wettanbieter_getAllBetOptions_result {
  public:
 
-  Wettanbieter_getAllBets_result(const Wettanbieter_getAllBets_result&);
-  Wettanbieter_getAllBets_result& operator=(const Wettanbieter_getAllBets_result&);
-  Wettanbieter_getAllBets_result() noexcept
-                                 : success() {
+  Wettanbieter_getAllBetOptions_result(const Wettanbieter_getAllBetOptions_result&);
+  Wettanbieter_getAllBetOptions_result& operator=(const Wettanbieter_getAllBetOptions_result&);
+  Wettanbieter_getAllBetOptions_result() noexcept
+                                       : success() {
   }
 
-  virtual ~Wettanbieter_getAllBets_result() noexcept;
+  virtual ~Wettanbieter_getAllBetOptions_result() noexcept;
   std::string success;
 
-  _Wettanbieter_getAllBets_result__isset __isset;
+  _Wettanbieter_getAllBetOptions_result__isset __isset;
 
   void __set_success(const std::string& val);
 
-  bool operator == (const Wettanbieter_getAllBets_result & rhs) const
+  bool operator == (const Wettanbieter_getAllBetOptions_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getAllBets_result &rhs) const {
+  bool operator != (const Wettanbieter_getAllBetOptions_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getAllBets_result & ) const;
+  bool operator < (const Wettanbieter_getAllBetOptions_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getAllBets_presult__isset {
-  _Wettanbieter_getAllBets_presult__isset() : success(false) {}
+typedef struct _Wettanbieter_getAllBetOptions_presult__isset {
+  _Wettanbieter_getAllBetOptions_presult__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getAllBets_presult__isset;
+} _Wettanbieter_getAllBetOptions_presult__isset;
 
-class Wettanbieter_getAllBets_presult {
+class Wettanbieter_getAllBetOptions_presult {
  public:
 
 
-  virtual ~Wettanbieter_getAllBets_presult() noexcept;
+  virtual ~Wettanbieter_getAllBetOptions_presult() noexcept;
   std::string* success;
 
-  _Wettanbieter_getAllBets_presult__isset __isset;
+  _Wettanbieter_getAllBetOptions_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _Wettanbieter_getSpecificBet_args__isset {
-  _Wettanbieter_getSpecificBet_args__isset() : nameanbieter(false), id(false) {}
+typedef struct _Wettanbieter_getSpecificBetOption_args__isset {
+  _Wettanbieter_getSpecificBetOption_args__isset() : nameanbieter(false), id(false) {}
   bool nameanbieter :1;
   bool id :1;
-} _Wettanbieter_getSpecificBet_args__isset;
+} _Wettanbieter_getSpecificBetOption_args__isset;
 
-class Wettanbieter_getSpecificBet_args {
+class Wettanbieter_getSpecificBetOption_args {
  public:
 
-  Wettanbieter_getSpecificBet_args(const Wettanbieter_getSpecificBet_args&);
-  Wettanbieter_getSpecificBet_args& operator=(const Wettanbieter_getSpecificBet_args&);
-  Wettanbieter_getSpecificBet_args() noexcept
-                                   : nameanbieter(),
-                                     id(0) {
+  Wettanbieter_getSpecificBetOption_args(const Wettanbieter_getSpecificBetOption_args&);
+  Wettanbieter_getSpecificBetOption_args& operator=(const Wettanbieter_getSpecificBetOption_args&);
+  Wettanbieter_getSpecificBetOption_args() noexcept
+                                         : nameanbieter(),
+                                           id(0) {
   }
 
-  virtual ~Wettanbieter_getSpecificBet_args() noexcept;
+  virtual ~Wettanbieter_getSpecificBetOption_args() noexcept;
   std::string nameanbieter;
   int32_t id;
 
-  _Wettanbieter_getSpecificBet_args__isset __isset;
+  _Wettanbieter_getSpecificBetOption_args__isset __isset;
 
   void __set_nameanbieter(const std::string& val);
 
   void __set_id(const int32_t val);
 
-  bool operator == (const Wettanbieter_getSpecificBet_args & rhs) const
+  bool operator == (const Wettanbieter_getSpecificBetOption_args & rhs) const
   {
     if (!(nameanbieter == rhs.nameanbieter))
       return false;
@@ -748,11 +898,11 @@ class Wettanbieter_getSpecificBet_args {
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getSpecificBet_args &rhs) const {
+  bool operator != (const Wettanbieter_getSpecificBetOption_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getSpecificBet_args & ) const;
+  bool operator < (const Wettanbieter_getSpecificBetOption_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -760,11 +910,11 @@ class Wettanbieter_getSpecificBet_args {
 };
 
 
-class Wettanbieter_getSpecificBet_pargs {
+class Wettanbieter_getSpecificBetOption_pargs {
  public:
 
 
-  virtual ~Wettanbieter_getSpecificBet_pargs() noexcept;
+  virtual ~Wettanbieter_getSpecificBetOption_pargs() noexcept;
   const std::string* nameanbieter;
   const int32_t* id;
 
@@ -772,101 +922,82 @@ class Wettanbieter_getSpecificBet_pargs {
 
 };
 
-typedef struct _Wettanbieter_getSpecificBet_result__isset {
-  _Wettanbieter_getSpecificBet_result__isset() : success(false) {}
+typedef struct _Wettanbieter_getSpecificBetOption_result__isset {
+  _Wettanbieter_getSpecificBetOption_result__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getSpecificBet_result__isset;
+} _Wettanbieter_getSpecificBetOption_result__isset;
 
-class Wettanbieter_getSpecificBet_result {
+class Wettanbieter_getSpecificBetOption_result {
  public:
 
-  Wettanbieter_getSpecificBet_result(const Wettanbieter_getSpecificBet_result&);
-  Wettanbieter_getSpecificBet_result& operator=(const Wettanbieter_getSpecificBet_result&);
-  Wettanbieter_getSpecificBet_result() noexcept
-                                     : success() {
+  Wettanbieter_getSpecificBetOption_result(const Wettanbieter_getSpecificBetOption_result&);
+  Wettanbieter_getSpecificBetOption_result& operator=(const Wettanbieter_getSpecificBetOption_result&);
+  Wettanbieter_getSpecificBetOption_result() noexcept
+                                           : success() {
   }
 
-  virtual ~Wettanbieter_getSpecificBet_result() noexcept;
+  virtual ~Wettanbieter_getSpecificBetOption_result() noexcept;
   std::string success;
 
-  _Wettanbieter_getSpecificBet_result__isset __isset;
+  _Wettanbieter_getSpecificBetOption_result__isset __isset;
 
   void __set_success(const std::string& val);
 
-  bool operator == (const Wettanbieter_getSpecificBet_result & rhs) const
+  bool operator == (const Wettanbieter_getSpecificBetOption_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getSpecificBet_result &rhs) const {
+  bool operator != (const Wettanbieter_getSpecificBetOption_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getSpecificBet_result & ) const;
+  bool operator < (const Wettanbieter_getSpecificBetOption_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getSpecificBet_presult__isset {
-  _Wettanbieter_getSpecificBet_presult__isset() : success(false) {}
+typedef struct _Wettanbieter_getSpecificBetOption_presult__isset {
+  _Wettanbieter_getSpecificBetOption_presult__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getSpecificBet_presult__isset;
+} _Wettanbieter_getSpecificBetOption_presult__isset;
 
-class Wettanbieter_getSpecificBet_presult {
+class Wettanbieter_getSpecificBetOption_presult {
  public:
 
 
-  virtual ~Wettanbieter_getSpecificBet_presult() noexcept;
+  virtual ~Wettanbieter_getSpecificBetOption_presult() noexcept;
   std::string* success;
 
-  _Wettanbieter_getSpecificBet_presult__isset __isset;
+  _Wettanbieter_getSpecificBetOption_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _Wettanbieter_getBettors_args__isset {
-  _Wettanbieter_getBettors_args__isset() : nameanbieter(false), id(false) {}
-  bool nameanbieter :1;
-  bool id :1;
-} _Wettanbieter_getBettors_args__isset;
 
-class Wettanbieter_getBettors_args {
+class Wettanbieter_getAllPlacedBets_args {
  public:
 
-  Wettanbieter_getBettors_args(const Wettanbieter_getBettors_args&);
-  Wettanbieter_getBettors_args& operator=(const Wettanbieter_getBettors_args&);
-  Wettanbieter_getBettors_args() noexcept
-                               : nameanbieter(),
-                                 id(0) {
+  Wettanbieter_getAllPlacedBets_args(const Wettanbieter_getAllPlacedBets_args&) noexcept;
+  Wettanbieter_getAllPlacedBets_args& operator=(const Wettanbieter_getAllPlacedBets_args&) noexcept;
+  Wettanbieter_getAllPlacedBets_args() noexcept {
   }
 
-  virtual ~Wettanbieter_getBettors_args() noexcept;
-  std::string nameanbieter;
-  int32_t id;
+  virtual ~Wettanbieter_getAllPlacedBets_args() noexcept;
 
-  _Wettanbieter_getBettors_args__isset __isset;
-
-  void __set_nameanbieter(const std::string& val);
-
-  void __set_id(const int32_t val);
-
-  bool operator == (const Wettanbieter_getBettors_args & rhs) const
+  bool operator == (const Wettanbieter_getAllPlacedBets_args & /* rhs */) const
   {
-    if (!(nameanbieter == rhs.nameanbieter))
-      return false;
-    if (!(id == rhs.id))
-      return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getBettors_args &rhs) const {
+  bool operator != (const Wettanbieter_getAllPlacedBets_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getBettors_args & ) const;
+  bool operator < (const Wettanbieter_getAllPlacedBets_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -874,101 +1005,99 @@ class Wettanbieter_getBettors_args {
 };
 
 
-class Wettanbieter_getBettors_pargs {
+class Wettanbieter_getAllPlacedBets_pargs {
  public:
 
 
-  virtual ~Wettanbieter_getBettors_pargs() noexcept;
-  const std::string* nameanbieter;
-  const int32_t* id;
+  virtual ~Wettanbieter_getAllPlacedBets_pargs() noexcept;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getBettors_result__isset {
-  _Wettanbieter_getBettors_result__isset() : success(false) {}
+typedef struct _Wettanbieter_getAllPlacedBets_result__isset {
+  _Wettanbieter_getAllPlacedBets_result__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getBettors_result__isset;
+} _Wettanbieter_getAllPlacedBets_result__isset;
 
-class Wettanbieter_getBettors_result {
+class Wettanbieter_getAllPlacedBets_result {
  public:
 
-  Wettanbieter_getBettors_result(const Wettanbieter_getBettors_result&);
-  Wettanbieter_getBettors_result& operator=(const Wettanbieter_getBettors_result&);
-  Wettanbieter_getBettors_result() noexcept
-                                 : success() {
+  Wettanbieter_getAllPlacedBets_result(const Wettanbieter_getAllPlacedBets_result&);
+  Wettanbieter_getAllPlacedBets_result& operator=(const Wettanbieter_getAllPlacedBets_result&);
+  Wettanbieter_getAllPlacedBets_result() noexcept
+                                       : success() {
   }
 
-  virtual ~Wettanbieter_getBettors_result() noexcept;
+  virtual ~Wettanbieter_getAllPlacedBets_result() noexcept;
   std::string success;
 
-  _Wettanbieter_getBettors_result__isset __isset;
+  _Wettanbieter_getAllPlacedBets_result__isset __isset;
 
   void __set_success(const std::string& val);
 
-  bool operator == (const Wettanbieter_getBettors_result & rhs) const
+  bool operator == (const Wettanbieter_getAllPlacedBets_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getBettors_result &rhs) const {
+  bool operator != (const Wettanbieter_getAllPlacedBets_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getBettors_result & ) const;
+  bool operator < (const Wettanbieter_getAllPlacedBets_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getBettors_presult__isset {
-  _Wettanbieter_getBettors_presult__isset() : success(false) {}
+typedef struct _Wettanbieter_getAllPlacedBets_presult__isset {
+  _Wettanbieter_getAllPlacedBets_presult__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getBettors_presult__isset;
+} _Wettanbieter_getAllPlacedBets_presult__isset;
 
-class Wettanbieter_getBettors_presult {
+class Wettanbieter_getAllPlacedBets_presult {
  public:
 
 
-  virtual ~Wettanbieter_getBettors_presult() noexcept;
+  virtual ~Wettanbieter_getAllPlacedBets_presult() noexcept;
   std::string* success;
 
-  _Wettanbieter_getBettors_presult__isset __isset;
+  _Wettanbieter_getAllPlacedBets_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _Wettanbieter_getAllPlacedBetsToAnBetOffer_args__isset {
-  _Wettanbieter_getAllPlacedBetsToAnBetOffer_args__isset() : nameanbieter(false), id(false) {}
+typedef struct _Wettanbieter_getAllPlacedBetsToABetOption_args__isset {
+  _Wettanbieter_getAllPlacedBetsToABetOption_args__isset() : nameanbieter(false), id(false) {}
   bool nameanbieter :1;
   bool id :1;
-} _Wettanbieter_getAllPlacedBetsToAnBetOffer_args__isset;
+} _Wettanbieter_getAllPlacedBetsToABetOption_args__isset;
 
-class Wettanbieter_getAllPlacedBetsToAnBetOffer_args {
+class Wettanbieter_getAllPlacedBetsToABetOption_args {
  public:
 
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_args(const Wettanbieter_getAllPlacedBetsToAnBetOffer_args&);
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_args& operator=(const Wettanbieter_getAllPlacedBetsToAnBetOffer_args&);
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_args() noexcept
+  Wettanbieter_getAllPlacedBetsToABetOption_args(const Wettanbieter_getAllPlacedBetsToABetOption_args&);
+  Wettanbieter_getAllPlacedBetsToABetOption_args& operator=(const Wettanbieter_getAllPlacedBetsToABetOption_args&);
+  Wettanbieter_getAllPlacedBetsToABetOption_args() noexcept
                                                  : nameanbieter(),
                                                    id(0) {
   }
 
-  virtual ~Wettanbieter_getAllPlacedBetsToAnBetOffer_args() noexcept;
+  virtual ~Wettanbieter_getAllPlacedBetsToABetOption_args() noexcept;
   std::string nameanbieter;
   int32_t id;
 
-  _Wettanbieter_getAllPlacedBetsToAnBetOffer_args__isset __isset;
+  _Wettanbieter_getAllPlacedBetsToABetOption_args__isset __isset;
 
   void __set_nameanbieter(const std::string& val);
 
   void __set_id(const int32_t val);
 
-  bool operator == (const Wettanbieter_getAllPlacedBetsToAnBetOffer_args & rhs) const
+  bool operator == (const Wettanbieter_getAllPlacedBetsToABetOption_args & rhs) const
   {
     if (!(nameanbieter == rhs.nameanbieter))
       return false;
@@ -976,11 +1105,11 @@ class Wettanbieter_getAllPlacedBetsToAnBetOffer_args {
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getAllPlacedBetsToAnBetOffer_args &rhs) const {
+  bool operator != (const Wettanbieter_getAllPlacedBetsToABetOption_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getAllPlacedBetsToAnBetOffer_args & ) const;
+  bool operator < (const Wettanbieter_getAllPlacedBetsToABetOption_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -988,11 +1117,11 @@ class Wettanbieter_getAllPlacedBetsToAnBetOffer_args {
 };
 
 
-class Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs {
+class Wettanbieter_getAllPlacedBetsToABetOption_pargs {
  public:
 
 
-  virtual ~Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs() noexcept;
+  virtual ~Wettanbieter_getAllPlacedBetsToABetOption_pargs() noexcept;
   const std::string* nameanbieter;
   const int32_t* id;
 
@@ -1000,64 +1129,64 @@ class Wettanbieter_getAllPlacedBetsToAnBetOffer_pargs {
 
 };
 
-typedef struct _Wettanbieter_getAllPlacedBetsToAnBetOffer_result__isset {
-  _Wettanbieter_getAllPlacedBetsToAnBetOffer_result__isset() : success(false) {}
+typedef struct _Wettanbieter_getAllPlacedBetsToABetOption_result__isset {
+  _Wettanbieter_getAllPlacedBetsToABetOption_result__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getAllPlacedBetsToAnBetOffer_result__isset;
+} _Wettanbieter_getAllPlacedBetsToABetOption_result__isset;
 
-class Wettanbieter_getAllPlacedBetsToAnBetOffer_result {
+class Wettanbieter_getAllPlacedBetsToABetOption_result {
  public:
 
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_result(const Wettanbieter_getAllPlacedBetsToAnBetOffer_result&);
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_result& operator=(const Wettanbieter_getAllPlacedBetsToAnBetOffer_result&);
-  Wettanbieter_getAllPlacedBetsToAnBetOffer_result() noexcept
+  Wettanbieter_getAllPlacedBetsToABetOption_result(const Wettanbieter_getAllPlacedBetsToABetOption_result&);
+  Wettanbieter_getAllPlacedBetsToABetOption_result& operator=(const Wettanbieter_getAllPlacedBetsToABetOption_result&);
+  Wettanbieter_getAllPlacedBetsToABetOption_result() noexcept
                                                    : success() {
   }
 
-  virtual ~Wettanbieter_getAllPlacedBetsToAnBetOffer_result() noexcept;
+  virtual ~Wettanbieter_getAllPlacedBetsToABetOption_result() noexcept;
   std::string success;
 
-  _Wettanbieter_getAllPlacedBetsToAnBetOffer_result__isset __isset;
+  _Wettanbieter_getAllPlacedBetsToABetOption_result__isset __isset;
 
   void __set_success(const std::string& val);
 
-  bool operator == (const Wettanbieter_getAllPlacedBetsToAnBetOffer_result & rhs) const
+  bool operator == (const Wettanbieter_getAllPlacedBetsToABetOption_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_getAllPlacedBetsToAnBetOffer_result &rhs) const {
+  bool operator != (const Wettanbieter_getAllPlacedBetsToABetOption_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_getAllPlacedBetsToAnBetOffer_result & ) const;
+  bool operator < (const Wettanbieter_getAllPlacedBetsToABetOption_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_getAllPlacedBetsToAnBetOffer_presult__isset {
-  _Wettanbieter_getAllPlacedBetsToAnBetOffer_presult__isset() : success(false) {}
+typedef struct _Wettanbieter_getAllPlacedBetsToABetOption_presult__isset {
+  _Wettanbieter_getAllPlacedBetsToABetOption_presult__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_getAllPlacedBetsToAnBetOffer_presult__isset;
+} _Wettanbieter_getAllPlacedBetsToABetOption_presult__isset;
 
-class Wettanbieter_getAllPlacedBetsToAnBetOffer_presult {
+class Wettanbieter_getAllPlacedBetsToABetOption_presult {
  public:
 
 
-  virtual ~Wettanbieter_getAllPlacedBetsToAnBetOffer_presult() noexcept;
+  virtual ~Wettanbieter_getAllPlacedBetsToABetOption_presult() noexcept;
   std::string* success;
 
-  _Wettanbieter_getAllPlacedBetsToAnBetOffer_presult__isset __isset;
+  _Wettanbieter_getAllPlacedBetsToABetOption_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _Wettanbieter_setBettor_args__isset {
-  _Wettanbieter_setBettor_args__isset() : nameanbieter(false), betid(false), namebettor(false), moneyset(false), ending(false), winachance(false), winbchance(false), even(false) {}
+typedef struct _Wettanbieter_placeNewBet_args__isset {
+  _Wettanbieter_placeNewBet_args__isset() : nameanbieter(false), betid(false), namebettor(false), moneyset(false), ending(false), winachance(false), winbchance(false), even(false) {}
   bool nameanbieter :1;
   bool betid :1;
   bool namebettor :1;
@@ -1066,25 +1195,25 @@ typedef struct _Wettanbieter_setBettor_args__isset {
   bool winachance :1;
   bool winbchance :1;
   bool even :1;
-} _Wettanbieter_setBettor_args__isset;
+} _Wettanbieter_placeNewBet_args__isset;
 
-class Wettanbieter_setBettor_args {
+class Wettanbieter_placeNewBet_args {
  public:
 
-  Wettanbieter_setBettor_args(const Wettanbieter_setBettor_args&);
-  Wettanbieter_setBettor_args& operator=(const Wettanbieter_setBettor_args&);
-  Wettanbieter_setBettor_args() noexcept
-                              : nameanbieter(),
-                                betid(0),
-                                namebettor(),
-                                moneyset(0),
-                                ending(0),
-                                winachance(0),
-                                winbchance(0),
-                                even(0) {
+  Wettanbieter_placeNewBet_args(const Wettanbieter_placeNewBet_args&);
+  Wettanbieter_placeNewBet_args& operator=(const Wettanbieter_placeNewBet_args&);
+  Wettanbieter_placeNewBet_args() noexcept
+                                : nameanbieter(),
+                                  betid(0),
+                                  namebettor(),
+                                  moneyset(0),
+                                  ending(0),
+                                  winachance(0),
+                                  winbchance(0),
+                                  even(0) {
   }
 
-  virtual ~Wettanbieter_setBettor_args() noexcept;
+  virtual ~Wettanbieter_placeNewBet_args() noexcept;
   std::string nameanbieter;
   int32_t betid;
   std::string namebettor;
@@ -1094,7 +1223,7 @@ class Wettanbieter_setBettor_args {
   double winbchance;
   double even;
 
-  _Wettanbieter_setBettor_args__isset __isset;
+  _Wettanbieter_placeNewBet_args__isset __isset;
 
   void __set_nameanbieter(const std::string& val);
 
@@ -1112,7 +1241,7 @@ class Wettanbieter_setBettor_args {
 
   void __set_even(const double val);
 
-  bool operator == (const Wettanbieter_setBettor_args & rhs) const
+  bool operator == (const Wettanbieter_placeNewBet_args & rhs) const
   {
     if (!(nameanbieter == rhs.nameanbieter))
       return false;
@@ -1132,11 +1261,11 @@ class Wettanbieter_setBettor_args {
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_setBettor_args &rhs) const {
+  bool operator != (const Wettanbieter_placeNewBet_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_setBettor_args & ) const;
+  bool operator < (const Wettanbieter_placeNewBet_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -1144,11 +1273,11 @@ class Wettanbieter_setBettor_args {
 };
 
 
-class Wettanbieter_setBettor_pargs {
+class Wettanbieter_placeNewBet_pargs {
  public:
 
 
-  virtual ~Wettanbieter_setBettor_pargs() noexcept;
+  virtual ~Wettanbieter_placeNewBet_pargs() noexcept;
   const std::string* nameanbieter;
   const int32_t* betid;
   const std::string* namebettor;
@@ -1162,57 +1291,1171 @@ class Wettanbieter_setBettor_pargs {
 
 };
 
-typedef struct _Wettanbieter_setBettor_result__isset {
-  _Wettanbieter_setBettor_result__isset() : success(false) {}
+typedef struct _Wettanbieter_placeNewBet_result__isset {
+  _Wettanbieter_placeNewBet_result__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_setBettor_result__isset;
+} _Wettanbieter_placeNewBet_result__isset;
 
-class Wettanbieter_setBettor_result {
+class Wettanbieter_placeNewBet_result {
  public:
 
-  Wettanbieter_setBettor_result(const Wettanbieter_setBettor_result&) noexcept;
-  Wettanbieter_setBettor_result& operator=(const Wettanbieter_setBettor_result&) noexcept;
-  Wettanbieter_setBettor_result() noexcept
-                                : success(0) {
+  Wettanbieter_placeNewBet_result(const Wettanbieter_placeNewBet_result&) noexcept;
+  Wettanbieter_placeNewBet_result& operator=(const Wettanbieter_placeNewBet_result&) noexcept;
+  Wettanbieter_placeNewBet_result() noexcept
+                                  : success(0) {
   }
 
-  virtual ~Wettanbieter_setBettor_result() noexcept;
+  virtual ~Wettanbieter_placeNewBet_result() noexcept;
   bool success;
 
-  _Wettanbieter_setBettor_result__isset __isset;
+  _Wettanbieter_placeNewBet_result__isset __isset;
 
   void __set_success(const bool val);
 
-  bool operator == (const Wettanbieter_setBettor_result & rhs) const
+  bool operator == (const Wettanbieter_placeNewBet_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const Wettanbieter_setBettor_result &rhs) const {
+  bool operator != (const Wettanbieter_placeNewBet_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Wettanbieter_setBettor_result & ) const;
+  bool operator < (const Wettanbieter_placeNewBet_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _Wettanbieter_setBettor_presult__isset {
-  _Wettanbieter_setBettor_presult__isset() : success(false) {}
+typedef struct _Wettanbieter_placeNewBet_presult__isset {
+  _Wettanbieter_placeNewBet_presult__isset() : success(false) {}
   bool success :1;
-} _Wettanbieter_setBettor_presult__isset;
+} _Wettanbieter_placeNewBet_presult__isset;
 
-class Wettanbieter_setBettor_presult {
+class Wettanbieter_placeNewBet_presult {
  public:
 
 
-  virtual ~Wettanbieter_setBettor_presult() noexcept;
+  virtual ~Wettanbieter_placeNewBet_presult() noexcept;
   bool* success;
 
-  _Wettanbieter_setBettor_presult__isset __isset;
+  _Wettanbieter_placeNewBet_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_addGame_args__isset {
+  _Wettanbieter_addGame_args__isset() : spielid(false), playera(false), playerb(false) {}
+  bool spielid :1;
+  bool playera :1;
+  bool playerb :1;
+} _Wettanbieter_addGame_args__isset;
+
+class Wettanbieter_addGame_args {
+ public:
+
+  Wettanbieter_addGame_args(const Wettanbieter_addGame_args&);
+  Wettanbieter_addGame_args& operator=(const Wettanbieter_addGame_args&);
+  Wettanbieter_addGame_args() noexcept
+                            : spielid(0),
+                              playera(),
+                              playerb() {
+  }
+
+  virtual ~Wettanbieter_addGame_args() noexcept;
+  int32_t spielid;
+  std::string playera;
+  std::string playerb;
+
+  _Wettanbieter_addGame_args__isset __isset;
+
+  void __set_spielid(const int32_t val);
+
+  void __set_playera(const std::string& val);
+
+  void __set_playerb(const std::string& val);
+
+  bool operator == (const Wettanbieter_addGame_args & rhs) const
+  {
+    if (!(spielid == rhs.spielid))
+      return false;
+    if (!(playera == rhs.playera))
+      return false;
+    if (!(playerb == rhs.playerb))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_addGame_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_addGame_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_addGame_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_addGame_pargs() noexcept;
+  const int32_t* spielid;
+  const std::string* playera;
+  const std::string* playerb;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_addGame_result__isset {
+  _Wettanbieter_addGame_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_addGame_result__isset;
+
+class Wettanbieter_addGame_result {
+ public:
+
+  Wettanbieter_addGame_result(const Wettanbieter_addGame_result&) noexcept;
+  Wettanbieter_addGame_result& operator=(const Wettanbieter_addGame_result&) noexcept;
+  Wettanbieter_addGame_result() noexcept
+                              : success(0) {
+  }
+
+  virtual ~Wettanbieter_addGame_result() noexcept;
+  bool success;
+
+  _Wettanbieter_addGame_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_addGame_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_addGame_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_addGame_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_addGame_presult__isset {
+  _Wettanbieter_addGame_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_addGame_presult__isset;
+
+class Wettanbieter_addGame_presult {
+ public:
+
+
+  virtual ~Wettanbieter_addGame_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_addGame_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_endGame_args__isset {
+  _Wettanbieter_endGame_args__isset() : spielid(false), pointsA(false), pointsB(false) {}
+  bool spielid :1;
+  bool pointsA :1;
+  bool pointsB :1;
+} _Wettanbieter_endGame_args__isset;
+
+class Wettanbieter_endGame_args {
+ public:
+
+  Wettanbieter_endGame_args(const Wettanbieter_endGame_args&) noexcept;
+  Wettanbieter_endGame_args& operator=(const Wettanbieter_endGame_args&) noexcept;
+  Wettanbieter_endGame_args() noexcept
+                            : spielid(0),
+                              pointsA(0),
+                              pointsB(0) {
+  }
+
+  virtual ~Wettanbieter_endGame_args() noexcept;
+  int32_t spielid;
+  int32_t pointsA;
+  int32_t pointsB;
+
+  _Wettanbieter_endGame_args__isset __isset;
+
+  void __set_spielid(const int32_t val);
+
+  void __set_pointsA(const int32_t val);
+
+  void __set_pointsB(const int32_t val);
+
+  bool operator == (const Wettanbieter_endGame_args & rhs) const
+  {
+    if (!(spielid == rhs.spielid))
+      return false;
+    if (!(pointsA == rhs.pointsA))
+      return false;
+    if (!(pointsB == rhs.pointsB))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_endGame_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_endGame_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_endGame_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_endGame_pargs() noexcept;
+  const int32_t* spielid;
+  const int32_t* pointsA;
+  const int32_t* pointsB;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_endGame_result__isset {
+  _Wettanbieter_endGame_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_endGame_result__isset;
+
+class Wettanbieter_endGame_result {
+ public:
+
+  Wettanbieter_endGame_result(const Wettanbieter_endGame_result&) noexcept;
+  Wettanbieter_endGame_result& operator=(const Wettanbieter_endGame_result&) noexcept;
+  Wettanbieter_endGame_result() noexcept
+                              : success(0) {
+  }
+
+  virtual ~Wettanbieter_endGame_result() noexcept;
+  bool success;
+
+  _Wettanbieter_endGame_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_endGame_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_endGame_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_endGame_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_endGame_presult__isset {
+  _Wettanbieter_endGame_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_endGame_presult__isset;
+
+class Wettanbieter_endGame_presult {
+ public:
+
+
+  virtual ~Wettanbieter_endGame_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_endGame_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_isGameOpen_args__isset {
+  _Wettanbieter_isGameOpen_args__isset() : spielid(false) {}
+  bool spielid :1;
+} _Wettanbieter_isGameOpen_args__isset;
+
+class Wettanbieter_isGameOpen_args {
+ public:
+
+  Wettanbieter_isGameOpen_args(const Wettanbieter_isGameOpen_args&) noexcept;
+  Wettanbieter_isGameOpen_args& operator=(const Wettanbieter_isGameOpen_args&) noexcept;
+  Wettanbieter_isGameOpen_args() noexcept
+                               : spielid(0) {
+  }
+
+  virtual ~Wettanbieter_isGameOpen_args() noexcept;
+  int32_t spielid;
+
+  _Wettanbieter_isGameOpen_args__isset __isset;
+
+  void __set_spielid(const int32_t val);
+
+  bool operator == (const Wettanbieter_isGameOpen_args & rhs) const
+  {
+    if (!(spielid == rhs.spielid))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_isGameOpen_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_isGameOpen_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_isGameOpen_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_isGameOpen_pargs() noexcept;
+  const int32_t* spielid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_isGameOpen_result__isset {
+  _Wettanbieter_isGameOpen_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_isGameOpen_result__isset;
+
+class Wettanbieter_isGameOpen_result {
+ public:
+
+  Wettanbieter_isGameOpen_result(const Wettanbieter_isGameOpen_result&) noexcept;
+  Wettanbieter_isGameOpen_result& operator=(const Wettanbieter_isGameOpen_result&) noexcept;
+  Wettanbieter_isGameOpen_result() noexcept
+                                 : success(0) {
+  }
+
+  virtual ~Wettanbieter_isGameOpen_result() noexcept;
+  bool success;
+
+  _Wettanbieter_isGameOpen_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_isGameOpen_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_isGameOpen_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_isGameOpen_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_isGameOpen_presult__isset {
+  _Wettanbieter_isGameOpen_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_isGameOpen_presult__isset;
+
+class Wettanbieter_isGameOpen_presult {
+ public:
+
+
+  virtual ~Wettanbieter_isGameOpen_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_isGameOpen_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+
+class Wettanbieter_getAllOpenGames_args {
+ public:
+
+  Wettanbieter_getAllOpenGames_args(const Wettanbieter_getAllOpenGames_args&) noexcept;
+  Wettanbieter_getAllOpenGames_args& operator=(const Wettanbieter_getAllOpenGames_args&) noexcept;
+  Wettanbieter_getAllOpenGames_args() noexcept {
+  }
+
+  virtual ~Wettanbieter_getAllOpenGames_args() noexcept;
+
+  bool operator == (const Wettanbieter_getAllOpenGames_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const Wettanbieter_getAllOpenGames_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getAllOpenGames_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getAllOpenGames_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getAllOpenGames_pargs() noexcept;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getAllOpenGames_result__isset {
+  _Wettanbieter_getAllOpenGames_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getAllOpenGames_result__isset;
+
+class Wettanbieter_getAllOpenGames_result {
+ public:
+
+  Wettanbieter_getAllOpenGames_result(const Wettanbieter_getAllOpenGames_result&);
+  Wettanbieter_getAllOpenGames_result& operator=(const Wettanbieter_getAllOpenGames_result&);
+  Wettanbieter_getAllOpenGames_result() noexcept
+                                      : success() {
+  }
+
+  virtual ~Wettanbieter_getAllOpenGames_result() noexcept;
+  std::string success;
+
+  _Wettanbieter_getAllOpenGames_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Wettanbieter_getAllOpenGames_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getAllOpenGames_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getAllOpenGames_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getAllOpenGames_presult__isset {
+  _Wettanbieter_getAllOpenGames_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getAllOpenGames_presult__isset;
+
+class Wettanbieter_getAllOpenGames_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getAllOpenGames_presult() noexcept;
+  std::string* success;
+
+  _Wettanbieter_getAllOpenGames_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+
+class Wettanbieter_getAllClosedGames_args {
+ public:
+
+  Wettanbieter_getAllClosedGames_args(const Wettanbieter_getAllClosedGames_args&) noexcept;
+  Wettanbieter_getAllClosedGames_args& operator=(const Wettanbieter_getAllClosedGames_args&) noexcept;
+  Wettanbieter_getAllClosedGames_args() noexcept {
+  }
+
+  virtual ~Wettanbieter_getAllClosedGames_args() noexcept;
+
+  bool operator == (const Wettanbieter_getAllClosedGames_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const Wettanbieter_getAllClosedGames_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getAllClosedGames_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getAllClosedGames_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getAllClosedGames_pargs() noexcept;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getAllClosedGames_result__isset {
+  _Wettanbieter_getAllClosedGames_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getAllClosedGames_result__isset;
+
+class Wettanbieter_getAllClosedGames_result {
+ public:
+
+  Wettanbieter_getAllClosedGames_result(const Wettanbieter_getAllClosedGames_result&);
+  Wettanbieter_getAllClosedGames_result& operator=(const Wettanbieter_getAllClosedGames_result&);
+  Wettanbieter_getAllClosedGames_result() noexcept
+                                        : success() {
+  }
+
+  virtual ~Wettanbieter_getAllClosedGames_result() noexcept;
+  std::string success;
+
+  _Wettanbieter_getAllClosedGames_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Wettanbieter_getAllClosedGames_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getAllClosedGames_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getAllClosedGames_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getAllClosedGames_presult__isset {
+  _Wettanbieter_getAllClosedGames_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getAllClosedGames_presult__isset;
+
+class Wettanbieter_getAllClosedGames_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getAllClosedGames_presult() noexcept;
+  std::string* success;
+
+  _Wettanbieter_getAllClosedGames_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_getSpecificGame_args__isset {
+  _Wettanbieter_getSpecificGame_args__isset() : spielid(false) {}
+  bool spielid :1;
+} _Wettanbieter_getSpecificGame_args__isset;
+
+class Wettanbieter_getSpecificGame_args {
+ public:
+
+  Wettanbieter_getSpecificGame_args(const Wettanbieter_getSpecificGame_args&) noexcept;
+  Wettanbieter_getSpecificGame_args& operator=(const Wettanbieter_getSpecificGame_args&) noexcept;
+  Wettanbieter_getSpecificGame_args() noexcept
+                                    : spielid(0) {
+  }
+
+  virtual ~Wettanbieter_getSpecificGame_args() noexcept;
+  int32_t spielid;
+
+  _Wettanbieter_getSpecificGame_args__isset __isset;
+
+  void __set_spielid(const int32_t val);
+
+  bool operator == (const Wettanbieter_getSpecificGame_args & rhs) const
+  {
+    if (!(spielid == rhs.spielid))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getSpecificGame_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getSpecificGame_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getSpecificGame_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getSpecificGame_pargs() noexcept;
+  const int32_t* spielid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getSpecificGame_result__isset {
+  _Wettanbieter_getSpecificGame_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getSpecificGame_result__isset;
+
+class Wettanbieter_getSpecificGame_result {
+ public:
+
+  Wettanbieter_getSpecificGame_result(const Wettanbieter_getSpecificGame_result&);
+  Wettanbieter_getSpecificGame_result& operator=(const Wettanbieter_getSpecificGame_result&);
+  Wettanbieter_getSpecificGame_result() noexcept
+                                      : success() {
+  }
+
+  virtual ~Wettanbieter_getSpecificGame_result() noexcept;
+  std::string success;
+
+  _Wettanbieter_getSpecificGame_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Wettanbieter_getSpecificGame_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getSpecificGame_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getSpecificGame_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getSpecificGame_presult__isset {
+  _Wettanbieter_getSpecificGame_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getSpecificGame_presult__isset;
+
+class Wettanbieter_getSpecificGame_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getSpecificGame_presult() noexcept;
+  std::string* success;
+
+  _Wettanbieter_getSpecificGame_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_getPossibleEarningBookholder_args__isset {
+  _Wettanbieter_getPossibleEarningBookholder_args__isset() : nameanbieter(false), betid(false), ending(false) {}
+  bool nameanbieter :1;
+  bool betid :1;
+  bool ending :1;
+} _Wettanbieter_getPossibleEarningBookholder_args__isset;
+
+class Wettanbieter_getPossibleEarningBookholder_args {
+ public:
+
+  Wettanbieter_getPossibleEarningBookholder_args(const Wettanbieter_getPossibleEarningBookholder_args&);
+  Wettanbieter_getPossibleEarningBookholder_args& operator=(const Wettanbieter_getPossibleEarningBookholder_args&);
+  Wettanbieter_getPossibleEarningBookholder_args() noexcept
+                                                 : nameanbieter(),
+                                                   betid(0),
+                                                   ending(0) {
+  }
+
+  virtual ~Wettanbieter_getPossibleEarningBookholder_args() noexcept;
+  std::string nameanbieter;
+  int32_t betid;
+  int32_t ending;
+
+  _Wettanbieter_getPossibleEarningBookholder_args__isset __isset;
+
+  void __set_nameanbieter(const std::string& val);
+
+  void __set_betid(const int32_t val);
+
+  void __set_ending(const int32_t val);
+
+  bool operator == (const Wettanbieter_getPossibleEarningBookholder_args & rhs) const
+  {
+    if (!(nameanbieter == rhs.nameanbieter))
+      return false;
+    if (!(betid == rhs.betid))
+      return false;
+    if (!(ending == rhs.ending))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getPossibleEarningBookholder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getPossibleEarningBookholder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getPossibleEarningBookholder_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getPossibleEarningBookholder_pargs() noexcept;
+  const std::string* nameanbieter;
+  const int32_t* betid;
+  const int32_t* ending;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getPossibleEarningBookholder_result__isset {
+  _Wettanbieter_getPossibleEarningBookholder_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getPossibleEarningBookholder_result__isset;
+
+class Wettanbieter_getPossibleEarningBookholder_result {
+ public:
+
+  Wettanbieter_getPossibleEarningBookholder_result(const Wettanbieter_getPossibleEarningBookholder_result&) noexcept;
+  Wettanbieter_getPossibleEarningBookholder_result& operator=(const Wettanbieter_getPossibleEarningBookholder_result&) noexcept;
+  Wettanbieter_getPossibleEarningBookholder_result() noexcept
+                                                   : success(0) {
+  }
+
+  virtual ~Wettanbieter_getPossibleEarningBookholder_result() noexcept;
+  int32_t success;
+
+  _Wettanbieter_getPossibleEarningBookholder_result__isset __isset;
+
+  void __set_success(const int32_t val);
+
+  bool operator == (const Wettanbieter_getPossibleEarningBookholder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getPossibleEarningBookholder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getPossibleEarningBookholder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getPossibleEarningBookholder_presult__isset {
+  _Wettanbieter_getPossibleEarningBookholder_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getPossibleEarningBookholder_presult__isset;
+
+class Wettanbieter_getPossibleEarningBookholder_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getPossibleEarningBookholder_presult() noexcept;
+  int32_t* success;
+
+  _Wettanbieter_getPossibleEarningBookholder_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_getNumberOfBettors_args__isset {
+  _Wettanbieter_getNumberOfBettors_args__isset() : nameanbieter(false), betid(false) {}
+  bool nameanbieter :1;
+  bool betid :1;
+} _Wettanbieter_getNumberOfBettors_args__isset;
+
+class Wettanbieter_getNumberOfBettors_args {
+ public:
+
+  Wettanbieter_getNumberOfBettors_args(const Wettanbieter_getNumberOfBettors_args&);
+  Wettanbieter_getNumberOfBettors_args& operator=(const Wettanbieter_getNumberOfBettors_args&);
+  Wettanbieter_getNumberOfBettors_args() noexcept
+                                       : nameanbieter(),
+                                         betid(0) {
+  }
+
+  virtual ~Wettanbieter_getNumberOfBettors_args() noexcept;
+  std::string nameanbieter;
+  int32_t betid;
+
+  _Wettanbieter_getNumberOfBettors_args__isset __isset;
+
+  void __set_nameanbieter(const std::string& val);
+
+  void __set_betid(const int32_t val);
+
+  bool operator == (const Wettanbieter_getNumberOfBettors_args & rhs) const
+  {
+    if (!(nameanbieter == rhs.nameanbieter))
+      return false;
+    if (!(betid == rhs.betid))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getNumberOfBettors_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getNumberOfBettors_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getNumberOfBettors_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getNumberOfBettors_pargs() noexcept;
+  const std::string* nameanbieter;
+  const int32_t* betid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getNumberOfBettors_result__isset {
+  _Wettanbieter_getNumberOfBettors_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getNumberOfBettors_result__isset;
+
+class Wettanbieter_getNumberOfBettors_result {
+ public:
+
+  Wettanbieter_getNumberOfBettors_result(const Wettanbieter_getNumberOfBettors_result&) noexcept;
+  Wettanbieter_getNumberOfBettors_result& operator=(const Wettanbieter_getNumberOfBettors_result&) noexcept;
+  Wettanbieter_getNumberOfBettors_result() noexcept
+                                         : success(0) {
+  }
+
+  virtual ~Wettanbieter_getNumberOfBettors_result() noexcept;
+  int32_t success;
+
+  _Wettanbieter_getNumberOfBettors_result__isset __isset;
+
+  void __set_success(const int32_t val);
+
+  bool operator == (const Wettanbieter_getNumberOfBettors_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getNumberOfBettors_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getNumberOfBettors_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getNumberOfBettors_presult__isset {
+  _Wettanbieter_getNumberOfBettors_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getNumberOfBettors_presult__isset;
+
+class Wettanbieter_getNumberOfBettors_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getNumberOfBettors_presult() noexcept;
+  int32_t* success;
+
+  _Wettanbieter_getNumberOfBettors_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_getEarningBettor_args__isset {
+  _Wettanbieter_getEarningBettor_args__isset() : nameanbieter(false), betid(false), namebettor(false) {}
+  bool nameanbieter :1;
+  bool betid :1;
+  bool namebettor :1;
+} _Wettanbieter_getEarningBettor_args__isset;
+
+class Wettanbieter_getEarningBettor_args {
+ public:
+
+  Wettanbieter_getEarningBettor_args(const Wettanbieter_getEarningBettor_args&);
+  Wettanbieter_getEarningBettor_args& operator=(const Wettanbieter_getEarningBettor_args&);
+  Wettanbieter_getEarningBettor_args() noexcept
+                                     : nameanbieter(),
+                                       betid(0),
+                                       namebettor() {
+  }
+
+  virtual ~Wettanbieter_getEarningBettor_args() noexcept;
+  std::string nameanbieter;
+  int32_t betid;
+  std::string namebettor;
+
+  _Wettanbieter_getEarningBettor_args__isset __isset;
+
+  void __set_nameanbieter(const std::string& val);
+
+  void __set_betid(const int32_t val);
+
+  void __set_namebettor(const std::string& val);
+
+  bool operator == (const Wettanbieter_getEarningBettor_args & rhs) const
+  {
+    if (!(nameanbieter == rhs.nameanbieter))
+      return false;
+    if (!(betid == rhs.betid))
+      return false;
+    if (!(namebettor == rhs.namebettor))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getEarningBettor_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getEarningBettor_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getEarningBettor_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getEarningBettor_pargs() noexcept;
+  const std::string* nameanbieter;
+  const int32_t* betid;
+  const std::string* namebettor;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getEarningBettor_result__isset {
+  _Wettanbieter_getEarningBettor_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getEarningBettor_result__isset;
+
+class Wettanbieter_getEarningBettor_result {
+ public:
+
+  Wettanbieter_getEarningBettor_result(const Wettanbieter_getEarningBettor_result&) noexcept;
+  Wettanbieter_getEarningBettor_result& operator=(const Wettanbieter_getEarningBettor_result&) noexcept;
+  Wettanbieter_getEarningBettor_result() noexcept
+                                       : success(0) {
+  }
+
+  virtual ~Wettanbieter_getEarningBettor_result() noexcept;
+  int32_t success;
+
+  _Wettanbieter_getEarningBettor_result__isset __isset;
+
+  void __set_success(const int32_t val);
+
+  bool operator == (const Wettanbieter_getEarningBettor_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getEarningBettor_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getEarningBettor_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getEarningBettor_presult__isset {
+  _Wettanbieter_getEarningBettor_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getEarningBettor_presult__isset;
+
+class Wettanbieter_getEarningBettor_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getEarningBettor_presult() noexcept;
+  int32_t* success;
+
+  _Wettanbieter_getEarningBettor_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Wettanbieter_getEarningBookholder_args__isset {
+  _Wettanbieter_getEarningBookholder_args__isset() : nameanbieter(false), betid(false) {}
+  bool nameanbieter :1;
+  bool betid :1;
+} _Wettanbieter_getEarningBookholder_args__isset;
+
+class Wettanbieter_getEarningBookholder_args {
+ public:
+
+  Wettanbieter_getEarningBookholder_args(const Wettanbieter_getEarningBookholder_args&);
+  Wettanbieter_getEarningBookholder_args& operator=(const Wettanbieter_getEarningBookholder_args&);
+  Wettanbieter_getEarningBookholder_args() noexcept
+                                         : nameanbieter(),
+                                           betid(0) {
+  }
+
+  virtual ~Wettanbieter_getEarningBookholder_args() noexcept;
+  std::string nameanbieter;
+  int32_t betid;
+
+  _Wettanbieter_getEarningBookholder_args__isset __isset;
+
+  void __set_nameanbieter(const std::string& val);
+
+  void __set_betid(const int32_t val);
+
+  bool operator == (const Wettanbieter_getEarningBookholder_args & rhs) const
+  {
+    if (!(nameanbieter == rhs.nameanbieter))
+      return false;
+    if (!(betid == rhs.betid))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getEarningBookholder_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getEarningBookholder_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getEarningBookholder_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getEarningBookholder_pargs() noexcept;
+  const std::string* nameanbieter;
+  const int32_t* betid;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getEarningBookholder_result__isset {
+  _Wettanbieter_getEarningBookholder_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getEarningBookholder_result__isset;
+
+class Wettanbieter_getEarningBookholder_result {
+ public:
+
+  Wettanbieter_getEarningBookholder_result(const Wettanbieter_getEarningBookholder_result&) noexcept;
+  Wettanbieter_getEarningBookholder_result& operator=(const Wettanbieter_getEarningBookholder_result&) noexcept;
+  Wettanbieter_getEarningBookholder_result() noexcept
+                                           : success(0) {
+  }
+
+  virtual ~Wettanbieter_getEarningBookholder_result() noexcept;
+  int32_t success;
+
+  _Wettanbieter_getEarningBookholder_result__isset __isset;
+
+  void __set_success(const int32_t val);
+
+  bool operator == (const Wettanbieter_getEarningBookholder_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getEarningBookholder_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getEarningBookholder_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getEarningBookholder_presult__isset {
+  _Wettanbieter_getEarningBookholder_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getEarningBookholder_presult__isset;
+
+class Wettanbieter_getEarningBookholder_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getEarningBookholder_presult() noexcept;
+  int32_t* success;
+
+  _Wettanbieter_getEarningBookholder_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -1243,33 +2486,66 @@ class WettanbieterClient : virtual public WettanbieterIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  bool addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) override;
-  void send_addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even);
+  bool addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) override;
+  void send_addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even);
   bool recv_addBet();
-  bool changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) override;
-  void send_changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even);
+  bool changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) override;
+  void send_changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even);
   bool recv_changeBet();
   bool deleteBet(const std::string& nameanbieter, const int32_t id) override;
   void send_deleteBet(const std::string& nameanbieter, const int32_t id);
   bool recv_deleteBet();
-  void getMyBets(std::string& _return, const std::string& nameanbieter) override;
-  void send_getMyBets(const std::string& nameanbieter);
-  void recv_getMyBets(std::string& _return);
-  void getAllBets(std::string& _return) override;
-  void send_getAllBets();
-  void recv_getAllBets(std::string& _return);
-  void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
-  void send_getSpecificBet(const std::string& nameanbieter, const int32_t id);
-  void recv_getSpecificBet(std::string& _return);
-  void getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
-  void send_getBettors(const std::string& nameanbieter, const int32_t id);
-  void recv_getBettors(std::string& _return);
-  void getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
-  void send_getAllPlacedBetsToAnBetOffer(const std::string& nameanbieter, const int32_t id);
-  void recv_getAllPlacedBetsToAnBetOffer(std::string& _return);
-  bool setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) override;
-  void send_setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even);
-  bool recv_setBettor();
+  bool betExists(const std::string& nameanbieter, const int32_t betid) override;
+  void send_betExists(const std::string& nameanbieter, const int32_t betid);
+  bool recv_betExists();
+  void getMyBetOptions(std::string& _return, const std::string& nameanbieter) override;
+  void send_getMyBetOptions(const std::string& nameanbieter);
+  void recv_getMyBetOptions(std::string& _return);
+  void getAllBetOptions(std::string& _return) override;
+  void send_getAllBetOptions();
+  void recv_getAllBetOptions(std::string& _return);
+  void getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
+  void send_getSpecificBetOption(const std::string& nameanbieter, const int32_t id);
+  void recv_getSpecificBetOption(std::string& _return);
+  void getAllPlacedBets(std::string& _return) override;
+  void send_getAllPlacedBets();
+  void recv_getAllPlacedBets(std::string& _return);
+  void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
+  void send_getAllPlacedBetsToABetOption(const std::string& nameanbieter, const int32_t id);
+  void recv_getAllPlacedBetsToABetOption(std::string& _return);
+  bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) override;
+  void send_placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even);
+  bool recv_placeNewBet();
+  bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) override;
+  void send_addGame(const int32_t spielid, const std::string& playera, const std::string& playerb);
+  bool recv_addGame();
+  bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) override;
+  void send_endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB);
+  bool recv_endGame();
+  bool isGameOpen(const int32_t spielid) override;
+  void send_isGameOpen(const int32_t spielid);
+  bool recv_isGameOpen();
+  void getAllOpenGames(std::string& _return) override;
+  void send_getAllOpenGames();
+  void recv_getAllOpenGames(std::string& _return);
+  void getAllClosedGames(std::string& _return) override;
+  void send_getAllClosedGames();
+  void recv_getAllClosedGames(std::string& _return);
+  void getSpecificGame(std::string& _return, const int32_t spielid) override;
+  void send_getSpecificGame(const int32_t spielid);
+  void recv_getSpecificGame(std::string& _return);
+  int32_t getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending) override;
+  void send_getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending);
+  int32_t recv_getPossibleEarningBookholder();
+  int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) override;
+  void send_getNumberOfBettors(const std::string& nameanbieter, const int32_t betid);
+  int32_t recv_getNumberOfBettors();
+  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override;
+  void send_getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor);
+  int32_t recv_getEarningBettor();
+  int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override;
+  void send_getEarningBookholder(const std::string& nameanbieter, const int32_t betid);
+  int32_t recv_getEarningBookholder();
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -1288,24 +2564,46 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_addBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_changeBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_deleteBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_getMyBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_getAllBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_getSpecificBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_getBettors(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_getAllPlacedBetsToAnBetOffer(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_setBettor(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_betExists(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getMyBetOptions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getAllBetOptions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getSpecificBetOption(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getAllPlacedBets(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getAllPlacedBetsToABetOption(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_placeNewBet(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_addGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_endGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_isGameOpen(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getAllOpenGames(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getAllClosedGames(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getSpecificGame(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getPossibleEarningBookholder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getNumberOfBettors(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getEarningBettor(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getEarningBookholder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   WettanbieterProcessor(::std::shared_ptr<WettanbieterIf> iface) :
     iface_(iface) {
     processMap_["addBet"] = &WettanbieterProcessor::process_addBet;
     processMap_["changeBet"] = &WettanbieterProcessor::process_changeBet;
     processMap_["deleteBet"] = &WettanbieterProcessor::process_deleteBet;
-    processMap_["getMyBets"] = &WettanbieterProcessor::process_getMyBets;
-    processMap_["getAllBets"] = &WettanbieterProcessor::process_getAllBets;
-    processMap_["getSpecificBet"] = &WettanbieterProcessor::process_getSpecificBet;
-    processMap_["getBettors"] = &WettanbieterProcessor::process_getBettors;
-    processMap_["getAllPlacedBetsToAnBetOffer"] = &WettanbieterProcessor::process_getAllPlacedBetsToAnBetOffer;
-    processMap_["setBettor"] = &WettanbieterProcessor::process_setBettor;
+    processMap_["betExists"] = &WettanbieterProcessor::process_betExists;
+    processMap_["getMyBetOptions"] = &WettanbieterProcessor::process_getMyBetOptions;
+    processMap_["getAllBetOptions"] = &WettanbieterProcessor::process_getAllBetOptions;
+    processMap_["getSpecificBetOption"] = &WettanbieterProcessor::process_getSpecificBetOption;
+    processMap_["getAllPlacedBets"] = &WettanbieterProcessor::process_getAllPlacedBets;
+    processMap_["getAllPlacedBetsToABetOption"] = &WettanbieterProcessor::process_getAllPlacedBetsToABetOption;
+    processMap_["placeNewBet"] = &WettanbieterProcessor::process_placeNewBet;
+    processMap_["addGame"] = &WettanbieterProcessor::process_addGame;
+    processMap_["endGame"] = &WettanbieterProcessor::process_endGame;
+    processMap_["isGameOpen"] = &WettanbieterProcessor::process_isGameOpen;
+    processMap_["getAllOpenGames"] = &WettanbieterProcessor::process_getAllOpenGames;
+    processMap_["getAllClosedGames"] = &WettanbieterProcessor::process_getAllClosedGames;
+    processMap_["getSpecificGame"] = &WettanbieterProcessor::process_getSpecificGame;
+    processMap_["getPossibleEarningBookholder"] = &WettanbieterProcessor::process_getPossibleEarningBookholder;
+    processMap_["getNumberOfBettors"] = &WettanbieterProcessor::process_getNumberOfBettors;
+    processMap_["getEarningBettor"] = &WettanbieterProcessor::process_getEarningBettor;
+    processMap_["getEarningBookholder"] = &WettanbieterProcessor::process_getEarningBookholder;
   }
 
   virtual ~WettanbieterProcessor() {}
@@ -1334,22 +2632,22 @@ class WettanbieterMultiface : virtual public WettanbieterIf {
     ifaces_.push_back(iface);
   }
  public:
-  bool addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) override {
+  bool addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+      ifaces_[i]->addBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
     }
-    return ifaces_[i]->addBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+    return ifaces_[i]->addBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
   }
 
-  bool changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) override {
+  bool changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+      ifaces_[i]->changeBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
     }
-    return ifaces_[i]->changeBet(nameanbieter, id, playera, playerb, winachance, winbchance, even);
+    return ifaces_[i]->changeBet(nameanbieter, wettid, spielid, winachance, winbchance, even);
   }
 
   bool deleteBet(const std::string& nameanbieter, const int32_t id) override {
@@ -1361,63 +2659,165 @@ class WettanbieterMultiface : virtual public WettanbieterIf {
     return ifaces_[i]->deleteBet(nameanbieter, id);
   }
 
-  void getMyBets(std::string& _return, const std::string& nameanbieter) override {
+  bool betExists(const std::string& nameanbieter, const int32_t betid) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getMyBets(_return, nameanbieter);
+      ifaces_[i]->betExists(nameanbieter, betid);
     }
-    ifaces_[i]->getMyBets(_return, nameanbieter);
+    return ifaces_[i]->betExists(nameanbieter, betid);
+  }
+
+  void getMyBetOptions(std::string& _return, const std::string& nameanbieter) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getMyBetOptions(_return, nameanbieter);
+    }
+    ifaces_[i]->getMyBetOptions(_return, nameanbieter);
     return;
   }
 
-  void getAllBets(std::string& _return) override {
+  void getAllBetOptions(std::string& _return) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getAllBets(_return);
+      ifaces_[i]->getAllBetOptions(_return);
     }
-    ifaces_[i]->getAllBets(_return);
+    ifaces_[i]->getAllBetOptions(_return);
     return;
   }
 
-  void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) override {
+  void getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getSpecificBet(_return, nameanbieter, id);
+      ifaces_[i]->getSpecificBetOption(_return, nameanbieter, id);
     }
-    ifaces_[i]->getSpecificBet(_return, nameanbieter, id);
+    ifaces_[i]->getSpecificBetOption(_return, nameanbieter, id);
     return;
   }
 
-  void getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id) override {
+  void getAllPlacedBets(std::string& _return) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getBettors(_return, nameanbieter, id);
+      ifaces_[i]->getAllPlacedBets(_return);
     }
-    ifaces_[i]->getBettors(_return, nameanbieter, id);
+    ifaces_[i]->getAllPlacedBets(_return);
     return;
   }
 
-  void getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id) override {
+  void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->getAllPlacedBetsToAnBetOffer(_return, nameanbieter, id);
+      ifaces_[i]->getAllPlacedBetsToABetOption(_return, nameanbieter, id);
     }
-    ifaces_[i]->getAllPlacedBetsToAnBetOffer(_return, nameanbieter, id);
+    ifaces_[i]->getAllPlacedBetsToABetOption(_return, nameanbieter, id);
     return;
   }
 
-  bool setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) override {
+  bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
+      ifaces_[i]->placeNewBet(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
     }
-    return ifaces_[i]->setBettor(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
+    return ifaces_[i]->placeNewBet(nameanbieter, betid, namebettor, moneyset, ending, winachance, winbchance, even);
+  }
+
+  bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->addGame(spielid, playera, playerb);
+    }
+    return ifaces_[i]->addGame(spielid, playera, playerb);
+  }
+
+  bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->endGame(spielid, pointsA, pointsB);
+    }
+    return ifaces_[i]->endGame(spielid, pointsA, pointsB);
+  }
+
+  bool isGameOpen(const int32_t spielid) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->isGameOpen(spielid);
+    }
+    return ifaces_[i]->isGameOpen(spielid);
+  }
+
+  void getAllOpenGames(std::string& _return) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getAllOpenGames(_return);
+    }
+    ifaces_[i]->getAllOpenGames(_return);
+    return;
+  }
+
+  void getAllClosedGames(std::string& _return) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getAllClosedGames(_return);
+    }
+    ifaces_[i]->getAllClosedGames(_return);
+    return;
+  }
+
+  void getSpecificGame(std::string& _return, const int32_t spielid) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getSpecificGame(_return, spielid);
+    }
+    ifaces_[i]->getSpecificGame(_return, spielid);
+    return;
+  }
+
+  int32_t getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getPossibleEarningBookholder(nameanbieter, betid, ending);
+    }
+    return ifaces_[i]->getPossibleEarningBookholder(nameanbieter, betid, ending);
+  }
+
+  int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getNumberOfBettors(nameanbieter, betid);
+    }
+    return ifaces_[i]->getNumberOfBettors(nameanbieter, betid);
+  }
+
+  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getEarningBettor(nameanbieter, betid, namebettor);
+    }
+    return ifaces_[i]->getEarningBettor(nameanbieter, betid, namebettor);
+  }
+
+  int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getEarningBookholder(nameanbieter, betid);
+    }
+    return ifaces_[i]->getEarningBookholder(nameanbieter, betid);
   }
 
 };
@@ -1452,33 +2852,66 @@ class WettanbieterConcurrentClient : virtual public WettanbieterIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  bool addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) override;
-  int32_t send_addBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even);
+  bool addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) override;
+  int32_t send_addBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even);
   bool recv_addBet(const int32_t seqid);
-  bool changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even) override;
-  int32_t send_changeBet(const std::string& nameanbieter, const int32_t id, const std::string& playera, const std::string& playerb, const double winachance, const double winbchance, const double even);
+  bool changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even) override;
+  int32_t send_changeBet(const std::string& nameanbieter, const int32_t wettid, const int32_t spielid, const double winachance, const double winbchance, const double even);
   bool recv_changeBet(const int32_t seqid);
   bool deleteBet(const std::string& nameanbieter, const int32_t id) override;
   int32_t send_deleteBet(const std::string& nameanbieter, const int32_t id);
   bool recv_deleteBet(const int32_t seqid);
-  void getMyBets(std::string& _return, const std::string& nameanbieter) override;
-  int32_t send_getMyBets(const std::string& nameanbieter);
-  void recv_getMyBets(std::string& _return, const int32_t seqid);
-  void getAllBets(std::string& _return) override;
-  int32_t send_getAllBets();
-  void recv_getAllBets(std::string& _return, const int32_t seqid);
-  void getSpecificBet(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
-  int32_t send_getSpecificBet(const std::string& nameanbieter, const int32_t id);
-  void recv_getSpecificBet(std::string& _return, const int32_t seqid);
-  void getBettors(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
-  int32_t send_getBettors(const std::string& nameanbieter, const int32_t id);
-  void recv_getBettors(std::string& _return, const int32_t seqid);
-  void getAllPlacedBetsToAnBetOffer(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
-  int32_t send_getAllPlacedBetsToAnBetOffer(const std::string& nameanbieter, const int32_t id);
-  void recv_getAllPlacedBetsToAnBetOffer(std::string& _return, const int32_t seqid);
-  bool setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) override;
-  int32_t send_setBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even);
-  bool recv_setBettor(const int32_t seqid);
+  bool betExists(const std::string& nameanbieter, const int32_t betid) override;
+  int32_t send_betExists(const std::string& nameanbieter, const int32_t betid);
+  bool recv_betExists(const int32_t seqid);
+  void getMyBetOptions(std::string& _return, const std::string& nameanbieter) override;
+  int32_t send_getMyBetOptions(const std::string& nameanbieter);
+  void recv_getMyBetOptions(std::string& _return, const int32_t seqid);
+  void getAllBetOptions(std::string& _return) override;
+  int32_t send_getAllBetOptions();
+  void recv_getAllBetOptions(std::string& _return, const int32_t seqid);
+  void getSpecificBetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
+  int32_t send_getSpecificBetOption(const std::string& nameanbieter, const int32_t id);
+  void recv_getSpecificBetOption(std::string& _return, const int32_t seqid);
+  void getAllPlacedBets(std::string& _return) override;
+  int32_t send_getAllPlacedBets();
+  void recv_getAllPlacedBets(std::string& _return, const int32_t seqid);
+  void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) override;
+  int32_t send_getAllPlacedBetsToABetOption(const std::string& nameanbieter, const int32_t id);
+  void recv_getAllPlacedBetsToABetOption(std::string& _return, const int32_t seqid);
+  bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) override;
+  int32_t send_placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even);
+  bool recv_placeNewBet(const int32_t seqid);
+  bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) override;
+  int32_t send_addGame(const int32_t spielid, const std::string& playera, const std::string& playerb);
+  bool recv_addGame(const int32_t seqid);
+  bool endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB) override;
+  int32_t send_endGame(const int32_t spielid, const int32_t pointsA, const int32_t pointsB);
+  bool recv_endGame(const int32_t seqid);
+  bool isGameOpen(const int32_t spielid) override;
+  int32_t send_isGameOpen(const int32_t spielid);
+  bool recv_isGameOpen(const int32_t seqid);
+  void getAllOpenGames(std::string& _return) override;
+  int32_t send_getAllOpenGames();
+  void recv_getAllOpenGames(std::string& _return, const int32_t seqid);
+  void getAllClosedGames(std::string& _return) override;
+  int32_t send_getAllClosedGames();
+  void recv_getAllClosedGames(std::string& _return, const int32_t seqid);
+  void getSpecificGame(std::string& _return, const int32_t spielid) override;
+  int32_t send_getSpecificGame(const int32_t spielid);
+  void recv_getSpecificGame(std::string& _return, const int32_t seqid);
+  int32_t getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending) override;
+  int32_t send_getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending);
+  int32_t recv_getPossibleEarningBookholder(const int32_t seqid);
+  int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) override;
+  int32_t send_getNumberOfBettors(const std::string& nameanbieter, const int32_t betid);
+  int32_t recv_getNumberOfBettors(const int32_t seqid);
+  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override;
+  int32_t send_getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor);
+  int32_t recv_getEarningBettor(const int32_t seqid);
+  int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override;
+  int32_t send_getEarningBookholder(const std::string& nameanbieter, const int32_t betid);
+  int32_t recv_getEarningBookholder(const int32_t seqid);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

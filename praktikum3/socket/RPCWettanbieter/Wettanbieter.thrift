@@ -22,5 +22,10 @@ service Wettanbieter {
     bool isGameOpen(1: i32 spielid),
     string getAllOpenGames(),
     string getAllClosedGames(),
-    string getSpecificGame(1: i32 spielid)
+    string getSpecificGame(1: i32 spielid),
+
+    i32 getPossibleEarningBookholder(1: string nameanbieter, 2: i32 betid, 3: i32 ending),
+    i32 getNumberOfBettors(1: string nameanbieter, 2: i32 betid),
+    i32 getEarningBettor(1: string nameanbieter, 2: i32 betid, 3: string namebettor),
+    i32 getEarningBookholder(1: string nameanbieter, 2: i32 betid)
 }

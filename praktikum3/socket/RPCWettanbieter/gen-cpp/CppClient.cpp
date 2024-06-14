@@ -27,14 +27,15 @@ int main(int argc, char **argv)
 
     //source: https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
 
-    while(true){
+    //while(true){
         auto start = high_resolution_clock::now();
 
         try
         {
             transport->open();
 
-            client.addBet("cpp", 42, "A", "B", 1.0, 2.0, 3.0);
+            cout << client.getEarningBookholder("jemand", 4) << endl;
+            //client.addBet("cpp", 42, "A", "B", 1.0, 2.0, 3.0);
 
             transport->close();
 
@@ -46,6 +47,6 @@ int main(int argc, char **argv)
         auto duration = duration_cast<microseconds>(end - start);
 
         cout << "addBet: Dauer in Microsekunden: "<< duration.count() << endl;
-    }
+    //}
     return 0;
 }

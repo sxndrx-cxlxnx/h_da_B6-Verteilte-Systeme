@@ -100,6 +100,26 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("getSpecificGame\n");
   }
 
+  int32_t getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending) {
+    // Your implementation goes here
+    printf("getPossibleEarningBookholder\n");
+  }
+
+  int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) {
+    // Your implementation goes here
+    printf("getNumberOfBettors\n");
+  }
+
+  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) {
+    // Your implementation goes here
+    printf("getEarningBettor\n");
+  }
+
+  int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) {
+    // Your implementation goes here
+    printf("getEarningBookholder\n");
+  }
+
 };
 
 int main(int argc, char **argv) {
