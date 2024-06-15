@@ -1,2 +1,3 @@
 JemandAnderes:7:jemand:4:0;
 JemandAnderes:7:jemand:4:0;
+irgendEinName:34:Hogwarts:10:8520;

@@ -86,6 +86,7 @@ ___
 - Zeit steht im Terminal
 ```
 cd socket/RPCWettanbieter/gen-cpp/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/thrift-0.20.0/lib/cpp/.libs
 g++ Wettanbieter_types.h Wettanbieter.h Wettanbieter.cpp CppClient.cpp -o test-client -lthrift
 ./test-client
 ```

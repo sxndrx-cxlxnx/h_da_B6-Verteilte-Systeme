@@ -8,4 +8,5 @@ if client.connect("mqttbroker", 1883, 60) != 0:
     sys.exit(1)
 
 client.publish("test_topic", "Hi, paho mqtt client works fine!", 0)
+client.publish("neueAutowette", "10:", 0)
 client.disconnect()

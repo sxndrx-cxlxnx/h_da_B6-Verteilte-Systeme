@@ -38,7 +38,7 @@ while loop:
         playera = input("Player A?: ")
         playerb = input("Player B?: ")
 
-        news = pid + ":" + "Neu" + ":" + playera + ":" + playerb
+        news = pid + ":" + playera + ":" + playerb + ":"
 
         try:
 
@@ -61,14 +61,14 @@ while loop:
             print("Couldn't connect to the mqtt broker")
             sys.exit(1)
 
-        client.publish("newsfeed", news, 0)
+        client.publish("neuesSpiel", news, 0)
         client.disconnect()
 
 
     elif input2 == 2:
         pid = input("Spiel-ID?: ")
 
-        news = pid + ":" + "Beginn"
+        news = pid + ":"
 
         client = paho.Client()
 
@@ -76,7 +76,7 @@ while loop:
             print("Couldn't connect to the mqtt broker")
             sys.exit(1)
 
-        client.publish("newsfeed", news, 0)
+        client.publish("spielBeginn", news, 0)
         client.disconnect()
         
 
@@ -86,7 +86,7 @@ while loop:
         playera = input("Stand Spieler A?: ")
         playerb = input("Stand Spieler B?: ")
 
-        news = pid + ":" + "Ende" + ":" + playera + ":" + playerb
+        news = pid + ":" + playera + ":" + playerb + ":"
 
         try:
 
@@ -109,7 +109,7 @@ while loop:
             print("Couldn't connect to the mqtt broker")
             sys.exit(1)
 
-        client.publish("newsfeed", news, 0)
+        client.publish("spielEnde", news, 0)
         client.disconnect()            
 
     elif input2 == 4:
@@ -118,7 +118,7 @@ while loop:
         playera = input("Stand Spieler A?: ")
         playerb = input("Stand Spieler B?: ")
 
-        news = pid + ":" + "Stand" + ":" + playera + ":" + playerb
+        news = pid + ":" + playera + ":" + playerb + ":"
 
         client = paho.Client()
 
@@ -126,7 +126,7 @@ while loop:
             print("Couldn't connect to the mqtt broker")
             sys.exit(1)
 
-        client.publish("newsfeed", news, 0)
+        client.publish("spielStandUpdate", news, 0)
         client.disconnect()  
     
     elif input2 == 5:
@@ -136,7 +136,7 @@ while loop:
 
         if team == "1" or team == "2":
 
-            news = pid + ":" + "Verletzung" + ":" + team
+            news = pid + ":" + team + ":"
 
             client = paho.Client()
 
@@ -144,7 +144,7 @@ while loop:
                 print("Couldn't connect to the mqtt broker")
                 sys.exit(1)
 
-            client.publish("newsfeed", news, 0)
+            client.publish("verletzung", news, 0)
             client.disconnect()
         else:
             print("invalid input")
@@ -156,7 +156,7 @@ while loop:
 
         if team == "1" or team == "2":
 
-            news = pid + ":" + "Freiwurf" + ":" + team
+            news = pid + ":" + team + ":"
 
             client = paho.Client()
 
@@ -164,7 +164,7 @@ while loop:
                 print("Couldn't connect to the mqtt broker")
                 sys.exit(1)
 
-            client.publish("newsfeed", news, 0)
+            client.publish("freiwurf", news, 0)
             client.disconnect()
         else:
             print("invalid input")
@@ -175,7 +175,7 @@ while loop:
         playera = input("Anzahl Spieler A?: ")
         playerb = input("Anzahl Spieler B?: ")
 
-        news = pid + ":" + "Platzverweis" + ":" + playera + ":" + playerb
+        news = pid + ":" + playera + ":" + playerb + ":"
 
         client = paho.Client()
 
@@ -183,7 +183,7 @@ while loop:
             print("Couldn't connect to the mqtt broker")
             sys.exit(1)
 
-        client.publish("newsfeed", news, 0)
+        client.publish("platzverweis", news, 0)
         client.disconnect()
 
     elif input2 == 8:
@@ -193,7 +193,7 @@ while loop:
 
         if team == "1" or team == "2":
 
-            news = pid + ":" + "DobbyKlatscherGegen" + ":" + team
+            news = pid + ":" + team + ":"
 
             client = paho.Client()
 
@@ -201,7 +201,7 @@ while loop:
                 print("Couldn't connect to the mqtt broker")
                 sys.exit(1)
 
-            client.publish("newsfeed", news, 0)
+            client.publish("dobby", news, 0)
             client.disconnect()
         else:
             print("invalid input")            

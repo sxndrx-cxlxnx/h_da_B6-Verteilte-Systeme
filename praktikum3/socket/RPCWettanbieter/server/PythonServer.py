@@ -367,21 +367,25 @@ class WettanbieterHandler:
     def getPossibleEarningBookholder(self, nameanbieter, betid, ending):
         print("getPossibleEarningBookholder called")
         with open('placedBets.txt','r',encoding='utf-8') as file:
-            data = file.readlines()       
+            data = file.readlines()
 
         returnValue = 0
         
         for line in data:
             if line.startswith(nameanbieter + ":" + str(betid) + ":") :
+                print(line)
+                x = line.split(':')
                 pEnding = int(x[4])
+                print(pEnding)
                 if(pEnding == ending):
-                    x = line.split(':')                
+                    print("if:", float(x[3]))
+                    print("if:", float(x[4 + pEnding]))
                     returnValue -= float(x[3]) * float(x[4 + pEnding])
                 else:
-                    x = line.split(':')                
-                    returnValue += float(x[3])           
-            
-        return returnValue
+                    print("else:", float(x[3]))
+                    returnValue += float(x[3])
+        print(returnValue)
+        return int(returnValue)
 
     def getNumberOfBettors(self, nameanbieter, betid):
         print("getNumberOfBettors called")
