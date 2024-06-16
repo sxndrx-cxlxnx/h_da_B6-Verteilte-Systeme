@@ -378,9 +378,10 @@ class WettanbieterHandler:
                 pEnding = int(x[4])
                 print(pEnding)
                 if(pEnding == ending):
-                    print("if:", float(x[3]))
-                    print("if:", float(x[4 + pEnding]))
-                    returnValue -= float(x[3]) * float(x[4 + pEnding])
+                    if pEnding == 3:
+                        returnValue -= float(x[3]) * float(x[4 + pEnding].split(';')[0])
+                    else:
+                        returnValue -= float(x[3]) * float(x[4 + pEnding])
                 else:
                     print("else:", float(x[3]))
                     returnValue += float(x[3])
