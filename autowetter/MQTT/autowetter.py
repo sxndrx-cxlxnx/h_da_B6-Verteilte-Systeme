@@ -5,10 +5,12 @@ TEAM_A = 1
 TEAM_B = 2
 EVEN   = 3
 minQuote = 3.5
+money = 200
 
 client = paho.Client()
 
 def isBetOptionInteresting(quoteA, quoteB, quoteEven):
+    print("isBetOptionInteresting() called)")
     global minQuote
     global TEAM_A
     global TEAM_B
@@ -23,30 +25,33 @@ def isBetOptionInteresting(quoteA, quoteB, quoteEven):
     return False, 0
 
 def newBet(message):
-    anbieterName = msg.payload.decode().split(":")[0]
-    wettID = int( msg.payload.decode().split(":")[1] )
-    quoteA = float( msg.payload.decode().split(":")[2] )
-    quoteB = float( msg.payload.decode().split(":")[3] )
-    quoteEven = float( msg.payload.decode().split(":")[4] )
+    print("newBet() called)")
+    anbieterName = message.split(":")[0]
+    wettID = int( message.split(":")[1] )
+    quoteA = float( message.split(":")[2] )
+    quoteB = float( message.split(":")[3] )
+    quoteEven = float( message.split(":")[4] )
     # anbieterName + ":" + wettIDctr + ":" quoteA + ":" + quoteB + ":" + quoteEven + ":"
-    betOptionIsInteresting, ending = isBetOptionInteresting(quoteA, quoteB, quoteC)
-    
+
+    betOptionIsInteresting, ending = isBetOptionInteresting(quoteA, quoteB, quoteEven)
     if betOptionIsInteresting:
-        '''publish_client = paho.Client()
+        publish_client = paho.Client()
         if publish_client.connect("mqttbroker", 1883, 60) != 0:
-        print("Couldn't connect to the mqtt broker")
-        sys.exit(1)
+            print("Couldn't connect to the mqtt broker")
+            sys.exit(1)
 
-        mqtt_message = anbieterName + ":" + wettID + ":" + ending + ":" + moneyset
+        mqtt_message = anbieterName +  ":" + str(wettID) + ':' + "automatischeWette" + ":" + str(money) + ":" + str(ending)  + ':' + str(quoteA) + ':' + str(quoteB) + ':' + str(quoteEven) + ':'
 
-        #publish_client.publish("neueAutowette", "neue Autowette", 0)
+        publish_client.publish("neueAutowette", mqtt_message, 0)
         
-        publish_client.disconnect()'''
+        publish_client.disconnect()
+        print("New Bet placed")
     
 
 def message_handling(client, userdata, msg):
+    print("message_handling() called)")
     print(f"{msg.topic}: {msg.payload.decode()}")
-    newBet(msg.topic)
+    newBet(msg.payload.decode())
 
 
 client = paho.Client()

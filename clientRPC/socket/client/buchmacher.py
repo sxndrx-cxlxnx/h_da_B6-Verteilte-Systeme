@@ -162,10 +162,10 @@ def newBetOption(spielID):
 
     publish_client = paho.Client()
     if publish_client.connect("mqttbroker", 1883, 60) != 0:
-    print("Couldn't connect to the mqtt broker")
-    sys.exit(1)
+        print("Couldn't connect to the mqtt broker")
+        sys.exit(1)
 
-    mqtt_message = anbieterName + ":" + wettIDctr + ":" quoteA + ":" + quoteB + ":" + quoteEven + ":"
+    mqtt_message = anbieterName + ":" + str(wettIDctr) + ":" + str(quoteA) + ":" + str(quoteB) + ":" + str(quoteEven) + ":"
 
     publish_client.publish("neuesWettangebot", mqtt_message, 0)
     publish_client.disconnect()
@@ -206,8 +206,7 @@ def calculateRisk(wettID, spielID):
     isRiskEvenToHigh = risikoEven + gebuehrenEinnahmen < maxRisiko
 
     if SpielIsStarted[spielID]: # Buchmacherkommunikation
-        print("SpielIsStarted - Hier wollen Buchmacher kooperieren")
-        print("1")
+
         print(Gewinnwahrscheinlichkeit)
         print(Gewinnwahrscheinlichkeit[spielID])
         print(Gewinnwahrscheinlichkeit[spielID]["A"])
@@ -215,24 +214,18 @@ def calculateRisk(wettID, spielID):
         
 
         aGewinnwahrscheinlichkeit = Gewinnwahrscheinlichkeit[spielID]["A"]["Spielstand"] + Gewinnwahrscheinlichkeit[spielID]["A"]["Verletzung"] + Gewinnwahrscheinlichkeit[spielID]["A"]["Dobby"] + Gewinnwahrscheinlichkeit[spielID]["A"]["Freiwurf"] + Gewinnwahrscheinlichkeit[spielID]["A"]["Platzverweis"]
-        print("2")
         bGewinnwahrscheinlichkeit = Gewinnwahrscheinlichkeit[spielID]["B"]["Spielstand"] + Gewinnwahrscheinlichkeit[spielID]["B"]["Verletzung"] + Gewinnwahrscheinlichkeit[spielID]["B"]["Dobby"] + Gewinnwahrscheinlichkeit[spielID]["B"]["Freiwurf"] + Gewinnwahrscheinlichkeit[spielID]["B"]["Platzverweis"]
-        print("3")
         evenGewinnwahrscheinlichkeit = 0.0
 
 
         if aGewinnwahrscheinlichkeit > bGewinnwahrscheinlichkeit:
-            print("4")
+ 
             if aGewinnwahrscheinlichkeit - bGewinnwahrscheinlichkeit < 0.3 :
-                print("5")
                 evenGewinnwahrscheinlichkeit = 1.0
         elif bGewinnwahrscheinlichkeit > aGewinnwahrscheinlichkeit:
-            print("6")
             if bGewinnwahrscheinlichkeit - aGewinnwahrscheinlichkeit < 0.3 :
-                print("7")
                 evenGewinnwahrscheinlichkeit = 1.0
         else:
-            print("8")
             evenGewinnwahrscheinlichkeit = 1.0
 
         isWinALikely = False
@@ -240,23 +233,17 @@ def calculateRisk(wettID, spielID):
         isEvenLikely = False
 
         if aGewinnwahrscheinlichkeit > bGewinnwahrscheinlichkeit and aGewinnwahrscheinlichkeit > evenGewinnwahrscheinlichkeit:
-            print("9")
             isWinALikely = True
         elif bGewinnwahrscheinlichkeit > aGewinnwahrscheinlichkeit and bGewinnwahrscheinlichkeit > evenGewinnwahrscheinlichkeit:
-            print("10")
             isWinBLikely = True
         elif evenGewinnwahrscheinlichkeit > aGewinnwahrscheinlichkeit and evenGewinnwahrscheinlichkeit > bGewinnwahrscheinlichkeit:
-            print("11")
             isEvenLikely = True
 
         if isRiskAToHigh and isWinALikely:
-            print("12")
             cooperateRequest(spielID, 1, risikoA + gebuehrenEinnahmen, risikoB + gebuehrenEinnahmen, risikoEven + gebuehrenEinnahmen)
         elif isRiskBToHigh and isWinBLikely:
-            print("13")
             cooperateRequest(spielID, 2, risikoA + gebuehrenEinnahmen, risikoB + gebuehrenEinnahmen, risikoEven + gebuehrenEinnahmen)
         elif isRiskEvenToHigh and isEvenLikely:
-            print("14")
             cooperateRequest(spielID, 3, risikoA + gebuehrenEinnahmen, risikoB + gebuehrenEinnahmen, risikoEven + gebuehrenEinnahmen)        
 
 
@@ -295,6 +282,16 @@ def calculateRisk(wettID, spielID):
                 print("A) new Bet:", newQuoteA, newQuoteB, newQuoteEven)
                 transport.close()
 
+                publish_client = paho.Client()
+                if publish_client.connect("mqttbroker", 1883, 60) != 0:
+                    print("Couldn't connect to the mqtt broker")
+                    sys.exit(1)
+
+                mqtt_message = anbieterName + ":" + str(wettID) + ":" + str(newQuoteA) + ":" + str(newQuoteB) + ":" + str(newQuoteEven) + ":"
+
+                publish_client.publish("neuesWettangebot", mqtt_message, 0)
+                publish_client.disconnect()
+
             except Thrift.TException as tx:
                 print ('Something went wrong : %s' % (tx.message))
 
@@ -331,6 +328,16 @@ def calculateRisk(wettID, spielID):
                 print("B) new Bet:", newQuoteA, newQuoteB, newQuoteEven)
                 transport.close()
 
+                publish_client = paho.Client()
+                if publish_client.connect("mqttbroker", 1883, 60) != 0:
+                    print("Couldn't connect to the mqtt broker")
+                    sys.exit(1)
+
+                mqtt_message = anbieterName + ":" + str(wettID) + ":" + str(newQuoteA) + ":" + str(newQuoteB) + ":" + str(newQuoteEven) + ":"
+
+                publish_client.publish("neuesWettangebot", mqtt_message, 0)
+                publish_client.disconnect()
+
             except Thrift.TException as tx:
                 print ('Something went wrong : %s' % (tx.message))
 
@@ -366,6 +373,16 @@ def calculateRisk(wettID, spielID):
                 print("Even) old Bet:", quoteA, quoteB, quoteEven)
                 print("Even) new Bet:", newQuoteA, newQuoteB, newQuoteEven)
                 transport.close()
+
+                publish_client = paho.Client()
+                if publish_client.connect("mqttbroker", 1883, 60) != 0:
+                    print("Couldn't connect to the mqtt broker")
+                    sys.exit(1)
+
+                mqtt_message = anbieterName + ":" + str(wettID) + ":" + str(newQuoteA) + ":" + str(newQuoteB) + ":" + str(newQuoteEven) + ":"
+
+                publish_client.publish("neuesWettangebot", mqtt_message, 0)
+                publish_client.disconnect()
 
             except Thrift.TException as tx:
                 print ('Something went wrong : %s' % (tx.message))
@@ -443,18 +460,12 @@ def spielStandUpdate(spielID, standA, standB):
 def verletzung(spielID, team):
     print("verletzung() called")
     global Gewinnwahrscheinlichkeit
-    print("1")
     if team == 1:
-        print("2")
         print(Gewinnwahrscheinlichkeit)
         Gewinnwahrscheinlichkeit[spielID]["A"]["Verletzung"] -= 0.2
-        print("3")
         Gewinnwahrscheinlichkeit[spielID]["B"]["Verletzung"] += 0.2
-        print("4")
     else:
-        print("5")
         Gewinnwahrscheinlichkeit[spielID]["A"]["Verletzung"] += 0.2
-        print("6")
         Gewinnwahrscheinlichkeit[spielID]["B"]["Verletzung"] -= 0.2
 
 def freiwurf(spielID, team):
@@ -470,29 +481,18 @@ def freiwurf(spielID, team):
 def platzverweis(spielID, anzahlTeamA, anzahlTeamB):
     print("platzverweis() called")
     global Gewinnwahrscheinlichkeit
-    print("1")
     if anzahlTeamA > anzahlTeamB:
-        print("2")
         diff = anzahlTeamA - anzahlTeamB
-        print("3")
-        print(Gewinnwahrscheinlichkeit)
 
         Gewinnwahrscheinlichkeit[spielID]["A"]["Platzverweis"] += diff * 0.3
-        print("4")
         Gewinnwahrscheinlichkeit[spielID]["B"]["Platzverweis"] -= diff * 0.3
 
-        print(Gewinnwahrscheinlichkeit)
     elif anzahlTeamA < anzahlTeamB:
-        print("5")
         diff = anzahlTeamB - anzahlTeamA
-        print("6")
-        print(Gewinnwahrscheinlichkeit)
 
         Gewinnwahrscheinlichkeit[spielID]["A"]["Platzverweis"] -= diff * 0.3
-        print("7")
         Gewinnwahrscheinlichkeit[spielID]["B"]["Platzverweis"] += diff * 0.3
 
-        print(Gewinnwahrscheinlichkeit)
     else :
         Gewinnwahrscheinlichkeit[spielID]["A"]["Platzverweis"] = 0.0
         Gewinnwahrscheinlichkeit[spielID]["B"]["Platzverweis"] = 0.0
@@ -525,35 +525,22 @@ def cooperateRequest(spielID, team, risikoA, risikoB, risikoEven):
     elif team == 3:
         myRisk = risikoEven
 
-    print(str(myRisk))
 
     sendOffer = False
 
-    print("1")
-    print(IsendCooperationRequest)
-
     if (IsendCooperationRequest[spielID] == False) and (ImInCooperation[spielID] == False):
-        print("2")
-        print(CooperationRequests)
 
         for andererAnbieter, obj in CooperationRequests[spielID].items():
-            print("3")
             if not andererAnbieter == anbieterName:
-                print("4")
 
                 iSendCooperationOffer = False
                 for x, obj in IsendCooperationOffer[spielID].items():
-                    print("5")
                     if x == andererAnbieter:
-                        print("6")
                         if IsendCooperationOffer[spielID][andererAnbieter]["OfferSend"] == False:
-                            print("7")
                             iSendCooperationOffer = True
 
                 if not iSendCooperationOffer:
-                    print("8")
                     andererAnbieterTeam = CooperationRequests[spielID][andererAnbieter]["team"]
-                    print("9")
 
                     if not andererAnbieterTeam == team:
                         myRiskString = "risikoA"
@@ -569,15 +556,11 @@ def cooperateRequest(spielID, team, risikoA, risikoB, risikoEven):
                             otherRiskString = "risikoEven"
 
                         if  ( ( CooperationRequests[spielID][andererAnbieter][myRiskString] + myRisk ) >= 0 ) and ( ( CooperationRequests[spielID][andererAnbieter][otherRiskString] + CooperationRequests[spielID][anbieterName][otherRiskString] ) >= 0 ):
-
-                            print("10")
                             makeOfferToOther(andererAnbieter, spielID)
                             sendOffer = True
                 
     
-    print("11")
     if (IsendCooperationRequest[spielID] == False) and (sendOffer == False) and (ImInCooperation[spielID] == False):
-        print("12")
 
         clientSend = paho.Client()
 
@@ -587,14 +570,10 @@ def cooperateRequest(spielID, team, risikoA, risikoB, risikoEven):
 
         clientSend.publish("risikoKommunikation", message, 0)
         clientSend.disconnect()
-        print("13")
 
         IsendCooperationRequest[spielID] = True
-        print("14")
 
-        print(CooperationRequests)
         CooperationRequests[spielID][anbieterName] = {}
-        print(CooperationRequests)
 
         CooperationRequests[spielID][anbieterName]["team"] = team
         CooperationRequests[spielID][anbieterName]["risikoA"] = risikoA
@@ -602,41 +581,18 @@ def cooperateRequest(spielID, team, risikoA, risikoB, risikoEven):
         CooperationRequests[spielID][anbieterName]["risikoEven"] = risikoEven
         CooperationRequests[spielID][anbieterName]["inCooperation"] = False
 
-        print(CooperationRequests)
-
-        '''
-        CooperationRequests[spielID] = {
-            andererAnbieter : {
-                "team"          : 1,
-                "risikoA"       : 0.0,
-                "risikoB"       : 0.0,
-                "risikoEven"    : 0.0,
-                "inCooperation" : ""
-            }
-        }
-        '''
-        print("15")
 
 def makeOfferToOther(andererAnbieter, spielID):
     print("makeOfferToOther called")
     global CooperationOffersIsend
     global IsendCooperationOffer
 
-    print("1")
 
     message = str(spielID) + ':' + anbieterName + ':'
-
-    print(message)
-
-    print(CooperationOffersIsend)
 
     CooperationOffersIsend[spielID][andererAnbieter] = {}
     CooperationOffersIsend[spielID][andererAnbieter]["Accepted"] = False
     CooperationOffersIsend[spielID][andererAnbieter]["Rejected"] = False
-
-    print(CooperationOffersIsend)
-
-    print(IsendCooperationOffer)
 
     IsendCooperationOffer[spielID][andererAnbieter]["OfferSend"] = True
 
@@ -656,15 +612,9 @@ def gotOfferFromOther(andererAnbieter, spielID):
     global CooperationRequests
     global ImInCooperation
 
-    print("1")
-    print(andererAnbieter)
-
     message = "NACK" + ':' + anbieterName  + ':' + str(spielID) + ':'
-    print(ImInCooperation)
-    print(ImInCooperation[spielID])
 
     if ImInCooperation[spielID] == False:
-        print("2")
         message = "ACK" + ':' + anbieterName  + ':' + str(spielID) + ':'
         #CooperationRequests[spielID][anbieterName]["inCooperation"] = andererAnbieter
         ImInCooperation[spielID] = True
@@ -689,20 +639,12 @@ def offerGotAccepted(andererAnbieter, spielID):
     global IsendCooperationRequest
     global CooperationOffersIsend
 
-    print("1")
-    print(ImInCooperation)
-    print(spielID)
-
     #CooperationRequests[spielID][anbieterName]["inCooperation"] = andererAnbieter
     ImInCooperation[spielID] = True
-    print("2")
     IsendCooperationRequest["Accepted"] = True
-    print("3")
 
     CooperationOffersIsend[spielID][andererAnbieter]["Accepted"] = True
-    print("4")
     CooperationOffersIsend[spielID][andererAnbieter]["Rejected"] = False
-    print("5")
 
     print("I'm in Cooperation with ", andererAnbieter, " for game ", spielID)
 
@@ -721,24 +663,16 @@ def getCooperationRequest(andererAnbieter ,spielID, team, risikoA, risikoB, risi
     global CooperationRequests
     global IsendCooperationOffer
 
-    print("1")
 
     if not andererAnbieter == anbieterName:
-        print("2")
-        print(CooperationRequests)
 
         CooperationRequests[spielID][andererAnbieter] = {}
-        print("3")
-
-        print(CooperationRequests)
 
         CooperationRequests[spielID][andererAnbieter]["team"] = team
         CooperationRequests[spielID][andererAnbieter]["risikoA"] = risikoA
         CooperationRequests[spielID][andererAnbieter]["risikoB"] = risikoB
         CooperationRequests[spielID][andererAnbieter]["risikoEven"] = risikoEven
         CooperationRequests[spielID][andererAnbieter]["inCooperation"] = ""
-
-        print(CooperationRequests)
 
         IsendCooperationOffer[spielID][andererAnbieter] = {}
         IsendCooperationOffer[spielID][andererAnbieter]["OfferSend"] = False
@@ -772,30 +706,36 @@ def evaluateCooperationRequest(andererAnbieter, spielID, team, otherRisikoA, oth
     risikoB = risikoB + gebuehrenEinnahmen
     risikoEven = risikoEven + gebuehrenEinnahmen 
     
-    print("1")
-    print(otherRisikoA + risikoA)
-    print(otherRisikoB + risikoB)
-    print(otherRisikoEven + risikoEven)
-    print(risikoA)
-    print(risikoB)
-    print(risikoEven)
 
     if team == 1 and ((otherRisikoA + risikoA) >= 0):
-        print("2")
         makeOfferToOther(andererAnbieter, spielID)
     elif team == 2 and ((otherRisikoB + risikoB) >= 0):
-        print("3")
         makeOfferToOther(andererAnbieter, spielID)
     elif team == 3 and ((otherRisikoEven + risikoEven) >= 0):
-        print("4")
         makeOfferToOther(andererAnbieter, spielID)
     
 
+def newPlacedBet(wettID, nameBettor, money, ending, quoteA, quoteB, quoteEven):
+    print("newPlacedBet() called")
+    try:
+        transport = TSocket.TSocket( host , port)
+        transport = TTransport.TBufferedTransport(transport)
+        protocol = TBinaryProtocol.TBinaryProtocol(transport)
+
+        clientrpc = Wettanbieter.Client(protocol)
+        transport.open()
+        clientrpc.placeNewBet(str(anbieterName), int(wettID),str(nameBettor), float(money), int(ending), float(quoteA), float(quoteB), float(quoteEven))
+        transport.close()
+        print("placed new bet from: ", nameBettor)
+
+    except Thrift.TException as tx:
+        print ('Something went wrong : %s' % (tx.message))
 
 def message_handling(client, userdata, msg):
     print(f"{msg.topic}: {msg.payload.decode()}")
     global SpielIsStarted
     global ImInCooperation
+    global anbieterName
 
     match msg.topic:
         case "neuesSpiel":
@@ -812,8 +752,21 @@ def message_handling(client, userdata, msg):
 
         case "neueAutowette":
             print("match case neue Autowette")
-            wettID = int( msg.payload.decode().split(":")[0] )
-            calculateRiskOfBet(wettID)
+            # anbieterName +  ":" + str(wettID) + ':' + "automatischeWette" + ":" + str(money) + ":" + str(ending)  + ':' + str(quoteA) + ':' + str(quoteB) + ':' + str(quoteEven) + ':'
+            
+            message = msg.payload.decode()
+            adressat = str(message.split(":")[0]))
+            if adressat == anbieterName:
+                wettID = int( msg.payload.decode().split(":")[1] )
+                nameBettor = msg.payload.decode().split(":")[2]
+                money = float( msg.payload.decode().split(":")[3] )
+                ending = int( msg.payload.decode().split(":")[4] )
+                quoteA = float( msg.payload.decode().split(":")[5] )
+                quoteB = float( msg.payload.decode().split(":")[6] )
+                quoteEven = float( msg.payload.decode().split(":")[7] )
+
+                newPlacedBet(wettID, nameBettor, money, ending, quoteA, quoteB, quoteEven)
+                calculateRiskOfBet(wettID)
 
         case "spielEnde":
             print("match case spielEnde")
@@ -858,18 +811,15 @@ def message_handling(client, userdata, msg):
         case anbieterName:
             print("Personal Message")
             if msg.payload.decode().split(":")[0] == "NACK":
-                print("1")
                 # "NACK" + ':' + anbieterName  + ':' + str(spielID) + ':'
                 andererAnbieter  = msg.payload.decode().split(":")[1]
                 spielID = int(msg.payload.decode().split(":")[2])
                 offerGotRejected(andererAnbieter, spielID)
             elif msg.payload.decode().split(":")[0] == "ACK":
-                print("2")
                 andererAnbieter  = msg.payload.decode().split(":")[1]
                 spielID = int(msg.payload.decode().split(":")[2])
                 offerGotAccepted(andererAnbieter, spielID)
             else:
-                print("3")
                 # spielID + ':' + anbieterName + ':'                
                 spielID = int(msg.payload.decode().split(":")[0])
                 andererAnbieter  = msg.payload.decode().split(":")[1]

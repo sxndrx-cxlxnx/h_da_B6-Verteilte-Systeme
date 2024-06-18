@@ -205,9 +205,7 @@ class WettanbieterHandler:
         else:
             ending = 3
             
-        print(gameline)
         gameline = gameline.replace(";\n", ":" + str(ending) + ":" + str(pointsA) + ":" + str(pointsB) + ";\n")
-        print(gameline)
 
         file = open("closedGames.csv", "a")
         file.write(gameline)
@@ -373,17 +371,14 @@ class WettanbieterHandler:
         
         for line in data:
             if line.startswith(nameanbieter + ":" + str(betid) + ":") :
-                print(line)
                 x = line.split(':')
                 pEnding = int(x[4])
-                print(pEnding)
                 if(pEnding == ending):
                     if pEnding == 3:
                         returnValue -= float(x[3]) * float(x[4 + pEnding].split(';')[0])
                     else:
                         returnValue -= float(x[3]) * float(x[4 + pEnding])
                 else:
-                    print("else:", float(x[3]))
                     returnValue += float(x[3])
         print(returnValue)
         return int(returnValue)
