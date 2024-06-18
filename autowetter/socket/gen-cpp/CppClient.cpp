@@ -34,7 +34,7 @@ int main(int argc, char **argv)
         {
             transport->open();
 
-            cout << client.getEarningBookholder("jemand", 4) << endl;
+            cout << client.getPossibleEarningBookholder("Hogwarts", 10, 1) << endl;
             //client.addBet("cpp", 42, "A", "B", 1.0, 2.0, 3.0);
 
             transport->close();

@@ -26,6 +26,6 @@ service Wettanbieter {
 
     i32 getPossibleEarningBookholder(1: string nameanbieter, 2: i32 betid, 3: i32 ending),
     i32 getNumberOfBettors(1: string nameanbieter, 2: i32 betid),
-    i32 getEarningBettor(1: string nameanbieter, 2: i32 betid, 3: string namebettor),
+    double getEarningBettor(1: string nameanbieter, 2: i32 betid, 3: string namebettor),
     i32 getEarningBookholder(1: string nameanbieter, 2: i32 betid)
 }

@@ -110,7 +110,7 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("getNumberOfBettors\n");
   }
 
-  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) {
+  double getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) {
     // Your implementation goes here
     printf("getEarningBettor\n");
   }

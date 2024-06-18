@@ -40,7 +40,7 @@ class WettanbieterIf {
   virtual void getSpecificGame(std::string& _return, const int32_t spielid) = 0;
   virtual int32_t getPossibleEarningBookholder(const std::string& nameanbieter, const int32_t betid, const int32_t ending) = 0;
   virtual int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) = 0;
-  virtual int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) = 0;
+  virtual double getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) = 0;
   virtual int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) = 0;
 };
 
@@ -135,8 +135,8 @@ class WettanbieterNull : virtual public WettanbieterIf {
     int32_t _return = 0;
     return _return;
   }
-  int32_t getEarningBettor(const std::string& /* nameanbieter */, const int32_t /* betid */, const std::string& /* namebettor */) override {
-    int32_t _return = 0;
+  double getEarningBettor(const std::string& /* nameanbieter */, const int32_t /* betid */, const std::string& /* namebettor */) override {
+    double _return = 0.0;
     return _return;
   }
   int32_t getEarningBookholder(const std::string& /* nameanbieter */, const int32_t /* betid */) override {
@@ -2306,11 +2306,11 @@ class Wettanbieter_getEarningBettor_result {
   }
 
   virtual ~Wettanbieter_getEarningBettor_result() noexcept;
-  int32_t success;
+  double success;
 
   _Wettanbieter_getEarningBettor_result__isset __isset;
 
-  void __set_success(const int32_t val);
+  void __set_success(const double val);
 
   bool operator == (const Wettanbieter_getEarningBettor_result & rhs) const
   {
@@ -2339,7 +2339,7 @@ class Wettanbieter_getEarningBettor_presult {
 
 
   virtual ~Wettanbieter_getEarningBettor_presult() noexcept;
-  int32_t* success;
+  double* success;
 
   _Wettanbieter_getEarningBettor_presult__isset __isset;
 
@@ -2540,9 +2540,9 @@ class WettanbieterClient : virtual public WettanbieterIf {
   int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) override;
   void send_getNumberOfBettors(const std::string& nameanbieter, const int32_t betid);
   int32_t recv_getNumberOfBettors();
-  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override;
+  double getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override;
   void send_getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor);
-  int32_t recv_getEarningBettor();
+  double recv_getEarningBettor();
   int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override;
   void send_getEarningBookholder(const std::string& nameanbieter, const int32_t betid);
   int32_t recv_getEarningBookholder();
@@ -2802,7 +2802,7 @@ class WettanbieterMultiface : virtual public WettanbieterIf {
     return ifaces_[i]->getNumberOfBettors(nameanbieter, betid);
   }
 
-  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override {
+  double getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
@@ -2906,9 +2906,9 @@ class WettanbieterConcurrentClient : virtual public WettanbieterIf {
   int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) override;
   int32_t send_getNumberOfBettors(const std::string& nameanbieter, const int32_t betid);
   int32_t recv_getNumberOfBettors(const int32_t seqid);
-  int32_t getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override;
+  double getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) override;
   int32_t send_getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor);
-  int32_t recv_getEarningBettor(const int32_t seqid);
+  double recv_getEarningBettor(const int32_t seqid);
   int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override;
   int32_t send_getEarningBookholder(const std::string& nameanbieter, const int32_t betid);
   int32_t recv_getEarningBookholder(const int32_t seqid);

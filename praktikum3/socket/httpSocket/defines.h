@@ -90,6 +90,12 @@ struct PlatzierteWette{
     Wettoption wettoption;    // nameAnbieter, wett-id, winachance, winbchance, even
 };
 
+struct Earnings{
+    double gewinn;
+    double verlust;
+    double gesamt;
+};
+
 struct HTTPrequest{
 
     bool valid = false;

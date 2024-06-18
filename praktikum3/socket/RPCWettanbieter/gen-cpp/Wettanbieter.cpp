@@ -3876,8 +3876,8 @@ uint32_t Wettanbieter_getEarningBettor_result::read(::apache::thrift::protocol::
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->success);
+        if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble(this->success);
           this->__isset.success = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3902,8 +3902,8 @@ uint32_t Wettanbieter_getEarningBettor_result::write(::apache::thrift::protocol:
   xfer += oprot->writeStructBegin("Wettanbieter_getEarningBettor_result");
 
   if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I32, 0);
-    xfer += oprot->writeI32(this->success);
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_DOUBLE, 0);
+    xfer += oprot->writeDouble(this->success);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -3938,8 +3938,8 @@ uint32_t Wettanbieter_getEarningBettor_presult::read(::apache::thrift::protocol:
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*(this->success)));
+        if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble((*(this->success)));
           this->__isset.success = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -5228,7 +5228,7 @@ int32_t WettanbieterClient::recv_getNumberOfBettors()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getNumberOfBettors failed: unknown result");
 }
 
-int32_t WettanbieterClient::getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor)
+double WettanbieterClient::getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor)
 {
   send_getEarningBettor(nameanbieter, betid, namebettor);
   return recv_getEarningBettor();
@@ -5250,7 +5250,7 @@ void WettanbieterClient::send_getEarningBettor(const std::string& nameanbieter, 
   oprot_->getTransport()->flush();
 }
 
-int32_t WettanbieterClient::recv_getEarningBettor()
+double WettanbieterClient::recv_getEarningBettor()
 {
 
   int32_t rseqid = 0;
@@ -5275,7 +5275,7 @@ int32_t WettanbieterClient::recv_getEarningBettor()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int32_t _return;
+  double _return;
   Wettanbieter_getEarningBettor_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -7989,7 +7989,7 @@ int32_t WettanbieterConcurrentClient::recv_getNumberOfBettors(const int32_t seqi
   } // end while(true)
 }
 
-int32_t WettanbieterConcurrentClient::getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor)
+double WettanbieterConcurrentClient::getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor)
 {
   int32_t seqid = send_getEarningBettor(nameanbieter, betid, namebettor);
   return recv_getEarningBettor(seqid);
@@ -8015,7 +8015,7 @@ int32_t WettanbieterConcurrentClient::send_getEarningBettor(const std::string& n
   return cseqid;
 }
 
-int32_t WettanbieterConcurrentClient::recv_getEarningBettor(const int32_t seqid)
+double WettanbieterConcurrentClient::recv_getEarningBettor(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -8053,7 +8053,7 @@ int32_t WettanbieterConcurrentClient::recv_getEarningBettor(const int32_t seqid)
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      int32_t _return;
+      double _return;
       Wettanbieter_getEarningBettor_presult result;
       result.success = &_return;
       result.read(iprot_);

@@ -88,6 +88,17 @@ PlatzierteWette newPlatzierteWette(string pnamebettor, double pmoneyset, int pen
     return wette;
 }
 
+Earnings newEarnings(double pgewinn, double pverlust, double pgesamt)
+{
+    Earnings earnings;
+
+    earnings.gewinn = pgewinn;
+    earnings.verlust = pverlust;
+    earnings.gesamt = pgesamt;
+
+    return earnings;
+}
+
 void getAllWettanbieter()   // initial
 {
     // File pointer 
@@ -659,6 +670,51 @@ vector<Spiel> getAllClosedGames()
     return closedGames;
 }
 
+Earnings getEarningsOfBettor(string nameBettor)
+{
+    cout << "Entry getEarningsOfBettor " + nameBettor << endl;
+    vector<double> alleEinnahmen;
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    double einnahme;
+    vector<PlatzierteWette> alleMeineWetten = getAllMyPlacedBets(nameBettor);
+
+    for(int i = 0; i < alleMeineWetten.size(); i++)
+    {
+        try
+        {
+            transport->open();
+            einnahme = client.getEarningBettor(alleMeineWetten[i].wettoption.anbieterName, alleMeineWetten[i].wettoption.id, nameBettor);
+            transport->close();
+        
+        } catch (TException& tx) {
+            cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        }
+        alleEinnahmen.push_back(einnahme);
+    }
+
+    double gewinn = 0;
+    double verlust = 0;
+    double gesamt = 0;
+
+    for(int i = 0; i < alleEinnahmen.size(); i++)
+    {
+        if (alleEinnahmen[i] < 0){
+            verlust += alleEinnahmen[i];
+        } else {
+            gewinn += alleEinnahmen[i];
+        }
+        gesamt += alleEinnahmen[i];
+    }
+
+    cout << "*got Earnings Of Bettor " + nameBettor << endl;
+
+    return newEarnings(gewinn, verlust, gesamt);
+}
+
 // ******************************
 // RPC - Update
 // ******************************
@@ -797,7 +853,7 @@ int main() {
                                         + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]</option>";
                         }
                         replace(sEditFileBuffer, htmlVariable, newHTML_getSelection);
-
+/*
                         // <li>Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Even (4.0) : [Anbieter]<br> 15 auf Team B</li>
                         string htmlVariableCurrentBets = "{bettor_get_my_current_bets}";
                         string htmlVariablePreviousBets = "{bettor_get_my_previous_bets}";
@@ -832,6 +888,7 @@ int main() {
                         }
                         replace(sEditFileBuffer, htmlVariableCurrentBets, newHTMLcurrent);
                         replace(sEditFileBuffer, htmlVariablePreviousBets, newHTMLcurrent);
+*/
                     }
                     else if ((filename.find("wettanbieter.html")) != string::npos)
                     {
@@ -941,9 +998,13 @@ int main() {
                 }
 
             } else if (request.post){
+                bool sendEcho = true;
                 cout << "* request.referer: " << request.referer; 
                 cout << "!"<< endl;
-                if(request.referer.find("wettender",0) != -1){  
+
+                string dataToSend = "";
+
+                if(request.referer.find("wettender",0) != -1){
                     cout << "POST bei wettender" << endl;
                     
                     //Wettender Beispiel POST-String: Spiel=Fred_und_GeorgeAA2AARavenclawAASlytherinAA1.00AA2.00AA3.50&gewaehlteMannschaft=Team+A&Wetteinsatz=10&Name=emmy
@@ -1055,6 +1116,78 @@ int main() {
 
                         placeNewBet(anbieter, stoi(wettid), name, stod(einsatz), ergebnis, stod(aQuote), stod(bQuote), stod(evenQuote));
                     }
+                    //Wettender Beispiel POST-String: GetValuesOfName=emmy
+                    string GETVALUES = "GetValuesOfName=";
+                    vector<Wettoption> alleWetten = getAllBetOptions();
+
+                    if((post.find(GETVALUES,0) == 0)){
+                        sendEcho = false;
+                        post.erase(0, GETVALUES.size());
+                        name = post;
+                        cout << "*post: " << post << endl;
+
+                        dataToSend += "Ihr Name: " + name;
+
+                        // <li>Chudley Cannons (2.0) vs. Holyhead Harpines (1.5) - Even (4.0) : [Anbieter]<br> 15 auf Team B</li>
+                        string newCurrentWetten = "";
+                        string newPreviousWetten = "";
+                        vector<PlatzierteWette> alleMeineWetten = getAllMyPlacedBets(name);
+
+                        for(int i = 0; i < alleMeineWetten.size(); i++)
+                        {
+                            string quoteA = to_string(alleMeineWetten[i].wettoption.quoteA);
+                            string quoteB = to_string(alleMeineWetten[i].wettoption.quoteB);
+                            string quoteEven = to_string(alleMeineWetten[i].wettoption.quoteEven);
+                            string moneyset = to_string(alleMeineWetten[i].moneyset);
+                            string newString = "";
+
+                            if(alleMeineWetten[i].wettoption.spiel.status == STATUS_OPEN)
+                            {
+                                //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
+                                newString       = "- " + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
+                                                + alleMeineWetten[i].wettoption.spiel.teamB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                                + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]\n   "
+                                                + moneyset.substr(0, moneyset.find('.')+3) + " Euro auf " + gameEnding(alleMeineWetten[i].ending) + "\n";
+                                newCurrentWetten += newString;
+                            }
+                            else if (alleMeineWetten[i].wettoption.spiel.status == STATUS_CLOSED)
+                            {
+                                //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
+                                newString       = "- " + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
+                                                + alleMeineWetten[i].wettoption.spiel.teamB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                                + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]\n   "
+                                                + moneyset.substr(0, moneyset.find('.')+3) + " Euro auf " + gameEnding(alleMeineWetten[i].ending) + "\n";
+                                newPreviousWetten += newString;
+                            }
+                        }
+
+                        dataToSend += "\n\n";
+                        dataToSend += "Aktuelle Wetten:\n";
+                        dataToSend += newCurrentWetten;
+                        dataToSend += "\n\n";
+                        dataToSend += "Abgeschlossene Wetten:\n";
+                        dataToSend += newPreviousWetten;
+
+                        double winMoney = 0;
+                        double lossMoney = 0;
+                        double wholeMoney = 0;
+
+                        // TODO: hier weiter
+                        Earnings earnings = getEarningsOfBettor(name);
+                        winMoney = earnings.gewinn;
+                        lossMoney = earnings.verlust;
+                        wholeMoney = earnings.gesamt;
+
+                        string win = to_string(winMoney);
+                        string loss = to_string(lossMoney);
+                        string whole = to_string(wholeMoney);
+                        
+                        dataToSend += "\n\n";
+                        dataToSend += "Gesamtuebersicht:\n";
+                        dataToSend += "Gewinn:  " + win.substr(0, win.find('.')+3) + "Euro\n";
+                        dataToSend += "Verlust: " + loss.substr(0, loss.find('.')+3) + "Euro\n";
+                        dataToSend += "Gesamt:  " + whole.substr(0, whole.find('.')+3) + "Euro";
+                    }
                 }
                 else if(request.referer.find("wettanbieter",0) != -1)
                 {
@@ -1069,7 +1202,7 @@ int main() {
                     string IDBET_DELETE = "idbetdel=";
                     string AMPERSAND = "&";
                     string NAME = "nameanbieter=";
-                    string NAME_DELETE = "nameanbieteDel=";
+                    string NAME_DELETE = "nameanbieterDel=";
                     string CARRIAGERETURN = "%0D%0A";
 
                     string anbieter = "";
@@ -1150,7 +1283,7 @@ int main() {
                     
                     else if ((post.find(IDBET_DELETE,0) == 0))
                     {                        
-                        //idbetdel=3&nameanbieteDel=Hogwarts
+                        //idbetdel=3&nameanbieterDel=Hogwarts
 
                         post.erase(0, IDBET_DELETE.size());                        
                         cout << "*post: " << post << endl;
@@ -1183,11 +1316,23 @@ int main() {
                         }
                     }
                 }
-                int length = request.data.length(); 
-                char* bufferPostHeader = new char[length + 1]; 
-                strcpy(bufferPostHeader, request.data.c_str());  
-                cout << "Message from client: " << bufferPostHeader << endl;
-                send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
+
+                if (sendEcho)
+                {
+                    int length = request.data.length(); 
+                    char* bufferPostHeader = new char[length + 1]; 
+                    strcpy(bufferPostHeader, request.data.c_str());
+                    cout << "Message from client: " << bufferPostHeader << endl;
+                    send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
+                }
+                else
+                {
+                    int length = dataToSend.length();
+                    char* bufferPostHeader = new char[length + 1];
+                    strcpy(bufferPostHeader, dataToSend.c_str());
+                    cout << "Message from client: " << bufferPostHeader << endl;
+                    send(newClientSocket, bufferPostHeader, strlen(bufferPostHeader),0);
+                }
             }
 
             if (errorPage)

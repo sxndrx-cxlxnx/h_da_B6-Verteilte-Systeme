@@ -42,7 +42,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  string getSpecificGame(i32 spielid)')
     print('  i32 getPossibleEarningBookholder(string nameanbieter, i32 betid, i32 ending)')
     print('  i32 getNumberOfBettors(string nameanbieter, i32 betid)')
-    print('  i32 getEarningBettor(string nameanbieter, i32 betid, string namebettor)')
+    print('  double getEarningBettor(string nameanbieter, i32 betid, string namebettor)')
     print('  i32 getEarningBookholder(string nameanbieter, i32 betid)')
     print('')
     sys.exit(0)

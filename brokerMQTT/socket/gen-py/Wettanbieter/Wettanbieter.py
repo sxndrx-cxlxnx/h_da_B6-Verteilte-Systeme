@@ -3967,8 +3967,8 @@ class getEarningBettor_result(object):
             if ftype == TType.STOP:
                 break
             if fid == 0:
-                if ftype == TType.I32:
-                    self.success = iprot.readI32()
+                if ftype == TType.DOUBLE:
+                    self.success = iprot.readDouble()
                 else:
                     iprot.skip(ftype)
             else:
@@ -3982,8 +3982,8 @@ class getEarningBettor_result(object):
             return
         oprot.writeStructBegin('getEarningBettor_result')
         if self.success is not None:
-            oprot.writeFieldBegin('success', TType.I32, 0)
-            oprot.writeI32(self.success)
+            oprot.writeFieldBegin('success', TType.DOUBLE, 0)
+            oprot.writeDouble(self.success)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -4003,7 +4003,7 @@ class getEarningBettor_result(object):
         return not (self == other)
 all_structs.append(getEarningBettor_result)
 getEarningBettor_result.thrift_spec = (
-    (0, TType.I32, 'success', None, None, ),  # 0
+    (0, TType.DOUBLE, 'success', None, None, ),  # 0
 )
 
 
