@@ -128,7 +128,6 @@ def newBetOption(spielID):
     SpielID2WettID[spielID] = wettIDctr
     WettID2SpielID[wettIDctr] = spielID
     SpielIsStarted[spielID] = False
-    wettIDctr += 1
 
     Gewinnwahrscheinlichkeit = {
         spielID : {
@@ -160,6 +159,18 @@ def newBetOption(spielID):
         spielID : {}
     }
     IsendCooperationRequest[spielID] = False
+
+    publish_client = paho.Client()
+    if publish_client.connect("mqttbroker", 1883, 60) != 0:
+    print("Couldn't connect to the mqtt broker")
+    sys.exit(1)
+
+    mqtt_message = anbieterName + ":" + wettIDctr + ":" quoteA + ":" + quoteB + ":" + quoteEven + ":"
+
+    publish_client.publish("neuesWettangebot", mqtt_message, 0)
+    publish_client.disconnect()
+
+    wettIDctr += 1
   
 
 def calculateRisk(wettID, spielID):
