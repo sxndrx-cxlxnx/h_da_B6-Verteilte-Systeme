@@ -21,6 +21,7 @@ from thrift.protocol import TBinaryProtocol
 loop = True 
 while loop:
 
+    print("Neuer Tag? :0 \n")
     print("Neues Spiel? :1 \n")
     print("Spielbeginn? :2 \n")
     print("Spielende? :3 \n")
@@ -204,7 +205,19 @@ while loop:
             client.publish("dobby", news, 0)
             client.disconnect()
         else:
-            print("invalid input")            
+            print("invalid input")     
+
+    elif input2 == 0:
+
+        client = paho.Client()
+
+        if client.connect("mqttbroker", 1883, 60) != 0:
+            print("Couldn't connect to the mqtt broker")
+            sys.exit(1)
+
+        client.publish("newDay", "neuerTag:", 0)
+        client.disconnect()
+ 
         
     elif input2 == 9:
         loop = False

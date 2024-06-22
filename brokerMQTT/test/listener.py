@@ -10,6 +10,8 @@ def message_handling(client, userdata, msg):
 client = paho.Client()
 client.on_message = message_handling
 
+client.will_set("lastWill", "I'm gone", qos=0, retain=False)
+
 if client.connect("localhost", 1883, 60) != 0:
     print("Couldn't connect to the mqtt broker")
     sys.exit(1)
@@ -17,6 +19,7 @@ if client.connect("localhost", 1883, 60) != 0:
 client.subscribe("test_topic")
 client.subscribe("topic2")
 client.subscribe("newsfeed")
+client.subscribe("lastWill")
 
 try:
     print("Press CTRL+C to exit...")
