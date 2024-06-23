@@ -35,7 +35,7 @@ anbieterGebuehr = 5
 leaderName = "null"
 leaderID = 1000
 
-variance = 2.0
+variance = 2.1
 
 SpielID2WettID = {}
 #"keySpielID" : "valueWettID"
@@ -122,6 +122,15 @@ VotingForRecommendation = {}
 #   wettanbieterName : True/False
 #}
 
+Recommendations = {}
+# spielid : {
+#    quoteA = 1.0
+#    quoteB = 1.0
+#    quoteEven = 1.0
+#}
+
+RecommendationsSend = {}
+#spielID = True/False
 
 
 def newBetOption(spielID):
@@ -757,14 +766,14 @@ def handleNewDay():
     global anbieterName
     global leaderName
     global AnswersForGame
+    global RecommendationsSend
 
     if anbieterName == leaderName:
 
         for spielID in SpielIsStarted:
             if SpielIsStarted[spielID] == False:
-                AnswersForGame = {
-                    spielID : {}
-                }
+                AnswersForGame[spielID] = {}
+                RecommendationsSend[spielID] = False
                 print("Send Request for game ", spielID)
 
                 message = str(spielID) + ':'
@@ -820,7 +829,6 @@ def handleRequestForGame(gameID):
     clientSend.publish("empfehlungen", message, 0)
     clientSend.disconnect()
 
-
 def handleAnswersForGame(gameID, anbieterName, quoteA, quoteB, quoteEven):
     print("handleAnswersForGame() called")
     global AnswersForGame
@@ -834,7 +842,6 @@ def handleAnswersForGame(gameID, anbieterName, quoteA, quoteB, quoteEven):
 
     print("AnswersForGame after handleRequestsForGame: ", AnswersForGame)
     checkIfAllAnswered(gameID)
-
 
 def checkIfAllAnswered(gameID):
     print("checkIfAllAnswered() called")
@@ -858,6 +865,7 @@ def calculateRecommendation(gameID):
     print("calculateRecommendation() called")
     global AnswersForGame
     global VotingForRecommendation
+    global Recommendations
 
     newQuoteA = newQuoteB = newQuoteEven = 0.0
     counter = 0
@@ -881,6 +889,13 @@ def calculateRecommendation(gameID):
     print(newQuoteB)
     print(newQuoteEven)
 
+    print("Recommendations before change ", Recommendations)
+    Recommendations[gameID] = {}
+    Recommendations[gameID]["quoteA"] = newQuoteA
+    Recommendations[gameID]["quoteB"] = newQuoteB
+    Recommendations[gameID]["quoteEven"] = newQuoteEven
+    print("Recommendations after change ", Recommendations)
+
     message = str(gameID) + ':' + str(newQuoteA) + ':' + str(newQuoteB) + ':' + str(newQuoteEven) + ':'
 
     clientSend = paho.Client()
@@ -891,7 +906,6 @@ def calculateRecommendation(gameID):
 
     clientSend.publish("empfehlungenVote", message, 0)
     clientSend.disconnect()
-
 
     VotingForRecommendation[gameID] = {}
 
@@ -959,6 +973,108 @@ def votingRecommendation(gameID, quoteA, quoteB, quoteEven):
     clientSend.publish("voting", message, 0)
     clientSend.disconnect()
 
+def handleACKvoting(gameID, pAnbieterName):
+    print("handleACKvoting() called")
+    global VotingForRecommendation
+
+    print("before ACK VotingForRecommendation ", VotingForRecommendation)
+
+    VotingForRecommendation[gameID][pAnbieterName] = True
+    print("after ACK VotingForRecommendation ", VotingForRecommendation)
+    checkIfAllVoted(gameID)
+
+def handleVeto(gameID, pAnbieterName, whichQuote, problem):
+    print("handleVeto() called")
+    global Recommendations
+    global VotingForRecommendation
+
+    print("VotingForRecommendation before: ", VotingForRecommendation)
+    VotingForRecommendation[gameID] = {}
+    print("VotingForRecommendation after: ", VotingForRecommendation)
+
+    print("Recommendations before change ", Recommendations)
+    if whichQuote == 1:
+        if problem == 1:
+            Recommendations[gameID]["quoteA"] += 0.1
+        else:
+            Recommendations[gameID]["quoteA"] -= 0.1
+
+    elif whichQuote == 2:
+        if problem == 1:
+            Recommendations[gameID]["quoteB"] += 0.1
+        else:
+            Recommendations[gameID]["quoteB"] -= 0.1
+
+    elif whichQuote == 3:
+        if problem == 1:
+            Recommendations[gameID]["quoteEven"] += 0.1
+        else:
+            Recommendations[gameID]["quoteEven"] -= 0.1
+
+    print("Recommendations after change ", Recommendations)
+
+    message = str(gameID) + ':' + str(Recommendations[gameID]["quoteA"]) + ':' + str(Recommendations[gameID]["quoteB"]) + ':' + str(Recommendations[gameID]["quoteEven"]) + ':'
+
+    clientSend = paho.Client()
+
+    if clientSend.connect("mqttbroker", 1883, 60) != 0:
+        print("Couldn't connect to the mqtt broker")
+        sys.exit(1)
+
+    clientSend.publish("empfehlungenVote", message, 0)
+    clientSend.disconnect()
+
+def checkIfAllVoted(gameID):
+    print("checkIfAllVoted() called")
+    global VotingForRecommendation
+    global Wettanbieter2ID
+    global RecommendationsSend
+
+    if RecommendationsSend[gameID] == False:
+
+        allVoted = True
+
+        print(Wettanbieter2ID)
+        print(AnswersForGame)
+
+        for wettanbieter in Wettanbieter2ID:
+            print(wettanbieter)
+            if not wettanbieter in VotingForRecommendation[gameID]:
+                allVoted = False
+            else:
+                if VotingForRecommendation[gameID][wettanbieter] == False:
+                    allVoted = False
+
+        if allVoted:
+            print("all accepted")
+            sendRecommendation(gameID)
+
+def sendRecommendation(gameID):
+    print("sendRecommendation() called")
+    global Recommendations
+    global RecommendationsSend
+
+    if RecommendationsSend[gameID] == False:
+
+        recquotea = float(Recommendations[gameID]["quoteA"])
+        recquoteb = float(Recommendations[gameID]["quoteB"])
+        recquoteeven = float(Recommendations[gameID]["quoteEven"])
+
+        try:
+            transport = TSocket.TSocket( host , port)
+            transport = TTransport.TBufferedTransport(transport)
+            protocol = TBinaryProtocol.TBinaryProtocol(transport)
+
+            clientrpc = Wettanbieter.Client(protocol)
+            transport.open()
+            clientrpc.newRecommendation(gameID, recquotea, recquoteb, recquoteeven)
+            
+            transport.close()
+            print("new Recommendation for ", gameID, " send")
+            RecommendationsSend[gameID] = True
+
+        except Thrift.TException as tx:
+            print ('Something went wrong : %s' % (tx.message))
 
 def informAboutID():
     print("informAboutID() called")
@@ -1192,6 +1308,7 @@ def message_handling(client, userdata, msg):
         case "newDay":
             print("new Day")
             handleNewDay()
+            
 
         case "idKommunikation":
             print("idKommunikation")
@@ -1245,6 +1362,19 @@ def message_handling(client, userdata, msg):
 
         case "voting":
             print("voting")
+            if leaderName == anbieterName:
+                #"ACK" + ':' + str(gameID) + ':' + anbieterName + ':'
+                #"NACK" + ':' + str(gameID) + ':' + anbieterName + ':' + "1" + ':' + "2" + ':' #zu groß
+                if msg.payload.decode().split(":")[0] == "ACK":
+                    gameID = msg.payload.decode().split(":")[1]
+                    pAnbieterName = msg.payload.decode().split(":")[2]
+                    handleACKvoting(int(gameID), pAnbieterName)
+                else:
+                    gameID = msg.payload.decode().split(":")[1]
+                    pAnbieterName = msg.payload.decode().split(":")[2]
+                    whichQuote = msg.payload.decode().split(":")[3]
+                    problem = msg.payload.decode().split(":")[4]
+                    handleVeto(int(gameID), pAnbieterName, int(whichQuote), int(problem))
 
         case anbieterName:
             print("Personal Message")

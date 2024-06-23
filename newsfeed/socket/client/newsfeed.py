@@ -209,6 +209,20 @@ while loop:
 
     elif input2 == 0:
 
+        try:
+
+            transport = TSocket.TSocket( host , port)
+            transport = TTransport.TBufferedTransport(transport)
+            protocol = TBinaryProtocol.TBinaryProtocol(transport)
+
+            clientrpc = Wettanbieter.Client(protocol)
+            transport.open()
+            clientrpc.newDay()
+            transport.close()
+
+        except Thrift.TException as tx:
+            print ('Something went wrong : %s' % (tx.message))
+
         client = paho.Client()
 
         if client.connect("mqttbroker", 1883, 60) != 0:
