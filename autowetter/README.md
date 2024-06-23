@@ -1,5 +1,5 @@
 
 ```
-cd MQTT\
-python3 test-client.py
+cd MQTT
+python3 autowetter.py
 ```

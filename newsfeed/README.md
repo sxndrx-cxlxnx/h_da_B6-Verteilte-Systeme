@@ -1,5 +1,5 @@
 
 ```
-cd MQTT\
-python3 test-client.py
+cd socket/client
+python3 newsfeed.py
 ```

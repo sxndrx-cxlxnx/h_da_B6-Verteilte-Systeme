@@ -289,7 +289,6 @@ class WettanbieterHandler:
 
         return True
 
-
     def isGameOpen(self, gameid):
         print("isGameOpen called")
         with open('openGames.csv','r',encoding='utf-8') as file:
@@ -320,7 +319,6 @@ class WettanbieterHandler:
             
         return returnValue
 
-
     def getAllClosedGames(self):
         print("getAllClosedGames called")
 
@@ -338,8 +336,7 @@ class WettanbieterHandler:
         returnValue = str(ctr) + "#" + returnValue
             
         return returnValue
-
-    
+  
     def getSpecificGame(self, gameid):
         print("getSpecificGame called")
 
@@ -425,7 +422,67 @@ class WettanbieterHandler:
         
         return -1
 
+    def newRecommendation(self, gameid, recquotea, recquoteb, recquoteeven):
+        print("newRecommendation called")
 
+        with open('recommendations.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)
+
+        day = -1
+        newDay = "neuer_Tag"
+
+        for line in data:
+            print("New Recommendation line: ", line)
+            if line.startswith(newDay + ":") :
+                day += 1
+
+        file = open("recommendations.csv", "a")
+        file.write(str(day) + ":" + str(gameid) + ":" + str(recquotea) + ":" + str(recquoteb) + ":" + str(recquoteeven) + ";\n")
+        file.close()
+
+        return True
+
+    def newDay(self):
+        print("newDay called")
+
+        with open('recommendations.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)
+        
+        day = -1    # starts with day 0
+        newDay = "neuer_Tag"
+
+        for line in data:
+            print("New Day line: ", line)
+            if line.startswith(newDay + ":") :
+                day += 1
+
+        this_day = day + 1
+
+        file = open("recommendations.csv", "a")
+        file.write(newDay + ":" + str(this_day) + ";\n")
+        file.close()
+
+        return True
+
+    def getAllRecommendations(self):
+        print("getAllRecommendations called")
+
+        with open('recommendations.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)
+
+        returnValue = ""
+        ctr = 0
+        
+        for line in data:
+            ctr += 1
+            returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
+
+        return returnValue
 
 # set handler to our implementation
 handler = WettanbieterHandler()

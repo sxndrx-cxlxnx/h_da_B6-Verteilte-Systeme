@@ -58,6 +58,31 @@ std::string gameStatus(int status)
     }
 }
 
+std::string tagString(int tag)
+{
+    tag %= 7;
+
+    switch ( tag )
+    {
+        case 0:
+            return "Montag";
+        case 1:
+            return "Dienstag";
+        case 2:
+            return "Mittwoch";
+        case 3:
+            return "Donnerstag";
+        case 4:
+            return "Freitag";
+        case 5:
+            return "Samstag";
+        case 6:
+            return "Sonntag";
+        default:
+            return "falscher Tag";
+    }
+}
+
 struct Spiel{
     int id;
     std::string teamA;
@@ -66,6 +91,14 @@ struct Spiel{
     int ending = ENDING_OPEN;
     int standA = 0;
     int standB = 0;
+};
+
+struct Empfehlung{
+    int tag;
+    Spiel spiel;
+    double quoteA;
+    double quoteB;
+    double quoteEven;
 };
 
 struct Wettoption{

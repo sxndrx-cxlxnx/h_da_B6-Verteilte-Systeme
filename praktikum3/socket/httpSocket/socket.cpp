@@ -99,6 +99,19 @@ Earnings newEarnings(double pgewinn, double pverlust, double pgesamt)
     return earnings;
 }
 
+Empfehlung newEmpfehlung(int ptag, Spiel pspiel, double pquoteA, double pquoteB, double pquoteEven)
+{
+    Empfehlung empfehlung;
+
+    empfehlung.tag = ptag;
+    empfehlung.spiel = pspiel;
+    empfehlung.quoteA = pquoteA;
+    empfehlung.quoteB = pquoteB;
+    empfehlung.quoteEven = pquoteEven;
+
+    return empfehlung;
+}
+
 void getAllWettanbieter()   // initial
 {
     // File pointer 
@@ -715,6 +728,126 @@ Earnings getEarningsOfBettor(string nameBettor)
     return newEarnings(gewinn, verlust, gesamt);
 }
 
+vector<Empfehlung> getAllRecommendations()
+{
+    cout << "Entry getAllRecommendations " << endl << flush;
+
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    vector<Empfehlung> alleEmpfehlungen;
+    string rpc;
+
+    try
+    {
+        transport->open();
+        client.getAllRecommendations(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+    }
+    //cout << "RPC: " << rpc << "<<" << endl;
+    // Output
+    // RPC: neuer Tag:10;
+    //      Tag:SpielID:recA:recB:recEven;
+
+    stringstream sRPC;
+    sRPC << rpc;
+    string line;
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        getline(sRPC, line, '\n');
+        stringstream sline;
+        sline << line;
+        cout << "Line: " << line << endl;
+
+        if (line.find("neuer_Tag", 0) == 0)
+        {
+            cout << "neuer Tag gefunden" << endl;
+            continue;
+        }
+        else
+        {
+            string tag, spielID, quoteA, quoteB, quoteEven;
+
+            getline(sline, tag, ':');
+            getline(sline, spielID, ':');
+            getline(sline, quoteA, ':');
+            getline(sline, quoteB, ':');
+            getline(sline, quoteEven, ';');
+
+            cout << "*Read Empfehlung: " << tag << ":" << spielID << ":" << quoteA << ":" << quoteB << ":" << quoteEven << endl << flush;
+            cout << "Tag: " << tag << " SpielID: " << spielID << endl;
+            Spiel spiel = getSpecificSpiel(stoi(spielID));
+            alleEmpfehlungen.push_back(newEmpfehlung(stoi(tag), spiel, stod(quoteA), stod(quoteB), stod(quoteEven)));
+        }
+    }
+
+    cout << "*got all Recommendations " << endl;
+    return alleEmpfehlungen;
+}
+
+int getAnzahlTage()
+{
+    cout << "Entry getAnzahlTage " << endl << flush;
+
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    int anzahlTage = 0;
+    string rpc;
+
+    try
+    {
+        transport->open();
+        client.getAllRecommendations(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+    }
+    cout << "RPC: " << rpc << "<<" << endl;
+    // Output
+    // RPC: neuer Tag:10;
+    //      Tag:SpielID:recA:recB:recEven;
+
+    stringstream sRPC;
+    sRPC << rpc;
+    string line;
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        getline(sRPC, line, '\n');
+        stringstream sline;
+        sline << line;
+
+        if (line.find("neuer_Tag", 0) == 0)
+        {
+            anzahlTage += 1;
+        }
+    }
+
+    cout << "*got Anzahl Tage " << endl;
+
+    return anzahlTage;
+}
+
 // ******************************
 // RPC - Update
 // ******************************
@@ -953,18 +1086,46 @@ int main() {
                     {
                         string htmlVariable;
 
-                        /*
-                        // <li>motag: Dobby hat einen Klatscher gegen Harry verhext</li>
-                        htmlVariable = "{news_ticker}";
-                        string newHTML_ticker = "";
-                        vector<News> alleNews = getAllNews();
+                        /* Montag:
+                        <li>Tag: Tag - SpielerA:B - Quote A, Quote B, Quote Even</li>
+                        Sonntag:*/
+                        htmlVariable = "{news_recommendations}";					
+                        string newHTML_recommendations = "";
+                        string recoms_tag = "";
+                        string recommendation = "";
+                        vector<Empfehlung> alleEmpfehlungen = getAllRecommendations();
+                        int anzahlTage = getAnzahlTage();
+                        cout << "Anzahl Tage: " << endl;
 
-                        for(int i = 0; i < alleNews.size(); i++)
+                        for (int currentDay = 0; currentDay < anzahlTage; currentDay++)
                         {
-                            newHTML_ticker += "<li>" + "message" + "</li>";
+                            recoms_tag = "<b>" + tagString(currentDay) + ":</b><ul>";
+                            recommendation = "";
+
+                            cout << "Anzahl Empfehlungen: " << alleEmpfehlungen.size() << endl;
+                            for(int e = 0; e < alleEmpfehlungen.size(); e++)
+                            {
+                                if(alleEmpfehlungen[e].tag == currentDay)
+                                {
+                                    string quoteA = to_string(alleEmpfehlungen[e].quoteA);
+                                    string quoteB = to_string(alleEmpfehlungen[e].quoteB);
+                                    string quoteEven = to_string(alleEmpfehlungen[e].quoteEven);
+                                    // string = SpielerA : SpielerB - QuoteA : QuoteB : Quote Even </li>
+                                    recommendation += "<li>"
+                                                    + alleEmpfehlungen[e].spiel.teamA + " : " + alleEmpfehlungen[e].spiel.teamB + "<br>"
+                                                    + " -> " + quoteA.substr(0, quoteA.find('.')+3) + " : " + quoteB.substr(0, quoteB.find('.')+3) + " : " + quoteEven.substr(0, quoteEven.find('.')+3)
+                                                    + "</li>";
+                                }
+                                else if (alleEmpfehlungen[e].tag == (currentDay + 1))
+                                {
+                                    break;
+                                }
+                            }
+                            recoms_tag += recommendation + "</ul>";
+                            newHTML_recommendations = recoms_tag + newHTML_recommendations;
                         }
-                        replace(sEditFileBuffer, htmlVariable, newHTML_ticker);
-                        */
+                        
+                        replace(sEditFileBuffer, htmlVariable, newHTML_recommendations);
 
                         // <li>Chudley Cannons vs. Holyhead Harpines</li>
                         htmlVariable = "{news_open_games}";
