@@ -120,6 +120,21 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("getEarningBookholder\n");
   }
 
+  bool newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven) {
+    // Your implementation goes here
+    printf("newRecommendation\n");
+  }
+
+  bool newDay() {
+    // Your implementation goes here
+    printf("newDay\n");
+  }
+
+  void getAllRecommendations(std::string& _return) {
+    // Your implementation goes here
+    printf("getAllRecommendations\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

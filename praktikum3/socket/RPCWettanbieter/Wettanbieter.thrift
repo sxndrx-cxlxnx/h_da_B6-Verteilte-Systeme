@@ -27,5 +27,9 @@ service Wettanbieter {
     i32 getPossibleEarningBookholder(1: string nameanbieter, 2: i32 betid, 3: i32 ending),
     i32 getNumberOfBettors(1: string nameanbieter, 2: i32 betid),
     double getEarningBettor(1: string nameanbieter, 2: i32 betid, 3: string namebettor),
-    i32 getEarningBookholder(1: string nameanbieter, 2: i32 betid)
+    i32 getEarningBookholder(1: string nameanbieter, 2: i32 betid),
+    
+    bool newRecommendation(1: i32 gameid, 2: double recquotea, 3: double recquoteb, 4: double recquoteeven),
+    bool newDay(),
+    string getAllRecommendations()
 }

@@ -42,6 +42,9 @@ class WettanbieterIf {
   virtual int32_t getNumberOfBettors(const std::string& nameanbieter, const int32_t betid) = 0;
   virtual double getEarningBettor(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor) = 0;
   virtual int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) = 0;
+  virtual bool newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven) = 0;
+  virtual bool newDay() = 0;
+  virtual void getAllRecommendations(std::string& _return) = 0;
 };
 
 class WettanbieterIfFactory {
@@ -142,6 +145,17 @@ class WettanbieterNull : virtual public WettanbieterIf {
   int32_t getEarningBookholder(const std::string& /* nameanbieter */, const int32_t /* betid */) override {
     int32_t _return = 0;
     return _return;
+  }
+  bool newRecommendation(const int32_t /* gameid */, const double /* recquotea */, const double /* recquoteb */, const double /* recquoteeven */) override {
+    bool _return = false;
+    return _return;
+  }
+  bool newDay() override {
+    bool _return = false;
+    return _return;
+  }
+  void getAllRecommendations(std::string& /* _return */) override {
+    return;
   }
 };
 
@@ -2461,6 +2475,322 @@ class Wettanbieter_getEarningBookholder_presult {
 
 };
 
+typedef struct _Wettanbieter_newRecommendation_args__isset {
+  _Wettanbieter_newRecommendation_args__isset() : gameid(false), recquotea(false), recquoteb(false), recquoteeven(false) {}
+  bool gameid :1;
+  bool recquotea :1;
+  bool recquoteb :1;
+  bool recquoteeven :1;
+} _Wettanbieter_newRecommendation_args__isset;
+
+class Wettanbieter_newRecommendation_args {
+ public:
+
+  Wettanbieter_newRecommendation_args(const Wettanbieter_newRecommendation_args&) noexcept;
+  Wettanbieter_newRecommendation_args& operator=(const Wettanbieter_newRecommendation_args&) noexcept;
+  Wettanbieter_newRecommendation_args() noexcept
+                                      : gameid(0),
+                                        recquotea(0),
+                                        recquoteb(0),
+                                        recquoteeven(0) {
+  }
+
+  virtual ~Wettanbieter_newRecommendation_args() noexcept;
+  int32_t gameid;
+  double recquotea;
+  double recquoteb;
+  double recquoteeven;
+
+  _Wettanbieter_newRecommendation_args__isset __isset;
+
+  void __set_gameid(const int32_t val);
+
+  void __set_recquotea(const double val);
+
+  void __set_recquoteb(const double val);
+
+  void __set_recquoteeven(const double val);
+
+  bool operator == (const Wettanbieter_newRecommendation_args & rhs) const
+  {
+    if (!(gameid == rhs.gameid))
+      return false;
+    if (!(recquotea == rhs.recquotea))
+      return false;
+    if (!(recquoteb == rhs.recquoteb))
+      return false;
+    if (!(recquoteeven == rhs.recquoteeven))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_newRecommendation_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_newRecommendation_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_newRecommendation_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_newRecommendation_pargs() noexcept;
+  const int32_t* gameid;
+  const double* recquotea;
+  const double* recquoteb;
+  const double* recquoteeven;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_newRecommendation_result__isset {
+  _Wettanbieter_newRecommendation_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_newRecommendation_result__isset;
+
+class Wettanbieter_newRecommendation_result {
+ public:
+
+  Wettanbieter_newRecommendation_result(const Wettanbieter_newRecommendation_result&) noexcept;
+  Wettanbieter_newRecommendation_result& operator=(const Wettanbieter_newRecommendation_result&) noexcept;
+  Wettanbieter_newRecommendation_result() noexcept
+                                        : success(0) {
+  }
+
+  virtual ~Wettanbieter_newRecommendation_result() noexcept;
+  bool success;
+
+  _Wettanbieter_newRecommendation_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_newRecommendation_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_newRecommendation_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_newRecommendation_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_newRecommendation_presult__isset {
+  _Wettanbieter_newRecommendation_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_newRecommendation_presult__isset;
+
+class Wettanbieter_newRecommendation_presult {
+ public:
+
+
+  virtual ~Wettanbieter_newRecommendation_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_newRecommendation_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+
+class Wettanbieter_newDay_args {
+ public:
+
+  Wettanbieter_newDay_args(const Wettanbieter_newDay_args&) noexcept;
+  Wettanbieter_newDay_args& operator=(const Wettanbieter_newDay_args&) noexcept;
+  Wettanbieter_newDay_args() noexcept {
+  }
+
+  virtual ~Wettanbieter_newDay_args() noexcept;
+
+  bool operator == (const Wettanbieter_newDay_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const Wettanbieter_newDay_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_newDay_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_newDay_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_newDay_pargs() noexcept;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_newDay_result__isset {
+  _Wettanbieter_newDay_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_newDay_result__isset;
+
+class Wettanbieter_newDay_result {
+ public:
+
+  Wettanbieter_newDay_result(const Wettanbieter_newDay_result&) noexcept;
+  Wettanbieter_newDay_result& operator=(const Wettanbieter_newDay_result&) noexcept;
+  Wettanbieter_newDay_result() noexcept
+                             : success(0) {
+  }
+
+  virtual ~Wettanbieter_newDay_result() noexcept;
+  bool success;
+
+  _Wettanbieter_newDay_result__isset __isset;
+
+  void __set_success(const bool val);
+
+  bool operator == (const Wettanbieter_newDay_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_newDay_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_newDay_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_newDay_presult__isset {
+  _Wettanbieter_newDay_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_newDay_presult__isset;
+
+class Wettanbieter_newDay_presult {
+ public:
+
+
+  virtual ~Wettanbieter_newDay_presult() noexcept;
+  bool* success;
+
+  _Wettanbieter_newDay_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+
+class Wettanbieter_getAllRecommendations_args {
+ public:
+
+  Wettanbieter_getAllRecommendations_args(const Wettanbieter_getAllRecommendations_args&) noexcept;
+  Wettanbieter_getAllRecommendations_args& operator=(const Wettanbieter_getAllRecommendations_args&) noexcept;
+  Wettanbieter_getAllRecommendations_args() noexcept {
+  }
+
+  virtual ~Wettanbieter_getAllRecommendations_args() noexcept;
+
+  bool operator == (const Wettanbieter_getAllRecommendations_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const Wettanbieter_getAllRecommendations_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getAllRecommendations_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Wettanbieter_getAllRecommendations_pargs {
+ public:
+
+
+  virtual ~Wettanbieter_getAllRecommendations_pargs() noexcept;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getAllRecommendations_result__isset {
+  _Wettanbieter_getAllRecommendations_result__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getAllRecommendations_result__isset;
+
+class Wettanbieter_getAllRecommendations_result {
+ public:
+
+  Wettanbieter_getAllRecommendations_result(const Wettanbieter_getAllRecommendations_result&);
+  Wettanbieter_getAllRecommendations_result& operator=(const Wettanbieter_getAllRecommendations_result&);
+  Wettanbieter_getAllRecommendations_result() noexcept
+                                            : success() {
+  }
+
+  virtual ~Wettanbieter_getAllRecommendations_result() noexcept;
+  std::string success;
+
+  _Wettanbieter_getAllRecommendations_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Wettanbieter_getAllRecommendations_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Wettanbieter_getAllRecommendations_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Wettanbieter_getAllRecommendations_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Wettanbieter_getAllRecommendations_presult__isset {
+  _Wettanbieter_getAllRecommendations_presult__isset() : success(false) {}
+  bool success :1;
+} _Wettanbieter_getAllRecommendations_presult__isset;
+
+class Wettanbieter_getAllRecommendations_presult {
+ public:
+
+
+  virtual ~Wettanbieter_getAllRecommendations_presult() noexcept;
+  std::string* success;
+
+  _Wettanbieter_getAllRecommendations_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class WettanbieterClient : virtual public WettanbieterIf {
  public:
   WettanbieterClient(std::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -2546,6 +2876,15 @@ class WettanbieterClient : virtual public WettanbieterIf {
   int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override;
   void send_getEarningBookholder(const std::string& nameanbieter, const int32_t betid);
   int32_t recv_getEarningBookholder();
+  bool newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven) override;
+  void send_newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven);
+  bool recv_newRecommendation();
+  bool newDay() override;
+  void send_newDay();
+  bool recv_newDay();
+  void getAllRecommendations(std::string& _return) override;
+  void send_getAllRecommendations();
+  void recv_getAllRecommendations(std::string& _return);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -2581,6 +2920,9 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_getNumberOfBettors(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getEarningBettor(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getEarningBookholder(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_newRecommendation(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_newDay(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getAllRecommendations(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   WettanbieterProcessor(::std::shared_ptr<WettanbieterIf> iface) :
     iface_(iface) {
@@ -2604,6 +2946,9 @@ class WettanbieterProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["getNumberOfBettors"] = &WettanbieterProcessor::process_getNumberOfBettors;
     processMap_["getEarningBettor"] = &WettanbieterProcessor::process_getEarningBettor;
     processMap_["getEarningBookholder"] = &WettanbieterProcessor::process_getEarningBookholder;
+    processMap_["newRecommendation"] = &WettanbieterProcessor::process_newRecommendation;
+    processMap_["newDay"] = &WettanbieterProcessor::process_newDay;
+    processMap_["getAllRecommendations"] = &WettanbieterProcessor::process_getAllRecommendations;
   }
 
   virtual ~WettanbieterProcessor() {}
@@ -2820,6 +3165,34 @@ class WettanbieterMultiface : virtual public WettanbieterIf {
     return ifaces_[i]->getEarningBookholder(nameanbieter, betid);
   }
 
+  bool newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->newRecommendation(gameid, recquotea, recquoteb, recquoteeven);
+    }
+    return ifaces_[i]->newRecommendation(gameid, recquotea, recquoteb, recquoteeven);
+  }
+
+  bool newDay() override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->newDay();
+    }
+    return ifaces_[i]->newDay();
+  }
+
+  void getAllRecommendations(std::string& _return) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->getAllRecommendations(_return);
+    }
+    ifaces_[i]->getAllRecommendations(_return);
+    return;
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -2912,6 +3285,15 @@ class WettanbieterConcurrentClient : virtual public WettanbieterIf {
   int32_t getEarningBookholder(const std::string& nameanbieter, const int32_t betid) override;
   int32_t send_getEarningBookholder(const std::string& nameanbieter, const int32_t betid);
   int32_t recv_getEarningBookholder(const int32_t seqid);
+  bool newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven) override;
+  int32_t send_newRecommendation(const int32_t gameid, const double recquotea, const double recquoteb, const double recquoteeven);
+  bool recv_newRecommendation(const int32_t seqid);
+  bool newDay() override;
+  int32_t send_newDay();
+  bool recv_newDay(const int32_t seqid);
+  void getAllRecommendations(std::string& _return) override;
+  int32_t send_getAllRecommendations();
+  void recv_getAllRecommendations(std::string& _return, const int32_t seqid);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
