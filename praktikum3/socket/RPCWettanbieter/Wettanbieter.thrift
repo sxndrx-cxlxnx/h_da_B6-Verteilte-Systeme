@@ -12,9 +12,12 @@ service Wettanbieter {
     string getAllBetOptions(),
     string getSpecificBetOption(1: string nameanbieter, 2: i32 id),
     string getAllPlacedBets(),
+    string getAllClosedPlacedBets(),
     string getAllPlacedBetsToABetOption(1: string nameanbieter, 2: i32 id),
 
     bool placeNewBet(1: string nameanbieter, 2: i32 betid, 3: string namebettor, 4: double moneyset, 5: i32 ending, 6: double winachance, 7: double winbchance, 8: double even),
+
+    string getSpecificBookmaker(1: string nameanbieter),
 
     bool addGame(1: i32 spielid, 2: string playera, 3: string playerb),
     bool endGame(1: i32 spielid, 2: i32 pointsA, 3: i32 pointsB),

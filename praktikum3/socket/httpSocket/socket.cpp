@@ -51,12 +51,12 @@ Spiel newSpiel(int id, string teamA, string teamB, int status, int ending, int s
     return spiel;
 };
 
-Wettoption newWettoption(int pid, string panbieterName, Spiel pspiel, double pquoteA, double pquoteB, double pquoteEven)
+Wettoption newWettoption(int pid, Wettanbieter panbieter, Spiel pspiel, double pquoteA, double pquoteB, double pquoteEven)
 {
     Wettoption wettoption;
 
     wettoption.id = pid;
-    wettoption.anbieterName = panbieterName;
+    wettoption.wettanbieter = panbieter;
     wettoption.spiel = pspiel;
     wettoption.quoteA = pquoteA;
     wettoption.quoteB = pquoteB;
@@ -65,13 +65,23 @@ Wettoption newWettoption(int pid, string panbieterName, Spiel pspiel, double pqu
     return wettoption;
 }
 
-Wettanbieter newWettanbieter(string pname, string padresse, int pport)
+BeendeteWettoption newBeendeteWettoption(Wettanbieter pwettanbieter, int pid, Spiel pspiel)
+{
+    BeendeteWettoption wettoption;
+
+    wettoption.wettanbieter = pwettanbieter;
+    wettoption.id = pid;
+    wettoption.spiel = pspiel;
+
+    return wettoption;
+}
+
+Wettanbieter newWettanbieter(string pname, double pgebuehr)
 {
     Wettanbieter anbieter;
 
     anbieter.name = pname;
-    anbieter.adresse = padresse;
-    anbieter.port = pport;
+    anbieter.gebuehr = pgebuehr;
 
     return anbieter;
 }
@@ -83,6 +93,17 @@ PlatzierteWette newPlatzierteWette(string pnamebettor, double pmoneyset, int pen
     wette.namebettor = pnamebettor;
     wette.moneyset = pmoneyset;
     wette.ending = pending;
+    wette.wettoption = pwettoption;
+
+    return wette;
+}
+
+BeendeteWette newBeendeteWette(string pnamebettor, double pmoneyoutcome, BeendeteWettoption pwettoption)
+{
+    BeendeteWette wette;
+
+    wette.namebettor = pnamebettor;
+    wette.moneyoutcome = pmoneyoutcome;
     wette.wettoption = pwettoption;
 
     return wette;
@@ -122,7 +143,7 @@ void getAllWettanbieter()   // initial
 
     // Read the Data from the file 
     string line;
-    string csv_name, csv_adresse, csv_port;
+    string csv_name, gebuehr;
 
     while(!wettanbieterCSV.eof())
     {
@@ -136,10 +157,9 @@ void getAllWettanbieter()   // initial
         // read every column data of a row and 
         // store it in a string variable 
         getline(sLine, csv_name, ',');
-        getline(sLine, csv_adresse, ',');
-        getline(sLine, csv_port, '\n');
+        getline(sLine, gebuehr, '\n');
 
-        alleWettanbieter.push_back( newWettanbieter(csv_name, csv_adresse, stoi(csv_port)) );
+        alleWettanbieter.push_back( newWettanbieter(csv_name, stod(gebuehr)) );
     } 
 
     wettanbieterCSV.close();
@@ -252,7 +272,7 @@ bool betExists(string nameanbieter, int id)
 
 Spiel readSpiel(stringstream* sRPC, int status)
 {
-    cout << "readSpiel" << endl;
+    cout << "Entry readSpiel()" << endl;
     string spielID, teamA, teamB, ending, standA, standB, nulln;
     int iEnding;
 
@@ -310,7 +330,7 @@ Spiel getSpecificSpiel(int id)
         transport->close();
     
     } catch (TException& tx) {
-        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        cout << "ERROR in getSpecificSpiel(): " << tx.what() << endl;
     }
     //cout << "RPC: " << rpc << "<<" << endl;
     // Output
@@ -339,6 +359,42 @@ Spiel getSpecificSpiel(int id)
     return spefificGame;
 }
 
+Wettanbieter getSpecificBookmaker(string anbieterName)
+{
+    cout << "getSpecificBookmaker" << endl;
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+    cout << "anbieterName: " << anbieterName << endl;
+
+    try
+    {
+        transport->open();
+        client.getSpecificBookmaker(rpc, anbieterName);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getSpecificBookmaker(): " << tx.what() << endl;
+    }
+    cout << "RPC: >>" << rpc << "<<" << endl;
+    // Output
+    // RPC: Fred_und_George:6.0;
+
+    stringstream sRPC;
+    sRPC << rpc;
+    string readAnbieterName, gebuehr, nulln;
+    getline(sRPC, readAnbieterName, ':');
+    getline(sRPC, gebuehr, ';');
+    getline(sRPC, nulln, '\n');
+
+    cout << "*got specific Bookmaker" << endl;
+
+    return newWettanbieter(readAnbieterName, stod(gebuehr));
+}
+
 Wettoption readWettoption (stringstream* sRPC) //
 {
     string readAnbieterName, wettID, spielID, quoteA, quoteB, quoteEven, nulln;
@@ -357,7 +413,7 @@ Wettoption readWettoption (stringstream* sRPC) //
 
     //cout << "*Read Wettoption:" << readAnbieterName << ":" << wettID << ":" << spielID << ":" << quoteA << ":" << quoteB << ":" << quoteEven << endl << flush;
 
-    return newWettoption(stoi(wettID), readAnbieterName, getSpecificSpiel(stoi(spielID)), stod(quoteA), stod(quoteB), stod(quoteEven));
+    return newWettoption(stoi(wettID), getSpecificBookmaker(readAnbieterName), getSpecificSpiel(stoi(spielID)), stod(quoteA), stod(quoteB), stod(quoteEven));
 }
 
 Wettoption getSpecificBetOption(string nameAnbieter, int id)
@@ -377,7 +433,7 @@ Wettoption getSpecificBetOption(string nameAnbieter, int id)
         transport->close();
     
     } catch (TException& tx) {
-        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        cout << "ERROR in getSpecificBetOption(): " << tx.what() << endl;
     }
     cout << "RPC: " << rpc << endl;
     // Output
@@ -389,6 +445,60 @@ Wettoption getSpecificBetOption(string nameAnbieter, int id)
     Wettoption specificBetOption = readWettoption(&sRPC);
 
     cout << "*got specific BetOption" << endl;
+
+    return specificBetOption;
+}
+
+BeendeteWettoption readBeendeteWettoption (stringstream* sRPC) //
+{
+    string anbieterName, wettID, spielID, earningsAnbieter, nulln;
+    // Hogwarts:11:2:0;
+
+    //cout << "Entry Read Beendete Wettoption" << endl << flush;
+
+    // read every column data of a row and 
+    // store it in a string variable
+    getline(*sRPC, anbieterName, ':');
+    getline(*sRPC, wettID, ':');
+    getline(*sRPC, spielID, ':');
+    getline(*sRPC, earningsAnbieter, ';');
+    getline(*sRPC, nulln, '\n');
+
+    //cout << "*Read BeendeteWettoption:" << anbieterName << ":" << wettID << ":" << spielID << ":" << earningsAnbieter << endl << flush;
+
+    return newBeendeteWettoption(getSpecificBookmaker(anbieterName), stoi(wettID), getSpecificSpiel(stoi(spielID)));
+}
+
+BeendeteWettoption getSpecificClosedBetOption(string nameAnbieter, int id)
+{
+    cout << "get specific Closed BetOption" << endl;
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+
+    try
+    {
+        transport->open();
+        // returnt BetOption unabhängig ob open oder close
+        client.getSpecificBetOption(rpc, nameAnbieter, id);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getSpecificClosedBetOption(): " << tx.what() << endl;
+    }
+    cout << "RPC: " << rpc << endl;
+    // Output
+    // RPC: Hogwarts:11:2:0;
+
+    stringstream sRPC;
+    sRPC << rpc;
+
+    BeendeteWettoption specificBetOption = readBeendeteWettoption(&sRPC);
+
+    cout << "*got specific Closed BetOption" << endl;
 
     return specificBetOption;
 }
@@ -413,6 +523,26 @@ PlatzierteWette readPlatzierteWette(stringstream* sRPC)
     //cout << "*Read Platzierte Wette: " << readAnbieterName << ":" << wettID << ":" << namebettor << ":" << moneyset << ":" << ending << ":" << quoteA << ":" << quoteB << ":" << quoteEven << endl << flush;
 
     return newPlatzierteWette(namebettor, stod(moneyset), stoi(ending), getSpecificBetOption(readAnbieterName, stoi(wettID)) );
+}
+
+BeendeteWette readBeendeteWette(stringstream* sRPC)
+{
+    cout << "Entry: readBeendeteWette" << endl;
+    string bettorName, spielID, anbieterName, wettID, moneyoutcome, nulln;
+
+    // read every column data of a row and 
+    // store it in a string variable
+    getline(*sRPC, bettorName, ':');
+    getline(*sRPC, spielID, ':');
+    getline(*sRPC, anbieterName, ':');
+    getline(*sRPC, wettID, ':');
+    getline(*sRPC, moneyoutcome, ';');
+    getline(*sRPC, nulln, '\n');
+    
+    cout << "*Read Beendete Wette" << endl;
+    //cout << "*Read Beendete Wette: " << anbieterName << ":" << wettID << ":" << bettorName << ":" << moneyoutcome << endl << flush;
+
+    return newBeendeteWette(bettorName, stod(moneyoutcome), getSpecificClosedBetOption(anbieterName, stoi(wettID)) );
 }
 
 vector<Wettoption> getAllBetOptionsFromWettanbieter(string anbieterName)
@@ -540,6 +670,47 @@ vector<PlatzierteWette> getAllPlacedBets()
     return allPlacedBets;
 }
 
+vector<BeendeteWette> getAllClosedPlacedBets()
+{
+    // rpc call
+    std::shared_ptr<TTransport> socket(new TSocket(ADRESSE, RPC_PORT));
+    std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+    WettanbieterClient client(protocol);
+
+    string rpc;
+    vector<BeendeteWette> allClosedPlacedBets;
+
+    try
+    {
+        transport->open();
+        client.getAllClosedPlacedBets(rpc);     // return string - \n fehlt
+        transport->close();
+    
+    } catch (TException& tx) {
+        cout << "ERROR in getAllClosedPlacedBets(): " << tx.what() << endl;
+    }
+    //cout << "getAllPlacedBets - RPC: " << rpc << endl;
+    // Output
+    // RPC: automatischeWette:2:Fred_und_George:11:0;
+
+    stringstream sRPC;
+    sRPC << rpc; 
+    string sLoopCtr = "";
+    int loopCtr = 0;
+
+    getline(sRPC, sLoopCtr, '#');
+    loopCtr = stoi(sLoopCtr);
+
+    for(int i = 0; i < loopCtr; i++)
+    {
+        allClosedPlacedBets.push_back( readBeendeteWette(&sRPC) );
+    }
+    cout << "*got all Closed Placed Bets" << endl;
+
+    return allClosedPlacedBets;
+}
+
 vector<PlatzierteWette> getAllMyPlacedBets(string myName)
 {
     vector<PlatzierteWette> allPlacedBets;
@@ -555,6 +726,25 @@ vector<PlatzierteWette> getAllMyPlacedBets(string myName)
         }
     }
     cout << "*got all my PlacedBets" << endl;
+
+    return myPlacedBets;
+}
+
+vector<BeendeteWette> getAllMyClosedPlacedBets(string myName)
+{
+    vector<BeendeteWette> allPlacedBets;
+    vector<BeendeteWette> myPlacedBets;
+
+    allPlacedBets = getAllClosedPlacedBets();
+
+    for (int i = 0; i < allPlacedBets.size(); i++)
+    {
+        if (strcmp(allPlacedBets[i].namebettor.c_str(), myName.c_str()) == 0)
+        {
+            myPlacedBets.push_back(allPlacedBets[i]);
+        }
+    }
+    cout << "*got all my Closed Placed Bets" << endl;
 
     return myPlacedBets;
 }
@@ -617,7 +807,7 @@ vector<Spiel> getAllOpenGames()
         transport->close();
     
     } catch (TException& tx) {
-        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        cout << "ERROR in getAllOpenGames(): " << tx.what() << endl;
     }
     //cout << "RPC: " << rpc << "<<" << endl;
     // Output
@@ -659,7 +849,7 @@ vector<Spiel> getAllClosedGames()
         transport->close();
     
     } catch (TException& tx) {
-        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        cout << "ERROR in getAllClosedGames(): " << tx.what() << endl;
     }
     //cout << "RPC: " << rpc << "<<" << endl;
     // Output
@@ -693,20 +883,21 @@ Earnings getEarningsOfBettor(string nameBettor)
     WettanbieterClient client(protocol);
 
     double einnahme;
-    vector<PlatzierteWette> alleMeineWetten = getAllMyPlacedBets(nameBettor);
+    vector<BeendeteWette> alleMeineWetten = getAllMyClosedPlacedBets(nameBettor);
 
     for(int i = 0; i < alleMeineWetten.size(); i++)
     {
         try
         {
             transport->open();
-            einnahme = client.getEarningBettor(alleMeineWetten[i].wettoption.anbieterName, alleMeineWetten[i].wettoption.id, nameBettor);
+            einnahme = client.getEarningBettor(alleMeineWetten[i].wettoption.wettanbieter.name, alleMeineWetten[i].wettoption.id, nameBettor);
             transport->close();
         
         } catch (TException& tx) {
-            cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+            cout << "ERROR in getEarningsOfBettor(): " << tx.what() << endl;
         }
         alleEinnahmen.push_back(einnahme);
+        cout << "Einnahmen: ";
     }
 
     double gewinn = 0;
@@ -715,6 +906,7 @@ Earnings getEarningsOfBettor(string nameBettor)
 
     for(int i = 0; i < alleEinnahmen.size(); i++)
     {
+        cout << einnahme << " + ";
         if (alleEinnahmen[i] < 0){
             verlust += alleEinnahmen[i];
         } else {
@@ -722,6 +914,7 @@ Earnings getEarningsOfBettor(string nameBettor)
         }
         gesamt += alleEinnahmen[i];
     }
+    cout << endl,
 
     cout << "*got Earnings Of Bettor " + nameBettor << endl;
 
@@ -747,7 +940,7 @@ vector<Empfehlung> getAllRecommendations()
         transport->close();
     
     } catch (TException& tx) {
-        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        cout << "ERROR in getAllRecommendations(): " << tx.what() << endl;
     }
     //cout << "RPC: " << rpc << "<<" << endl;
     // Output
@@ -815,7 +1008,7 @@ int getAnzahlTage()
         transport->close();
     
     } catch (TException& tx) {
-        cout << "ERROR in getAllBetOptions(): " << tx.what() << endl;
+        cout << "ERROR in getAnzahlTage(): " << tx.what() << endl;
     }
     cout << "RPC: " << rpc << "<<" << endl;
     // Output
@@ -978,12 +1171,12 @@ int main() {
                             string quoteB = to_string(alleWetten[i].quoteB);
                             string quoteEven = to_string(alleWetten[i].quoteEven);
 
-                            //cout << "wettender.html alleWettoptionen: " << alleWetten[i].anbieterName << endl;
-                            newHTML_getSelection += "<option value = \"" + alleWetten[i].anbieterName + "AA" + to_string(alleWetten[i].id) + "AA" + alleWetten[i].spiel.teamA + "AA" + alleWetten[i].spiel.teamB + "AA" 
+                            //cout << "wettender.html alleWettoptionen: " << alleWetten[i].wettanbieter.name << endl;
+                            newHTML_getSelection += "<option value = \"" + alleWetten[i].wettanbieter.name + "AA" + to_string(alleWetten[i].id) + "AA" + alleWetten[i].spiel.teamA + "AA" + alleWetten[i].spiel.teamB + "AA" 
                                         + quoteA.substr(0, quoteA.find('.')+3) + "AA" + quoteB.substr(0, quoteA.find('.')+3) + "AA" + quoteEven.substr(0, quoteA.find('.')+3) + "\">"
                                         + alleWetten[i].spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
                                         + alleWetten[i].spiel.teamB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                        + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]</option>";
+                                        + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].wettanbieter.name + "]</option>";
                         }
                         replace(sEditFileBuffer, htmlVariable, newHTML_getSelection);
 /*
@@ -1042,7 +1235,7 @@ int main() {
                             sumEven = 0;
 
                             //vector<PlatzierteWette> thisOptionsPlaced = getAllPlacedBetsToABetOption(thisAnbieter, alleWAWetten[ctr_wette].id);
-                            vector<PlatzierteWette> thisOptionsPlaced = getAllPlacedBetsToABetOption(alleWAWetten[ctr_wette].anbieterName, alleWAWetten[ctr_wette].id);
+                            vector<PlatzierteWette> thisOptionsPlaced = getAllPlacedBetsToABetOption(alleWAWetten[ctr_wette].wettanbieter.name, alleWAWetten[ctr_wette].id);
 
                             for(int ctr_placed = 0; ctr_placed < thisOptionsPlaced.size(); ctr_placed++)
                             {
@@ -1071,7 +1264,7 @@ int main() {
                             newHTML += "<li> <b>" + alleWAWetten[ctr_wette].spiel.teamA + "</b> (" + quoteA.substr(0, quoteA.find('.')+3) + ") "
                                     + "vs. <b>" + alleWAWetten[ctr_wette].spiel.teamB + "</b> (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
                                     + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : "
-                                    + "[" + alleWAWetten[ctr_wette].anbieterName + "]<br>"
+                                    + "[" + alleWAWetten[ctr_wette].wettanbieter.name + "]<br>"
                                     + to_string(anzahlPlatzierteWetten) + " platzierte Wetten: " + ssumA + "€ vs. " + ssumB + "€ - " + ssumEven + "€</li>";
                         }
                         // <span class="rot">rote Schrift</span>
@@ -1157,7 +1350,6 @@ int main() {
 
                     sendResponse(updatedFileBuffer, "HTTP/1.1 200 Ok", newClientSocket);
                 }
-
             } else if (request.post){
                 bool sendEcho = true;
                 cout << "* request.referer: " << request.referer; 
@@ -1279,7 +1471,6 @@ int main() {
                     }
                     //Wettender Beispiel POST-String: GetValuesOfName=emmy
                     string GETVALUES = "GetValuesOfName=";
-                    vector<Wettoption> alleWetten = getAllBetOptions();
 
                     if((post.find(GETVALUES,0) == 0)){
                         sendEcho = false;
@@ -1293,6 +1484,11 @@ int main() {
                         string newCurrentWetten = "";
                         string newPreviousWetten = "";
                         vector<PlatzierteWette> alleMeineWetten = getAllMyPlacedBets(name);
+                        vector<BeendeteWette> alleMeineBeendetenWetten = getAllMyClosedPlacedBets(name);
+                        double winMoney = 0;
+                        double lossMoney = 0;
+                        double wholeMoney = 0;
+                        double gebuehrMoney = 0;
 
                         for(int i = 0; i < alleMeineWetten.size(); i++)
                         {
@@ -1300,26 +1496,34 @@ int main() {
                             string quoteB = to_string(alleMeineWetten[i].wettoption.quoteB);
                             string quoteEven = to_string(alleMeineWetten[i].wettoption.quoteEven);
                             string moneyset = to_string(alleMeineWetten[i].moneyset);
-                            string newString = "";
 
-                            if(alleMeineWetten[i].wettoption.spiel.status == STATUS_OPEN)
-                            {
-                                //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
-                                newString       = "- " + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
-                                                + alleMeineWetten[i].wettoption.spiel.teamB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                                + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]\n   "
-                                                + moneyset.substr(0, moneyset.find('.')+3) + " Euro auf " + gameEnding(alleMeineWetten[i].ending) + "\n";
-                                newCurrentWetten += newString;
+                            //cout << "wettender.html: getCurrentBets >> " << alleMeineWetten[i].wettoption.wettanbieter.name << endl;
+                            newCurrentWetten  += "- " + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
+                                              + alleMeineWetten[i].wettoption.spiel.teamB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
+                                              + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleMeineWetten[i].wettoption.wettanbieter.name + "]\n   "
+                                              + moneyset.substr(0, moneyset.find('.')+3) + " Euro auf " + gameEnding(alleMeineWetten[i].ending) + "\n";
+                            double thisGebuehr = alleMeineWetten[i].wettoption.wettanbieter.gebuehr;
+                            gebuehrMoney += thisGebuehr;
+                            //cout << "Gebuehr: " << to_string(thisGebuehr) << endl;
+                        }
+
+                        for(int i = 0; i < alleMeineBeendetenWetten.size(); i++)
+                        {
+                            double moneyoutcome = alleMeineBeendetenWetten[i].moneyoutcome;
+                            string smoneyoutcome = to_string(moneyoutcome);
+
+                            //cout << "wettender.html: getPreviousBets >> " << alleMeineBeendetenWetten[i].wettoption.wettanbieter.name << endl;
+                            newPreviousWetten += "- " + alleMeineBeendetenWetten[i].wettoption.spiel.teamA + " vs. " + alleMeineBeendetenWetten[i].wettoption.spiel.teamB + " - "
+                                              + smoneyoutcome.substr(0, smoneyoutcome.find('.')+3) + " Euro" + "\n";
+                            double thisGebuehr = alleMeineBeendetenWetten[i].wettoption.wettanbieter.gebuehr;
+                            gebuehrMoney += thisGebuehr;
+                            if (moneyoutcome > 0){
+                                winMoney += moneyoutcome;
+                            } else {
+                                lossMoney += moneyoutcome;
                             }
-                            else if (alleMeineWetten[i].wettoption.spiel.status == STATUS_CLOSED)
-                            {
-                                //cout << "wettender.html: getCurrentBets >> " << alleWetten[i].anbieterName << endl;
-                                newString       = "- " + alleMeineWetten[i].wettoption.spiel.teamA + " (" + quoteA.substr(0, quoteA.find('.')+3) + ") vs. "
-                                                + alleMeineWetten[i].wettoption.spiel.teamB + " (" + quoteB.substr(0, quoteB.find('.')+3) + ") - "
-                                                + "Even (" + quoteEven.substr(0, quoteEven.find('.')+3) + ") : [" + alleWetten[i].anbieterName + "]\n   "
-                                                + moneyset.substr(0, moneyset.find('.')+3) + " Euro auf " + gameEnding(alleMeineWetten[i].ending) + "\n";
-                                newPreviousWetten += newString;
-                            }
+                            wholeMoney += moneyoutcome;
+                            //cout << "Gebuehr: " << to_string(thisGebuehr) << endl;
                         }
 
                         dataToSend += "\n\n";
@@ -1329,30 +1533,28 @@ int main() {
                         dataToSend += "Abgeschlossene Wetten:\n";
                         dataToSend += newPreviousWetten;
 
-                        double winMoney = 0;
-                        double lossMoney = 0;
-                        double wholeMoney = 0;
-
-                        // TODO: hier weiter
-                        Earnings earnings = getEarningsOfBettor(name);
-                        winMoney = earnings.gewinn;
-                        lossMoney = earnings.verlust;
-                        wholeMoney = earnings.gesamt;
+                        //Earnings earnings = getEarningsOfBettor(name);
+                        //winMoney = earnings.gewinn;
+                        //lossMoney = earnings.verlust;
+                        //wholeMoney = earnings.gesamt - gebuehrMoney;
+                        wholeMoney -= gebuehrMoney;
 
                         string win = to_string(winMoney);
                         string loss = to_string(lossMoney);
+                        string gebuehr = to_string(gebuehrMoney);
                         string whole = to_string(wholeMoney);
                         
                         dataToSend += "\n\n";
                         dataToSend += "Gesamtuebersicht:\n";
-                        dataToSend += "Gewinn:  " + win.substr(0, win.find('.')+3) + "Euro\n";
-                        dataToSend += "Verlust: " + loss.substr(0, loss.find('.')+3) + "Euro\n";
-                        dataToSend += "Gesamt:  " + whole.substr(0, whole.find('.')+3) + "Euro";
+                        dataToSend += "Gewinn:    " + win.substr(0, win.find('.')+3) + " Euro\n";
+                        dataToSend += "Verlust:   " + loss.substr(0, loss.find('.')+3) + " Euro\n";
+                        dataToSend += "Gebuehren: " + gebuehr.substr(0, gebuehr.find('.')+3) + " Euro\n";
+                        dataToSend += "Gesamt:    " + whole.substr(0, whole.find('.')+3) + " Euro";
                     }
                 }
                 else if(request.referer.find("wettanbieter",0) != -1)
                 {
-                //idbet=5&idgame=3&AGewinnquote=1.5&&BGewinnquote=1.5&even=1.5&nameanbieter=baum  
+                //idbet=5&idgame=3&AGewinnquote=1.5&&BGewinnquote=1.5&even=1.5&nameanbieter=Fred_und_George  
                 cout << "POST bei wettanbieter" << endl;  
                     
                     string GEWINNQUOTEA = "AGewinnquote=";

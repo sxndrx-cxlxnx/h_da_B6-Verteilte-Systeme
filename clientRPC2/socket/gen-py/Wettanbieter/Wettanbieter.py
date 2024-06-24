@@ -86,6 +86,9 @@ class Iface(object):
     def getAllPlacedBets(self):
         pass
 
+    def getAllClosedPlacedBets(self):
+        pass
+
     def getAllPlacedBetsToABetOption(self, nameanbieter, id):
         """
         Parameters:
@@ -106,6 +109,14 @@ class Iface(object):
          - winachance
          - winbchance
          - even
+
+        """
+        pass
+
+    def getSpecificBookmaker(self, nameanbieter):
+        """
+        Parameters:
+         - nameanbieter
 
         """
         pass
@@ -485,6 +496,32 @@ class Client(Iface):
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllPlacedBets failed: unknown result")
 
+    def getAllClosedPlacedBets(self):
+        self.send_getAllClosedPlacedBets()
+        return self.recv_getAllClosedPlacedBets()
+
+    def send_getAllClosedPlacedBets(self):
+        self._oprot.writeMessageBegin('getAllClosedPlacedBets', TMessageType.CALL, self._seqid)
+        args = getAllClosedPlacedBets_args()
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_getAllClosedPlacedBets(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = getAllClosedPlacedBets_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getAllClosedPlacedBets failed: unknown result")
+
     def getAllPlacedBetsToABetOption(self, nameanbieter, id):
         """
         Parameters:
@@ -564,6 +601,38 @@ class Client(Iface):
         if result.success is not None:
             return result.success
         raise TApplicationException(TApplicationException.MISSING_RESULT, "placeNewBet failed: unknown result")
+
+    def getSpecificBookmaker(self, nameanbieter):
+        """
+        Parameters:
+         - nameanbieter
+
+        """
+        self.send_getSpecificBookmaker(nameanbieter)
+        return self.recv_getSpecificBookmaker()
+
+    def send_getSpecificBookmaker(self, nameanbieter):
+        self._oprot.writeMessageBegin('getSpecificBookmaker', TMessageType.CALL, self._seqid)
+        args = getSpecificBookmaker_args()
+        args.nameanbieter = nameanbieter
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_getSpecificBookmaker(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = getSpecificBookmaker_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getSpecificBookmaker failed: unknown result")
 
     def addGame(self, spielid, playera, playerb):
         """
@@ -996,8 +1065,10 @@ class Processor(Iface, TProcessor):
         self._processMap["getAllBetOptions"] = Processor.process_getAllBetOptions
         self._processMap["getSpecificBetOption"] = Processor.process_getSpecificBetOption
         self._processMap["getAllPlacedBets"] = Processor.process_getAllPlacedBets
+        self._processMap["getAllClosedPlacedBets"] = Processor.process_getAllClosedPlacedBets
         self._processMap["getAllPlacedBetsToABetOption"] = Processor.process_getAllPlacedBetsToABetOption
         self._processMap["placeNewBet"] = Processor.process_placeNewBet
+        self._processMap["getSpecificBookmaker"] = Processor.process_getSpecificBookmaker
         self._processMap["addGame"] = Processor.process_addGame
         self._processMap["endGame"] = Processor.process_endGame
         self._processMap["isGameOpen"] = Processor.process_isGameOpen
@@ -1217,6 +1288,29 @@ class Processor(Iface, TProcessor):
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
+    def process_getAllClosedPlacedBets(self, seqid, iprot, oprot):
+        args = getAllClosedPlacedBets_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = getAllClosedPlacedBets_result()
+        try:
+            result.success = self._handler.getAllClosedPlacedBets()
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("getAllClosedPlacedBets", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
     def process_getAllPlacedBetsToABetOption(self, seqid, iprot, oprot):
         args = getAllPlacedBetsToABetOption_args()
         args.read(iprot)
@@ -1259,6 +1353,29 @@ class Processor(Iface, TProcessor):
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
         oprot.writeMessageBegin("placeNewBet", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_getSpecificBookmaker(self, seqid, iprot, oprot):
+        args = getSpecificBookmaker_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = getSpecificBookmaker_result()
+        try:
+            result.success = self._handler.getSpecificBookmaker(args.nameanbieter)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("getSpecificBookmaker", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -2667,6 +2784,110 @@ getAllPlacedBets_result.thrift_spec = (
 )
 
 
+class getAllClosedPlacedBets_args(object):
+
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllClosedPlacedBets_args')
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllClosedPlacedBets_args)
+getAllClosedPlacedBets_args.thrift_spec = (
+)
+
+
+class getAllClosedPlacedBets_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getAllClosedPlacedBets_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getAllClosedPlacedBets_result)
+getAllClosedPlacedBets_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
+)
+
+
 class getAllPlacedBetsToABetOption_args(object):
     """
     Attributes:
@@ -3006,6 +3227,129 @@ class placeNewBet_result(object):
 all_structs.append(placeNewBet_result)
 placeNewBet_result.thrift_spec = (
     (0, TType.BOOL, 'success', None, None, ),  # 0
+)
+
+
+class getSpecificBookmaker_args(object):
+    """
+    Attributes:
+     - nameanbieter
+
+    """
+
+
+    def __init__(self, nameanbieter=None,):
+        self.nameanbieter = nameanbieter
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.STRING:
+                    self.nameanbieter = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getSpecificBookmaker_args')
+        if self.nameanbieter is not None:
+            oprot.writeFieldBegin('nameanbieter', TType.STRING, 1)
+            oprot.writeString(self.nameanbieter.encode('utf-8') if sys.version_info[0] == 2 else self.nameanbieter)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getSpecificBookmaker_args)
+getSpecificBookmaker_args.thrift_spec = (
+    None,  # 0
+    (1, TType.STRING, 'nameanbieter', 'UTF8', None, ),  # 1
+)
+
+
+class getSpecificBookmaker_result(object):
+    """
+    Attributes:
+     - success
+
+    """
+
+
+    def __init__(self, success=None,):
+        self.success = success
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('getSpecificBookmaker_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(getSpecificBookmaker_result)
+getSpecificBookmaker_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 
 

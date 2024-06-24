@@ -24,13 +24,13 @@ from thrift.protocol import TBinaryProtocol
 
 # Anbieter defaults
 #anbieterName = "Hogwarts"
-anbieterName = "baum"
+anbieterName = "Fred_und_George"
 anbieterID = -1
 wettIDctr = int(10)
 quotenRangeStart = 100
 quotenRangeStopp = 500
 maxRisiko = -500
-anbieterGebuehr = 5
+anbieterGebuehr = 6
 
 leaderName = "null"
 leaderID = 1000
@@ -1261,6 +1261,7 @@ def message_handling(client, userdata, msg):
                 quoteA = float( msg.payload.decode().split(":")[5] )
                 quoteB = float( msg.payload.decode().split(":")[6] )
                 quoteEven = float( msg.payload.decode().split(":")[7] )
+                # TODO WettID - fuer platzierte Wette
 
                 newPlacedBet(wettID, nameBettor, money, ending, quoteA, quoteB, quoteEven)
                 calculateRiskOfBet(wettID)

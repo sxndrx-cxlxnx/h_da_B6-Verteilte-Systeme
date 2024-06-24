@@ -101,26 +101,39 @@ struct Empfehlung{
     double quoteEven;
 };
 
+struct Wettanbieter{
+    std::string name;
+    double gebuehr;
+};
+
 struct Wettoption{
     int id;
-    std::string anbieterName;
+    Wettanbieter wettanbieter;
     Spiel spiel;
     double quoteA;
     double quoteB;
     double quoteEven;
 };
 
-struct Wettanbieter{
-    std::string name;
-    std::string adresse;
-    int port;
+struct BeendeteWettoption{
+    int id;
+    Wettanbieter wettanbieter;
+    Spiel spiel;
 };
 
 struct PlatzierteWette{
-    std::string namebettor;
+    //int id; // TODO
+    string namebettor;
     double moneyset;
     int ending;
     Wettoption wettoption;    // nameAnbieter, wett-id, winachance, winbchance, even
+};
+
+struct BeendeteWette{
+    //int id; // TODO
+    string namebettor;
+    double moneyoutcome;
+    BeendeteWettoption wettoption;
 };
 
 struct Earnings{

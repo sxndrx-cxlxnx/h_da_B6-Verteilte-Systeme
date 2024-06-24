@@ -105,9 +105,14 @@ class WettanbieterHandler:
         return returnValue
 
     def getSpecificBetOption(self, nameanbieter, id):
-        print("getSpecificBetOption called")
+        print("getSpecificBetOption open called")
         with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
+        print(data)
+
+        print("getSpecificBetOption closed called")
+        with open('finishedBetsBookholder.txt','r',encoding='utf-8') as file:
+            data += file.readlines()
         print(data)
         
         for line in data:
@@ -121,7 +126,25 @@ class WettanbieterHandler:
 
         with open('placedBets.txt','r',encoding='utf-8') as file:
             data = file.readlines()
-        print(data)        
+        print(data)
+
+        returnValue = ""
+        ctr = 0
+        
+        for line in data:
+            ctr += 1
+            returnValue += line
+
+        returnValue = str(ctr) + "#" + returnValue
+            
+        return returnValue
+
+    def getAllClosedPlacedBets(self):
+        print("getAllClosedPlacedBets called")
+
+        with open('finishedBetsBettor.txt','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)
 
         returnValue = ""
         ctr = 0
@@ -173,6 +196,18 @@ class WettanbieterHandler:
                 return True
         print("Bet not Found")    
         return False
+
+    def getSpecificBookmaker(self, nameanbieter):
+        print("getSpecificBookmaker called")
+        with open('wettanbieter.csv','r',encoding='utf-8') as file:
+            data = file.readlines()
+        print(data)
+        
+        for line in data:
+            if line.startswith(nameanbieter + ":") :
+                return line
+        
+        return "SpecificBookmaker not found >>" + nameanbieter + "<<"
 
     def addGame(self, gameid, playerA, playerB):
         print("addGame called")
@@ -279,7 +314,7 @@ class WettanbieterHandler:
                             file2.write(x[2] + ':' + str(gameid) + ':' + x[0] + ':' + x[1] + ':' + str(int(moneyBettor)) + ';\n')
                             file2.close()                            
                         else:
-                            moneyBettor = 0
+                            moneyBettor = -1 * float(x[3])
                             file2 = open("finishedBetsBettor.txt", "a")
                             file2.write(x[2] + ':' + str(gameid) + ':' + x[0] + ':' + x[1] + ':' + str(int(moneyBettor)) + ';\n')
                             file2.close()

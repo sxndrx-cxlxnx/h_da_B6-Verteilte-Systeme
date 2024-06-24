@@ -1,5 +1,3 @@
-x,localhost,9090
-Fred_und_George,localhost,9090
-cpp,localhost,9090
-ich,localhost,9090
-Hogwarts,localhost,9090
+Fred_und_George:6.0;
+cpp:100.0;
+Hogwarts:5.0;

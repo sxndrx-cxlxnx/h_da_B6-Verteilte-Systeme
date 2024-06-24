@@ -60,6 +60,11 @@ class WettanbieterHandler : virtual public WettanbieterIf {
     printf("getAllPlacedBets\n");
   }
 
+  void getAllClosedPlacedBets(std::string& _return) {
+    // Your implementation goes here
+    printf("getAllClosedPlacedBets\n");
+  }
+
   void getAllPlacedBetsToABetOption(std::string& _return, const std::string& nameanbieter, const int32_t id) {
     // Your implementation goes here
     printf("getAllPlacedBetsToABetOption\n");
@@ -68,6 +73,11 @@ class WettanbieterHandler : virtual public WettanbieterIf {
   bool placeNewBet(const std::string& nameanbieter, const int32_t betid, const std::string& namebettor, const double moneyset, const int32_t ending, const double winachance, const double winbchance, const double even) {
     // Your implementation goes here
     printf("placeNewBet\n");
+  }
+
+  void getSpecificBookmaker(std::string& _return, const std::string& nameanbieter) {
+    // Your implementation goes here
+    printf("getSpecificBookmaker\n");
   }
 
   bool addGame(const int32_t spielid, const std::string& playera, const std::string& playerb) {
