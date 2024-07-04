@@ -105,7 +105,7 @@ class WettanbieterHandler:
         return returnValue
 
     def getSpecificBetOption(self, nameanbieter, id):
-        print("getSpecificBetOption open called")
+        print("getSpecificBetOption open called", nameanbieter, id)
         with open('betOptions.txt','r',encoding='utf-8') as file:
             data = file.readlines()
         print(data)

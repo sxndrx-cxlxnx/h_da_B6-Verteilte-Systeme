@@ -3,6 +3,7 @@ import paho.mqtt.client as paho
 import random
 from threading import Thread
 import time
+from datetime import datetime
 
 host = "p3-socket"
 port = 9090
@@ -24,13 +25,13 @@ from thrift.protocol import TBinaryProtocol
 
 # Anbieter defaults
 #anbieterName = "Hogwarts"
-anbieterName = "Fred_und_George"
+anbieterName = "Tagesprophet"
 anbieterID = -1
 wettIDctr = int(10)
 quotenRangeStart = 100
 quotenRangeStopp = 500
 maxRisiko = -500
-anbieterGebuehr = 6
+anbieterGebuehr = 5
 
 leaderName = "null"
 leaderID = 1000
@@ -131,6 +132,10 @@ Recommendations = {}
 
 RecommendationsSend = {}
 #spielID = True/False
+
+# Messungen:
+messungStart = 0
+messungEnd = 0
 
 
 def newBetOption(spielID):
@@ -1053,6 +1058,8 @@ def sendRecommendation(gameID):
     print("sendRecommendation() called")
     global Recommendations
     global RecommendationsSend
+    global messungStart
+    
 
     if RecommendationsSend[gameID] == False:
 
@@ -1070,6 +1077,8 @@ def sendRecommendation(gameID):
             clientrpc.newRecommendation(gameID, recquotea, recquoteb, recquoteeven)
             
             transport.close()
+            messungEnd = datetime.now()
+            print("******************* ",gameID, '****', messungStart, ":", messungEnd, ':', (messungEnd - messungStart).total_seconds() , "s")
             print("new Recommendation for ", gameID, " send")
             RecommendationsSend[gameID] = True
 
@@ -1233,6 +1242,7 @@ def message_handling(client, userdata, msg):
     global ImInCooperation
     global anbieterName
     global leaderName
+    global messungStart
 
     match msg.topic:
         case "neuesSpiel":
@@ -1261,7 +1271,6 @@ def message_handling(client, userdata, msg):
                 quoteA = float( msg.payload.decode().split(":")[5] )
                 quoteB = float( msg.payload.decode().split(":")[6] )
                 quoteEven = float( msg.payload.decode().split(":")[7] )
-                # TODO WettID - fuer platzierte Wette
 
                 newPlacedBet(wettID, nameBettor, money, ending, quoteA, quoteB, quoteEven)
                 calculateRiskOfBet(wettID)
@@ -1307,6 +1316,7 @@ def message_handling(client, userdata, msg):
             getCooperationRequest(andererAnbieter ,spielID, team, risikoA, risikoB, risikoEven)
 
         case "newDay":
+            messungStart = datetime.now()
             print("new Day")
             handleNewDay()
             

@@ -3,6 +3,7 @@ import paho.mqtt.client as paho
 import random
 from threading import Thread
 import time
+from datetime import datetime
 
 host = "p3-socket"
 port = 9090
@@ -132,6 +133,10 @@ Recommendations = {}
 RecommendationsSend = {}
 #spielID = True/False
 
+# Messungen:
+messungStart = 0
+messungEnd = 0
+
 
 def newBetOption(spielID):
     print("newBetOption called")
@@ -224,6 +229,7 @@ def calculateRisk(wettID, spielID):
         transport = TSocket.TSocket( host , port)
         transport = TTransport.TBufferedTransport(transport)
         protocol = TBinaryProtocol.TBinaryProtocol(transport)
+        print("1")
 
         clientrpc = Wettanbieter.Client(protocol)
         transport.open()
@@ -231,6 +237,7 @@ def calculateRisk(wettID, spielID):
         risikoB = clientrpc.getPossibleEarningBookholder(anbieterName, int(wettID),2)
         risikoEven = clientrpc.getPossibleEarningBookholder(anbieterName, int(wettID),3)
         gebuehrenEinnahmen = clientrpc.getNumberOfBettors(anbieterName, int(wettID)) * anbieterGebuehr
+        
         
         transport.close()
     except Thrift.TException as tx:
@@ -240,7 +247,9 @@ def calculateRisk(wettID, spielID):
     isRiskBToHigh = risikoB + gebuehrenEinnahmen < maxRisiko
     isRiskEvenToHigh = risikoEven + gebuehrenEinnahmen < maxRisiko
 
+    print("0")
     if SpielIsStarted[spielID]: # Buchmacherkommunikation
+        print("1")
 
         print(Gewinnwahrscheinlichkeit)
         print(Gewinnwahrscheinlichkeit[spielID])
@@ -283,8 +292,10 @@ def calculateRisk(wettID, spielID):
 
 
     else: # Quoten ändern
+        print("2")
 
         if isRiskAToHigh:
+            print("3")
             try:
                 transport = TSocket.TSocket( host , port)
                 transport = TTransport.TBufferedTransport(transport)
@@ -292,7 +303,10 @@ def calculateRisk(wettID, spielID):
 
                 clientrpc = Wettanbieter.Client(protocol)
                 transport.open()
+                print("4")
                 stringOption = clientrpc.getSpecificBetOption(anbieterName, wettID)
+                print(stringOption)
+                print("5")
                 quoteA = float(stringOption.split(":")[3])
                 quoteB = float(stringOption.split(":")[4])
                 quoteEven = float(stringOption.split(":")[5].split(";")[0])
@@ -312,7 +326,9 @@ def calculateRisk(wettID, spielID):
                         newQuoteEven = (quotenRangeStopp / 100)
 
                 print("A) WettID:", wettID)
+                print("6")
                 clientrpc.changeBet(anbieterName, wettID, spielID, newQuoteA, newQuoteB, newQuoteEven)
+                print("7")
                 print("A) old Bet:", quoteA, quoteB, quoteEven)
                 print("A) new Bet:", newQuoteA, newQuoteB, newQuoteEven)
                 transport.close()
@@ -331,6 +347,7 @@ def calculateRisk(wettID, spielID):
                 print ('Something went wrong : %s' % (tx.message))
 
         if isRiskBToHigh:
+            print("8")
             try:
                 transport = TSocket.TSocket( host , port)
                 transport = TTransport.TBufferedTransport(transport)
@@ -338,7 +355,10 @@ def calculateRisk(wettID, spielID):
 
                 clientrpc = Wettanbieter.Client(protocol)
                 transport.open()
+                print("9")
                 stringOption = clientrpc.getSpecificBetOption(anbieterName, wettID)
+                print("10")
+                print(stringOption)
                 quoteA = float(stringOption.split(":")[3])
                 quoteB = float(stringOption.split(":")[4])
                 quoteEven = float(stringOption.split(":")[5].split(";")[0])
@@ -358,7 +378,9 @@ def calculateRisk(wettID, spielID):
                         newQuoteEven = (quotenRangeStopp / 100)
 
                 print("B) WettID:", wettID)
+                print("11")
                 clientrpc.changeBet(anbieterName, wettID, spielID, newQuoteA, newQuoteB, newQuoteEven)
+                print("12")
                 print("B) old Bet:", quoteA, quoteB, quoteEven)
                 print("B) new Bet:", newQuoteA, newQuoteB, newQuoteEven)
                 transport.close()
@@ -377,6 +399,7 @@ def calculateRisk(wettID, spielID):
                 print ('Something went wrong : %s' % (tx.message))
 
         if isRiskEvenToHigh:
+            print("13")
             try:
                 transport = TSocket.TSocket( host , port)
                 transport = TTransport.TBufferedTransport(transport)
@@ -384,7 +407,10 @@ def calculateRisk(wettID, spielID):
 
                 clientrpc = Wettanbieter.Client(protocol)
                 transport.open()
+                print("14")
                 stringOption = clientrpc.getSpecificBetOption(anbieterName, wettID)
+                print(stringOption)
+                print("15")
                 quoteA = float(stringOption.split(":")[3])
                 quoteB = float(stringOption.split(":")[4])
                 quoteEven = float(stringOption.split(":")[5].split(";")[0])
@@ -404,7 +430,9 @@ def calculateRisk(wettID, spielID):
                         newQuoteA = (quotenRangeStopp / 100)
 
                 print("Even) WettID:", wettID)
+                print("16")
                 clientrpc.changeBet(anbieterName, wettID, spielID, newQuoteA, newQuoteB, newQuoteEven)
+                print("17")
                 print("Even) old Bet:", quoteA, quoteB, quoteEven)
                 print("Even) new Bet:", newQuoteA, newQuoteB, newQuoteEven)
                 transport.close()
@@ -1053,6 +1081,8 @@ def sendRecommendation(gameID):
     print("sendRecommendation() called")
     global Recommendations
     global RecommendationsSend
+    global messungStart
+    
 
     if RecommendationsSend[gameID] == False:
 
@@ -1070,6 +1100,8 @@ def sendRecommendation(gameID):
             clientrpc.newRecommendation(gameID, recquotea, recquoteb, recquoteeven)
             
             transport.close()
+            messungEnd = datetime.now()
+            print("******************* ",gameID, '****', messungStart, ":", messungEnd, ':', (messungEnd - messungStart).total_seconds() , "s")
             print("new Recommendation for ", gameID, " send")
             RecommendationsSend[gameID] = True
 
@@ -1233,6 +1265,7 @@ def message_handling(client, userdata, msg):
     global ImInCooperation
     global anbieterName
     global leaderName
+    global messungStart
 
     match msg.topic:
         case "neuesSpiel":
@@ -1243,9 +1276,13 @@ def message_handling(client, userdata, msg):
         case "spielBeginn":
             print("match case spielBeginn")
             spielID = int( msg.payload.decode().split(":")[0] )
+            print(spielID)
             SpielIsStarted[spielID] = True
+            print("1")
             ImInCooperation[spielID] = False
+            print("2")
             calculateRiskOfGame(spielID)
+            print("3")
 
         case "neueAutowette":
             print("match case neue Autowette")
@@ -1306,6 +1343,7 @@ def message_handling(client, userdata, msg):
             getCooperationRequest(andererAnbieter ,spielID, team, risikoA, risikoB, risikoEven)
 
         case "newDay":
+            messungStart = datetime.now()
             print("new Day")
             handleNewDay()
             
